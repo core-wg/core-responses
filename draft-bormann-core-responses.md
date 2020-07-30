@@ -1,5 +1,5 @@
 ---
-title: CoAP: Non-traditional response forms
+title: "CoAP: Non-traditional response forms"
 abbrev: TODO - Abbreviation
 docname: draft-bormann-core-responses-latest
 category: info
