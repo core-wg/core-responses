@@ -4,8 +4,8 @@
 
 Network Working Group                                         C. Bormann
 Internet-Draft                                    Universität Bremen TZI
-Intended status: Informational                              30 July 2020
-Expires: 31 January 2021
+Intended status: Informational                            25 August 2020
+Expires: 26 February 2021
 
 
                   CoAP: Non-traditional response forms
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 31 January 2021.
+   This Internet-Draft will expire on 26 February 2021.
 
 
 
 
 
 
-Bormann                  Expires 31 January 2021                [Page 1]
+Bormann                 Expires 26 February 2021                [Page 1]
 
-Internet-Draft    CoAP: Non-traditional response forms         July 2020
+Internet-Draft    CoAP: Non-traditional response forms       August 2020
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Bormann                  Expires 31 January 2021                [Page 2]
+Bormann                 Expires 26 February 2021                [Page 2]
 
-Internet-Draft    CoAP: Non-traditional response forms         July 2020
+Internet-Draft    CoAP: Non-traditional response forms       August 2020
 
 
 1.1.  Terminology
@@ -165,9 +165,9 @@ Internet-Draft    CoAP: Non-traditional response forms         July 2020
 
 
 
-Bormann                  Expires 31 January 2021                [Page 3]
+Bormann                 Expires 26 February 2021                [Page 3]
 
-Internet-Draft    CoAP: Non-traditional response forms         July 2020
+Internet-Draft    CoAP: Non-traditional response forms       August 2020
 
 
 3.  Response for configured request
@@ -221,9 +221,9 @@ Internet-Draft    CoAP: Non-traditional response forms         July 2020
 
 
 
-Bormann                  Expires 31 January 2021                [Page 4]
+Bormann                 Expires 26 February 2021                [Page 4]
 
-Internet-Draft    CoAP: Non-traditional response forms         July 2020
+Internet-Draft    CoAP: Non-traditional response forms       August 2020
 
 
    responses is that, for each multicast group, there is some form of
@@ -277,9 +277,9 @@ Internet-Draft    CoAP: Non-traditional response forms         July 2020
 
 
 
-Bormann                  Expires 31 January 2021                [Page 5]
+Bormann                 Expires 26 February 2021                [Page 5]
 
-Internet-Draft    CoAP: Non-traditional response forms         July 2020
+Internet-Draft    CoAP: Non-traditional response forms       August 2020
 
 
 5.  Security Considerations
@@ -333,9 +333,9 @@ Internet-Draft    CoAP: Non-traditional response forms         July 2020
 
 
 
-Bormann                  Expires 31 January 2021                [Page 6]
+Bormann                 Expires 26 February 2021                [Page 6]
 
-Internet-Draft    CoAP: Non-traditional response forms         July 2020
+Internet-Draft    CoAP: Non-traditional response forms       August 2020
 
 
 6.2.  Informative References
@@ -389,4 +389,4 @@ Author's Address
 
 
 
-Bormann                  Expires 31 January 2021                [Page 7]
+Bormann                 Expires 26 February 2021                [Page 7]
