@@ -72,28 +72,29 @@ The term "byte" is used in its now customary sense as a synonym for
 
 Terms used in this draft:
 
-A *non-traditional response* is a response that is not the single response
-a server generates when it receives a request but is still responding to
-the oriinal request (in terms of CoAP transports, this means that it has
-the same token and is send between the reversed endpoint pair of the
-request).
+Non-traditional response:
+: A response that is not the single response
+  a server generates when it receives a request but is still responding to
+  the oriinal request (in terms of CoAP transports, this means that it has
+  the same token and is send between the reversed endpoint pair of the
+  request).
 
-In particular, observations and responses to responses to multicast
-requests are non-traditional according to the definition; they already
-do follow the guidance set out here for new non-traditional responses.
+  In particular, observations and responses to responses to multicast
+  requests are non-traditional according to the definition; they already
+  do follow the guidance set out here for new non-traditional responses.
 
-(A second different response sent by a non-deduplicating server to a
-retransmission of a request is not non-traditional because it is sent to
-a repeated request -- that is probably the last corner case along the
-distinction line).
+  (A second different response sent by a non-deduplicating server to a
+  retransmission of a request is not non-traditional because it is sent to
+  a repeated request -- that is probably the last corner case along the
+  distinction line).
 
-
-An *obviously non-matching response* is a response that has properties
-(typically options) that make it incompatible with the original request,
-and thus especially unsuitable as a cached response to that request (but
-possibly suitable as a cached response to a similar request). A response
-can not be obviously non-matching if it only differs in safe-to-forward
-options.
+Obviously non-matching response:
+  : A response that has properties
+  (typically options) that make it incompatible with the original request,
+  and thus especially unsuitable as a cached response to that request (but
+  possibly suitable as a cached response to a similar request). A response
+  can not be obviously non-matching if it only differs in safe-to-forward
+  options.
 
 Configured request:
 : A request that reaches the server in another way than by
@@ -106,8 +107,7 @@ Embedded request:
 
 # Sending non-traditional responses
 
-Preconditions to sending non-traditional responses
-==================================================
+## Preconditions to sending non-traditional responses
 
 A server may send multiple responses to a request if there is any
 property in the request that indicates the client's intention to receive
@@ -137,8 +137,7 @@ which request would have triggered it, for example the Response-For
 option.
 
 
-Responses without request
-=========================
+## Responses without request
 
 Endpoints may agree out of band on a token (or other request-matching
 details). One way to do that is to exchange a "phantom request", which
@@ -286,7 +285,6 @@ than normal responses unless authenticated in another way (e.g., via
 {{-oscore}}).
 
 --- back
-
 
 
 CoAP extensions explained by non-traditional responses
