@@ -73,28 +73,15 @@ The term "byte" is used in its now customary sense as a synonym for
 Terms used in this draft:
 
 Non-traditional response:
-: A response that is not the single response
-  a server generates when it receives a request but is still responding to
-  the oriinal request (in terms of CoAP transports, this means that it has
-  the same token and is send between the reversed endpoint pair of the
-  request).
+: A response that is not the single response generated for a request received
+  on the same transport.
 
-  In particular, observations and responses to responses to multicast
-  requests are non-traditional according to the definition; they already
-  do follow the guidance set out here for new non-traditional responses.
-
-  (A second different response sent by a non-deduplicating server to a
-  retransmission of a request is not non-traditional because it is sent to
-  a repeated request -- that is probably the last corner case along the
-  distinction line).
-
-Obviously non-matching response:
+Non-matching response:
   : A response that has properties
   (typically options) that make it incompatible with the original request,
   and thus especially unsuitable as a cached response to that request (but
-  possibly suitable as a cached response to a similar request). A response
-  can not be obviously non-matching if it only differs in safe-to-forward
-  options.
+  possibly suitable to populate the cache for a similar request).
+  Options that make a response non-matching need to be proxy unsafe.
 
 Configured request:
 : A request that reaches the server in another way than by
@@ -107,34 +94,53 @@ Embedded request:
 
 # Sending non-traditional responses
 
+Non-traditional responses are sets of responses produced for a single request,
+or responses sent without a transmitted request.
+
+Where tokens are involved,
+all non-traditional responses use the request's token;
+in any case, they are bound to the original request
+(e.g. by using the same reqest_kid/request_piv pair in OSCORE).
+Where message IDs are involved,
+one of the non-traditional response (the first sent, not necessarily the first received as generally the network might reorder messages)
+can be sent as a piggy-back response (thus sharing the request's message ID),
+the others are CON or NON responses.
+
+Some established responses
+(observations defined in {{-observe}},
+and multicast responses in {{?I-D.ietf-core-groupcomm-bis}})
+match this definition and already follow the guidance set out here for non-traditional responses;
+{{extensions-explained}} gives details for them.
+
+A second response differing from the first that can be sent by a non-deduplicating server
+responding to a retransmission of a request
+is not non-traditional because there is a second request --
+that is probably the last corner case at the line separating traditional from non-traditional responses.
+
+
 ## Preconditions to sending non-traditional responses
 
 A server may send multiple responses to a request if there is any
 property in the request that indicates the client's intention to receive
-them. This is typically indicated by a request option, or (in the
-multicast case) by a propety of the destination address.
-
-Responses are sent after the primary response, but may be reorderered by
-transports that do not preserve sequence. The responses carry the same
-token as the original request when there are tokens, or are otherwise
-bound to the original request by whichever means the transport provides
-(e.g. by using the same reqest_kid/request_piv pair in OSCORE).
+them. This is typically indicated by a request option,
+and rarely in external properties of the message
+(in the multicast case, the destination address).
 
 A mechanism for eliciting multiple responses must specify the conditions
 under which a token gets freed, as the traditional arrival of the
 response is insufficient. It may also specify for which requests the
-token can be reused immediately for follow-up requests. On unordered
+token can be reused immediately in follow-up requests. On unordered
 transports, or when it's a client's follow-up request and not a response
 that terminates the token, the client needs to wait until no reordered
 non-traditional responses can be expected any more.
 
 If a non-traditional response answers the original request, no further
 action is required (this is the case of observation: ordering is added
-on top of that to ensure that only the freshest response is used). If
-the response does not answer the original request, it can either be
-obviously non-matching, or it needs to carry some option that indicates
-which request would have triggered it, for example the Response-For
-option.
+on top of that to ensure that only the latest response is used). If
+the response does not answer the original request,
+it must be non-matching,
+either by an option introduced with the eliciting option
+or by a generic option like Response-For.
 
 
 ## Responses without request
@@ -287,8 +293,8 @@ than normal responses unless authenticated in another way (e.g., via
 --- back
 
 
-CoAP extensions explained by non-traditional responses
-======================================================
+CoAP extensions explained by non-traditional responses {#extensions-explained}
+==============================================================================
 
 Observation
 -----------
