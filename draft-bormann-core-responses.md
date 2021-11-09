@@ -22,6 +22,10 @@ author:
     country: Germany
     phone: +49-421-218-63921
     email: cabo@tzi.org
+ -
+    ins: C. Amsuess
+    name: Christian Amsüss
+    email: christian@amsuess.com
 
 normative:
   RFC7252: coap
