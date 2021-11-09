@@ -253,6 +253,35 @@ This contains an opaque string with the port number as a 16-bit number
 |-----|---|---|---|---|------------|--------|--------|---------|
 | TBD | C | U | - | - | Respond-To | opaque |   6-18 | (none)  |
 
+
+## Leisure-For-Responses
+
+This new option (elective, proxy-unsafe, uint valued) allows the server
+to send up as many responses as indicated in the option value in
+addition to the requested response. They are to be sent immediately
+after the original response.
+
+On its own, the option does not indicate which more responses the client
+would expect (though further elective proxy-safe no-cache-key options
+can be added on top of that to give better guidance), and the server may
+choose not to send any at all.
+
+Intermediaries may add or remove the option, and use incoming responses to
+populate their cache. They may serve additional responses from their
+cache, but in most cases the sensible course of action is to forward the
+additional responses the origin server sends.
+
+Use cases for Leisure-For-Responses include sending further blocks in a
+Block2 transfer (which are obviously non-matching and thus don't need a
+Response-For), or serving follow-up documents (a response containing a
+single link can be followed by a representation of the linked resource,
+which needs a Request-For header that indicates the URI).
+<!-- or just provide
+the ETag of a freshly created resource (which would have a Reqeust-For
+option for a GET with the given path and an ETag, and be a 2.03 Valid
+response). / but that probably already works as there is the concept of a "tagged representation" -->
+
+
 IANA Considerations
 ============
 
@@ -338,8 +367,8 @@ the application's timeout (in proxy situations, this needs to be
 communicated explicitly in the Multicast-Signaling option of
 {{?I-D.tiloca-core-groupcomm-proxy}}).
 
-Triangular responses
---------------------
+Triangular responses (Response-To)
+----------------------------------
 
 The Response-To option can be viewed as a short-hand notation for
 "Consider this a No-Response:any request, but take a copy of it, make it
@@ -349,33 +378,6 @@ request".
 
 [ It may make sense to add an explicit return token, and include a
 No-Response option; that might allow it to be used even across proxies. ]
-
-Leisure-For-Responses
----------------------
-
-This new option (elective, proxy-unsafe, uint valued) allows the server
-to send up as many responses as indicated in the option value in
-addition to the requested response. They are to be sent immediately
-after the original response.
-
-On its own, the option does not indicate which more responses the client
-would expect (though further elective proxy-safe no-cache-key options
-can be added on top of that to give better guidance), and the server may
-choose not to send any at all.
-
-Intermediaries may add or remove the option, use incoming responses to
-populate their cache. They may serve additional responses from their
-cache, but in most cases the sensible course of action is to forward the
-additional responses the origin server sends.
-
-Use cases for Leisure-For-Responses include sending further blocks in a
-Block2 transfer (which are obviously non-matching and thus don't need a
-Response-For), serving follow-up documents (a response containing a
-single link can be followed by a representation of the linked resource,
-which needs a Request-For header that indicates the URI) or just provide
-the ETag of a freshly created resource (which would have a Reqeust-For
-option for a GET with the given path and an ETag, and be a 2.03 Valid
-response).
 
 Other current documents
 -----------------------
