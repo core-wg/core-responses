@@ -65,12 +65,7 @@ evaluated.
 
 ## Terminology         {#terms}
 
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in BCP
-14 {{!RFC2119}} {{!RFC8174}} when, and only when, they appear in all
-capitals, as shown here.
+{::boilerplate bcp14-tagged}
 
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
@@ -82,14 +77,14 @@ Non-traditional response:
   on the same transport.
 
 Non-matching response:
-  : A response that has properties
+: A response that has properties
   (typically options) that make it incompatible with the original request,
   and thus in particular unsuitable as a cached response to that request (but
   possibly suitable to populate the cache for a similar request).
   Options that make a response non-matching need to be proxy unsafe.
 
-    For example,
-    a Block2 response with a different block number {{{×}}} block size value than indicated in the request is non-matching.
+  For example,
+  a Block2 response with a different value of block number {{{×}}} block size than indicated in the request is non-matching.
 
 Configured request:
 : A request that reaches the server in another way than by
@@ -108,10 +103,10 @@ or responses sent without a transmitted request.
 Where tokens are involved,
 all non-traditional responses use the request's token;
 in any case, they are bound to the original request
-(e.g. by using the same reqest_kid/request_piv pair in OSCORE).
+(e.g. by using the same request_kid/request_piv pair in OSCORE {{-oscore}}).
 Where message IDs are involved,
 one of the non-traditional response (the first sent, not necessarily the first received as generally the network might reorder messages)
-can be sent as a piggy-back response in an ACK (thus sharing the request's message ID),
+can be sent as a piggybacked response in an ACK (thus sharing the request's message ID),
 the others are CON or NON responses.
 
 Some established responses
@@ -140,7 +135,7 @@ response is insufficient. It may also specify for which requests the
 token can be reused immediately in follow-up requests. On unordered
 transports, or when it's a client's follow-up request and not a response
 that terminates the token, the client needs to wait until no reordered
-non-traditional responses can be expected any more.
+non-traditional responses can be expected anymore.
 
 If a non-traditional response answers the original request, no further
 action is required (this is the case of observation: ordering is added
@@ -238,7 +233,7 @@ multicast group, there is some form of management for the token space
 join that multicast group; the specific form of management is out of
 the scope of this specification.  Note that this means that multicast
 responses MUST NOT be sent to unmanaged multicast addresses such as
-All Coap Nodes ({{Section 12.8 of -coap}}).
+All CoAP Nodes ({{Section 12.8 of -coap}}).
 
 Multicast responses are always non-confirmable.  The congestion
 control considerations for non-confirmable multicast messages apply
@@ -296,7 +291,7 @@ Response-For), or serving follow-up documents (a response containing a
 single link can be followed by a representation of the linked resource,
 which needs a Request-For header that indicates the URI).
 <!-- or just provide
-the ETag of a freshly created resource (which would have a Reqeust-For
+the ETag of a freshly created resource (which would have a Request-For
 option for a GET with the given path and an ETag, and be a 2.03 Valid
 response). / but that probably already works as there is the concept of a "tagged representation" -->
 
