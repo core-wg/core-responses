@@ -332,7 +332,7 @@ CoAP extensions explained by non-traditional responses {#extensions-explained}
 Observation
 -----------
 
-This section describes the Observe option {{?RFC7641}} in terms of this
+This section describes the Observe option {{?RFC7641}} in the terms of this
 document, [ so nothing in here should contradict that document ].
 
 When Observe:0 is present in a request, this sets up non-traditional
