@@ -24,7 +24,6 @@ author:
     phone: +49-421-218-63921
     email: cabo@tzi.org
   -
-    ins: C. Amsüss
     name: Christian Amsüss
     email: christian@amsuess.com
 
@@ -176,7 +175,7 @@ response to this request.
 {: #response-for-option title="The Response-For Option" cols="r l l l l l l r l"}
 
 The CoAP Token becomes meaningless for this form of response;
-responses with embedded requests are therefore sent with an
+responses with embedded requests are therefore sent with a
 zero-length Token.  (In essence, the "Response-For" option takes the
 place of the request the Token usually stands for.)
 
@@ -386,7 +385,7 @@ communicated explicitly in the Multicast-Signaling option of
 Triangular responses (Response-To)
 ----------------------------------
 
-The Response-To option can be viewed as a short-hand notation for
+The Response-To option can be viewed as a shorthand notation for
 "Consider this a No-Response:any request, but take a copy of it, make it
 into a CoAP-over-UDP request with that particular address as a source
 and any address of yours as a response, and treat that as a phantom
