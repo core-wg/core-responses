@@ -9,6 +9,7 @@ stand_alone: true
 ipr: trust200902
 keyword: Internet-Draft
 cat: info
+submissiontype: IETF
 
 pi: [toc, sortrefs, symrefs, compact, comments]
 
@@ -259,18 +260,20 @@ This contains an opaque string with the port number as a 16-bit number
 | No. | C | U | N | R | Name       | Format | Length | Default |
 |-----|---|---|---|---|------------|--------|--------|---------|
 | TBD | C | U | - | - | Respond-To | opaque |   6-18 | (none)  |
+{: #tbl-respond-to-option title="The Respond-To Option" cols="r l l l l l l r l"}
 
 
-## Leisure-For-Responses
+## Leisure-For-Responses Option
 
 This new option indicates a number expressed as a uint.
 It allows the server to send that number of non-traditional response messages in
-addition to the requested response. They are to be sent immediately
+addition to the requested response. They are to be sent without undue delay
 after the original response.
 
 | No. | C | U | N | R | Name                  | Format | Length | Default |
 |-----|---|---|---|---|-----------------------|--------|--------|---------|
 | TBD |   | U | - |   | Leisure-For-Responses | uint   |    1-4 |       0 |
+{: #tbl-leisure-for-responses-option title="The Leisure-For-Responses Option" cols="r l l l l l l r l"}
 
 The option is elective, but unsafe for proxies
 (as the option would otherwise cause multiple responses to a proxy that expects only one and that needs to be a matching response).
@@ -305,10 +308,11 @@ This draft adds the following option numbers to the CoAP Option
 Numbers registry of
 {{-coap}}:
 
-| Number | Name         | Reference |
-|--------|--------------|-----------|
-| TBD    | Response-For | {{&SELF}} |
-| TBD    | Respond-To   | {{&SELF}} |
+| Number | Name                  | Reference |
+|--------+-----------------------+-----------|
+| TBD    | Response-For          | {{&SELF}}   |
+| TBD    | Respond-To            | {{&SELF}}   |
+| TBD    | Leisure-For-Responses | {{&SELF}}   |
 {: #tab-option-registry title="CoAP Option Numbers"}
 
 
@@ -344,7 +348,7 @@ CoAP extensions explained by non-traditional responses {#extensions-explained}
 Observation
 -----------
 
-This section describes the Observe option {{?RFC7641}} in the terms of this
+This section describes the Observe option {{RFC7641}} in the terms of this
 document, [ so nothing in here should contradict that document ].
 
 When Observe:0 is present in a request, this sets up non-traditional
