@@ -277,7 +277,7 @@ The option is elective, but unsafe for proxies
 A proxy that chooses not to implement it may forward the request
 with the Leisure-For-Responses option removed.
 
-On its own, the option does not indicate which more responses the client
+On its own, the option does not indicate which kind of additional responses the client
 would expect (though further elective proxy-safe no-cache-key options
 can be added on top of that to give better guidance), and the server may
 choose not to send any at all.
