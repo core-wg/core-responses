@@ -107,7 +107,7 @@ in any case, they are bound to the original request
 (e.g. by using the same reqest_kid/request_piv pair in OSCORE).
 Where message IDs are involved,
 one of the non-traditional response (the first sent, not necessarily the first received as generally the network might reorder messages)
-can be sent as a piggy-back response (thus sharing the request's message ID),
+can be sent as a piggy-back response in an ACK (thus sharing the request's message ID),
 the others are CON or NON responses.
 
 Some established responses
