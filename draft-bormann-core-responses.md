@@ -83,9 +83,12 @@ Non-traditional response:
 Non-matching response:
   : A response that has properties
   (typically options) that make it incompatible with the original request,
-  and thus especially unsuitable as a cached response to that request (but
+  and thus in particular unsuitable as a cached response to that request (but
   possibly suitable to populate the cache for a similar request).
   Options that make a response non-matching need to be proxy unsafe.
+
+  For example,
+  a Block2 response with a different block number × block size value than indicated in the request is non-matching.
 
 Configured request:
 : A request that reaches the server in another way than by
