@@ -2,7 +2,7 @@
 title: >
   CoAP: Non-traditional response forms
 docname: draft-bormann-core-responses-latest
-# date: 2017-11-13
+# date: 2022-02-03
 
 stand_alone: true
 
@@ -36,6 +36,12 @@ informative:
 
 entity:
   SELF: RFCthis
+
+venue:
+  group: Constrained RESTful Environments (CoRE)
+  mail: core@ietf.org
+  github: core-wg/core-responses
+
 
 --- abstract
 
@@ -193,15 +199,15 @@ a token from the token name space it controls.
 
 ## Examples for configured requests
 
-## Example: Periodic request
+### Example: Periodic request
 
 A server may be configured to act on a configured request every day at 12:00.
 
-## Example: Event driven request
+### Example: Event driven request
 
 A server may be configured to act on a configured request each time it reboots.
 
-## Example: Configured observe
+### Example: Configured observe
 
 A server may be configured with a GET request from a client that
 includes an Observe option with value 0.  This means that the server
@@ -343,7 +349,7 @@ Observation
 -----------
 
 This section describes the Observe option {{RFC7641}} in the terms of this
-document, [ so nothing in here should contradict that document ].
+document, \[ so nothing in here should contradict that document ].
 
 When Observe:0 is present in a request, this sets up non-traditional
 responses until either of the following conditions is met:
@@ -391,7 +397,7 @@ into a CoAP-over-UDP request with that particular address as a source
 and any address of yours as a response, and treat that as a phantom
 request".
 
-[ It may make sense to add an explicit return token, and include a
+\[ It may make sense to add an explicit return token, and include a
 No-Response option; that might allow it to be used even across proxies. ]
 
 Other current documents
