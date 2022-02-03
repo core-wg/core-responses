@@ -29,7 +29,7 @@ author:
 
 normative:
   RFC7252: coap
-  I-D.ietf-core-object-security: oscore
+  RFC8613: oscore
 
 informative:
   RFC7641: observe
@@ -169,8 +169,8 @@ A server can send a response to a request that it did not actually
 receive by embedding the request which the response answers in the
 response.
 
-The option "Response-For" contains a request packaged as in Section
-5.2 of {{-oscore}}.  The response is then intended to serve as a
+The option "Response-For" contains a request packaged as in {{Section
+5.3 of -oscore}}.  The response is then intended to serve as a
 response to this request.
 
 
@@ -213,7 +213,7 @@ includes an Observe option with value 0.  This means that the server
 will send updates to the state of the resource addressed by the GET
 request to the configured address of the client.
 
-The considerations of Section 4.5 of {{-observe}} apply.  How losing
+The considerations of {{Section 4.5 of -observe}} apply.  How losing
 interest reflects back into to configuration and whether there is some
 form of error notification to the source of the configuration is out
 of scope of the present specification.
@@ -225,8 +225,8 @@ A server MAY send a response to a multicast address.
 request cannot be sent *from* a multicast address.)
 
 Note that, as the originator of a multicast response is a unicast
-address, the relaxation of matching rules described in Section 8.2 of
-{{RFC7252}} does not apply.
+address, the relaxation of matching rules described in {{Section 8.2 of
+RFC7252}} does not apply.
 
 The token space in CoAP is owned by the client, which is identified by
 a transport endpoint (address/port).  Here, the address is a multicast
@@ -237,7 +237,7 @@ multicast group, there is some form of management for the token space
 join that multicast group; the specific form of management is out of
 the scope of this specification.  Note that this means that multicast
 responses MUST NOT be sent to unmanaged multicast addresses such as
-All Coap Nodes (Section 12.8 of {{-coap}}).
+All Coap Nodes ({{Section 12.8 of -coap}}).
 
 Multicast responses are always non-confirmable.  The congestion
 control considerations for non-confirmable multicast messages apply
@@ -329,7 +329,7 @@ The CoAP request/response mechanism allows the client to ascertain a
 level of authentication (not resistant though to on-path attackers
 unless the communication is protected) and freshness of the response:
 The Token echoed in the response shows that the responder had
-knowledge of the (fresh) request (Section 5.3.1 of {{-coap}}).
+knowledge of the (fresh) request ({{Section 5.3.1 of -coap}}).
 Responses with embedded requests can not be authenticated or checked
 for freshness this way.  Their content therefore is less trustworthy
 than normal responses unless authenticated in another way (e.g., via
@@ -359,7 +359,7 @@ responses until either of the following conditions is met:
 * Any response has a non-successful status.
 
 Follow-up requests are limited to extending the request ETag set.
-Responses are obviousy non-matching by their Observe option; each hop
+Responses are obviously non-matching by their Observe option; each hop
 discards the Observe option for the purpose of caching and refreshes its
 cache with the most recent one as per the Observe value.
 
