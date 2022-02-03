@@ -375,7 +375,7 @@ still need to be followed, it might be seen as a template for creating a
 phantom request to any endpoint, if that suits the reader's mental
 model.)
 
-Responses can only be sent for up to the deployment's leisure time plus
+Responses can only be sent for up to the deployment's Leisure time (see {{RFC7252}} Section 8.2) plus
 the application's timeout (in proxy situations, this needs to be
 communicated explicitly in the Multicast-Signaling option of
 {{?I-D.tiloca-core-groupcomm-proxy}}).
