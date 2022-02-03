@@ -344,7 +344,7 @@ responses until either of the following conditions is met:
   could be combined; otherwise, the other conditions suffice).
 
 * Any response does not carry an Observe option.
-* Any response has a non-successful state.
+* Any response has a non-successful status.
 
 Follow-up requests are limited to extending the request ETag set.
 Responses are obviousy non-matching by their Observe option; each hop
