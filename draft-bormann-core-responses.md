@@ -87,8 +87,8 @@ Non-matching response:
   possibly suitable to populate the cache for a similar request).
   Options that make a response non-matching need to be proxy unsafe.
 
-  For example,
-  a Block2 response with a different block number × block size value than indicated in the request is non-matching.
+    For example,
+    a Block2 response with a different block number {{{×}}} block size value than indicated in the request is non-matching.
 
 Configured request:
 : A request that reaches the server in another way than by
