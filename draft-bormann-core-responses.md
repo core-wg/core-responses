@@ -263,8 +263,8 @@ This contains an opaque string with the port number as a 16-bit number
 
 ## Leisure-For-Responses
 
-This new option allows the server
-to send up as many responses as indicated in the option's uint value in
+This new option indicates a number expressed as a uint.
+It allows the server to send that number of non-traditional response messages in
 addition to the requested response. They are to be sent immediately
 after the original response.
 
