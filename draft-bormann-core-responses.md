@@ -24,7 +24,7 @@ author:
     phone: +49-421-218-63921
     email: cabo@tzi.org
   -
-    ins: C. Amsuess
+    ins: C. Amsüss
     name: Christian Amsüss
     email: christian@amsuess.com
 
