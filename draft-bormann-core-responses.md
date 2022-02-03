@@ -260,10 +260,19 @@ This contains an opaque string with the port number as a 16-bit number
 
 ## Leisure-For-Responses
 
-This new option (elective, proxy-unsafe, uint valued) allows the server
-to send up as many responses as indicated in the option value in
+This new option allows the server
+to send up as many responses as indicated in the option's uint value in
 addition to the requested response. They are to be sent immediately
 after the original response.
+
+| No. | C | U | N | R | Name                  | Format | Length | Default |
+|-----|---|---|---|---|-----------------------|--------|--------|---------|
+| TBD |   | U | - |   | Leisure-For-Responses | uint   |    1-4 |       0 |
+
+The option is elective, but unsafe for proxies
+(as the option would otherwise cause multiple responses to a proxy that expects only one and that needs to be a matching response).
+A proxy that chooses not to implement it may forward the request
+with the Leisure-For-Responses option removed.
 
 On its own, the option does not indicate which more responses the client
 would expect (though further elective proxy-safe no-cache-key options
