@@ -1,0 +1,124 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Boadilla} % plainest one with slide number footer
+
+% generic packages
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{ulem}
+
+% about the presentation
+\title{CoAP: Non-traditional response forms}
+\hypersetup{pdftitle={CoAP: Non-traditional response forms}}
+\subtitle{\texttt{draft-bormann-core-responses-01}}
+\author{Carsten~Bormann, \textit{Christian~Amsüss}}
+\date{2022-03-25 \\CoRE at IETF 113 in Vienna}
+
+% attach self
+
+\usepackage{embedfile}
+\embedfile{\jobname.tex}
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\newcommand{\otheritems}{
+% 2010 
+\item[RFC7252 multicast] Single request, different responses with different source addresses
+
+% 2010
+\item[RFC7641] Observe notifications come in until further notice
+
+% 2011
+\item[core-coap-sms] Response-To-Uri-Host/-Port -- triangular requests
+
+% 2013
+\item[core-coap-endpoint-id] Observations across server address changes
+
+% 2017
+\item[core-responses-00] Configured requests, Response-For
+
+% 2020
+\item[RFC9177] Responding with multiple blocks
+
+% 2020
+\item[core-groupcomm-proxy] Multicast-Timeout
+}
+
+\begin{frame}{A history of \ldots{} relevant things}\large
+	\begin{description}[RFC7252 simplest case]
+		% 2010 
+		\item[RFC7252 simplest case] Single request, single response\footnote{Retransmits are not necessarily identical, but either way the client usually only processes one.}
+
+		\otheritems
+	\end{description}
+
+	\raggedleft
+
+	\ldots all on the same token.
+\end{frame}
+
+\begin{frame}{A history of non-traditional responses}\large
+	\begin{description}[RFC7252 simplest case]
+		% 2010 
+		\item[\color{gray}RFC7252 simplest case] \color{gray} Single request, single response\footnote{The retransmits, even when changed, are barely not considered nontraditional.}\color{black}
+
+		\otheritems
+	\end{description}
+
+	\raggedleft
+
+	\ldots which can all be described with common terminology.
+\end{frame}
+
+\begin{frame}{Defining non-traditional responses}\Large
+	\textit{Non-traditional response}: A response that is not the single response generated for a request received on the same transport.
+
+	\bigskip
+
+	One response is non-traditional $\Rightarrow$ all responses are non-traditional \ldots{} but often, only one is ``matching''.
+
+	\pause\bigskip
+
+	\textit{Non-matching response}: A response that has properties (typically options) that make it incompatible with the original request, and thus in particular unsuitable as a cached response to that request (but possibly suitable to populate the cache for a similar request).
+\end{frame}
+
+\begin{frame}{What to do with it?}\large
+	\begin{itemize}
+		\item Provide terminology and general concepts usable for other specifications.
+
+			\qquad groupcomm-proxy and multicast-notifications are concrete candidates.
+
+			\qquad Any -bis of prior art could do the same.
+		\item Provide terminology and general concepts usable for implementers.
+
+			\qquad Ongoing experimentation in Python and Rust implementations.
+		\item Provide concepts usable for applications.
+
+			\qquad Statically configured requests.
+
+			\qquad (Dynamic configured requests can follow multicast-notifications pattern.)
+
+		\item Provide options usable for generic applications (Response-For, Respond-To, Leisure-Time).
+
+			\qquad Can double as examples for further specifications.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Next steps}\Large 
+	\begin{itemize}
+		\item Gauge working group interest.
+		\item Align with potential users.
+		\item Scrutinise definitions and generalizations.
+		\item Gather working group feedback.
+	\end{itemize}
+
+\end{frame}
+
+% TBD plug taps?
+
+\end{document}
