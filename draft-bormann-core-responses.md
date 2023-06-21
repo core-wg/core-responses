@@ -1,17 +1,14 @@
 ---
+v: 3
+
 title: >
   CoAP: Non-traditional response forms
 docname: draft-bormann-core-responses-latest
-# date: 2022-02-03
+# date: 2023-06-07
 
-stand_alone: true
-
-ipr: trust200902
 keyword: Internet-Draft
 cat: info
 submissiontype: IETF
-
-pi: [toc, sortrefs, symrefs, compact, comments]
 
 author:
   -
