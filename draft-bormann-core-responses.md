@@ -400,7 +400,7 @@ No-Response option; that might allow it to be used even across proxies. ]
 Other current documents
 -----------------------
 
-{{?I-D.tiloca-core-observe-multicast-notifications}} is a
+{{?I-D.ietf-core-observe-multicast-notifications}} is a
 straightforward application of the phantom requests (the concept was
 developed there); Leisure-For-Responses could help it around the topic
 of joining a multicast group securely through a proxy.
