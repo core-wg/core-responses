@@ -136,7 +136,7 @@ under which a token gets freed, as the traditional arrival of the
 response is insufficient. It may also specify for which requests the
 token can be reused immediately in follow-up requests. On unordered
 transports, or when it's a client's follow-up request and not a response
-that terminates the token, the client needs to wait until no reordered
+that terminates the token, the client needs to wait with reuse until no reordered
 non-traditional responses can be expected anymore.
 
 If a non-traditional response answers the original request, no further
