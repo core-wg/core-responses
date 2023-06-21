@@ -113,7 +113,7 @@ the others are CON or NON responses.
 
 Some established responses
 (observations defined in {{-observe}},
-and multicast responses in {{?I-D.ietf-core-groupcomm-bis}})
+and responses to multicast requests in {{?I-D.ietf-core-groupcomm-bis}})
 match this definition and already follow the guidance set out here for non-traditional responses;
 {{extensions-explained}} gives details for them.
 
