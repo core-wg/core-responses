@@ -203,7 +203,8 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
 
   It is unclear why one would delay sending the one response that has the least overhead,
   but that may be lack of imagination.
-  An affine type system (where instances can not generally be duplicated and are used at most once) can make this doable in a safe way.
+  An approach where instances can not generally be duplicated and are
+  used at most once (as in an affine type system) can make this doable in a safe way.
   In the end it's a tradeoff between implementer flexibility and specification simplicity.
 
 * In 8.4 between steps 5 and 6,
