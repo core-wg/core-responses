@@ -163,7 +163,8 @@ token values in order to set up non-traditional responses).
 
 # OSCORE processing for non-traditional responses
 
-OSCORE {{oscore}} is built with the assumption that requests are processed into exactly one response.
+OSCORE {{-oscore}} is built with the general assumption that requests
+are processed into exactly one response.
 The specification contains explicit provisions for Observe requests,
 and a whole protocol extension for multicast requests.
 
@@ -171,31 +172,36 @@ OSCORE's binding between requests and responses remains unmodified:
 Each response is cryptographically bound to an OSCORE request.
 Therefore, any phantom request needs to be an OSCORE request as well,
 and the parties need to agree on the sender and sequence number of the phantom request.
-An easy way to do that securely is to deliver the phantom request in a way the server do the full OSCORE request processing on it.
+An easy way to do that securely is to deliver the phantom request in a
+way that the server can do the full OSCORE request processing on it.
 The server may process the OSCORE request into internal data structures at reception time,
 or may process it whenever a response is to be sent.
-In the latter case, it may need to relax the requirements of {{Section 8.2 of oscore}} item 3.
+In the latter case, it may need to relax the requirements of {{Section
+8.2 (Verifying the Request) of -oscore}} item 3.
 
 To avoid reinventing the same rules as for Observe requests for any other non-traditional response,
-this documents defines a set of processing instructions which can be referenced when specifying their options.
-These rules generalize {{Sections 8.3 and 8.4 of oscore}}:
+this document defines a set of processing instructions which can be referenced when specifying their options.
+These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
+(Verifying the Response) of -oscore}}:
 
-* In 8.3 step 3, "use the AEAD nonce from the request" is only an option one time
-  after the sequence number expressed in that request was removed from the replay window.
+* In 8.3 step 3, "use the AEAD nonce from the request" is only an option once,
+  i.e., after the sequence number expressed in that request was removed from the replay window.
   This option is usually taken in the first response,
-  necessitating the use encoded Sender Sequence Numbers in later responses.
-  (Non-traditional responses such as Observe that rely on message ordering may require that request's nonce is used either in the first response or not at all).
+  necessitating the use of encoded Sender Sequence Numbers in later responses.
+  (Non-traditional responses such as Observe that rely on message
+  ordering may require that the request's nonce is used either in the first response or not at all.)
   [^maybealwaysfirst]
 
   <!-- Conveniently, this is obsoleting some text that's rotting away in lwig-oscore. -->
 
   As a convenient effect, this generalized rule also implies
-  that when a server performs {{Appendix B.1.2 of oscore}},
+  that when a server performs {{Appendix B.1.2 (Replay Window) of -oscore}},
   it needs to use its own Partial IV for the nonce
   (which without this generalized rule necessitated a "MUST" statement in the appendix).
 
 [^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior.
-  I don't know why one would save the efficient response,
+
+  It is unclear why one would save the efficient response,
   but that may be lack of imagination.
   An affine type system can make this doable in a safe way.
   In the end it's a tradeoff between implementer flexibility and specification simplicity.
@@ -220,9 +226,9 @@ These rules generalize {{Sections 8.3 and 8.4 of oscore}}:
   applications that only process the latest response
   may track the latest sequence number for deduplication.
 
-* In 8.4 step 8, the option establishing the non-traditional responses may specify
+* In 8.4 step 8, the Option establishing the non-traditional responses may specify
   that error conditions processing a response are not fatal for the whole request.
-  This should be done when an option allows immediate follow-up requests.
+  This should be done when an Option allows immediate follow-up requests.
   This is the case for the Observe option:
   When an observation is refreshed, a response encrypted with the earlier request's request_kid may still be in flight.
   That in-flight response will fail decryption,
