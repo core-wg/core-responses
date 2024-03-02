@@ -15,24 +15,24 @@ intended as advocacy for adopting these approaches immediately, they
 are provided to point out potential avenues for development that would
 have to be carefully evaluated. 
     " name="description">
-<meta content="xml2rfc 3.17.3" name="generator">
+<meta content="xml2rfc 3.19.4" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-bormann-core-responses-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.17.3
-    Python 3.11.4
-    appdirs 1.4.4
-    ConfigArgParse 1.5.3
+  xml2rfc 3.19.4
+    Python 3.11.6
+    ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
-    lxml 4.9.2
+    lxml 4.9.3
+    platformdirs 4.2.0
     pycountry 22.3.5
-    PyYAML 6.0
+    PyYAML 6.0.1
     requests 2.31.0
-    setuptools 67.7.2
+    setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.6
+    wcwidth 0.2.13
 -->
 <link href="draft-bormann-core-responses.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -655,7 +655,7 @@ sub, sup {
 }
 #toc nav li {
   line-height: 1.3em;
-  margin: 0.75em 0;
+  margin: 2px 0;
   padding-left: 1.2em;
   text-indent: -1.2em;
 }
@@ -748,7 +748,7 @@ hr.addr {
     z-index: 2;
     top: 0;
     right: 0;
-    padding: 0;
+    padding: 1px 0 0 0;
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
@@ -872,16 +872,13 @@ hr.addr {
     border-top: none;
     padding-top: 0;
   }
-  figure, pre {
+  figure, pre, .vcard {
     page-break-inside: avoid;
-  }
-  figure {
-    overflow: scroll;
   }
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
   }
-  h2+*, h3+*, h4+*, h5+*, h6+* {
+  :is(h2, h3, h4, h5, h6)+*, dd {
     page-break-before: avoid;
   }
   pre {
@@ -894,6 +891,9 @@ hr.addr {
   }
   td {
     border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
   }
 }
 
@@ -995,28 +995,6 @@ address div.right {
   text-align: right;
 }
 
-/* Give the table caption label the same styling as the figcaption */
-
-@media print {
-  .toplink {
-    display: none;
-  }
-
-  /* avoid overwriting the top border line with the ToC header */
-  #toc {
-    padding-top: 1px;
-  }
-
-  /* Avoid page breaks inside dl and author address entries */
-  dd {
-    page-break-before: avoid;
-  }
-  .vcard {
-    page-break-inside: avoid;
-  }
-
-}
-
 /* Dark mode. */
 @media (prefers-color-scheme: dark) {
 :root {
@@ -1053,11 +1031,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">CoAP: Non-traditional response forms</td>
-<td class="right">June 2023</td>
+<td class="right">March 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bormann &amp; Amsüss</td>
-<td class="center">Expires 23 December 2023</td>
+<td class="center">Expires 3 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1070,12 +1048,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bormann-core-responses-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-06-21" class="published">21 June 2023</time>
+<time datetime="2024-03-02" class="published">2 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-12-23">23 December 2023</time></dd>
+<dd class="expires"><time datetime="2024-09-03">3 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1132,7 +1110,7 @@ have to be carefully evaluated.<a href="#section-abstract-1" class="pilcrow">¶<
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 23 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 3 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1141,7 +1119,7 @@ have to be carefully evaluated.<a href="#section-abstract-1" class="pilcrow">¶<
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2023 IETF Trust and the persons identified as the
+            Copyright (c) 2024 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1692,6 +1670,7 @@ than normal responses unless authenticated in another way (e.g., via
       <h2 id="name-references">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
 <section id="section-7.1">
         <h3 id="name-normative-references">
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
@@ -1715,6 +1694,8 @@ than normal responses unless authenticated in another way (e.g., via
 <dd class="break"></dd>
 </dl>
 </section>
+</div>
+<div id="sec-informative-references">
 <section id="section-7.2">
         <h3 id="name-informative-references">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
@@ -1722,15 +1703,15 @@ than normal responses unless authenticated in another way (e.g., via
 <dl class="references">
 <dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
         <dd>
-<span class="refAuthor">Dijk, E.</span>, <span class="refAuthor">Wang, C.</span>, and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-08</span>, <time datetime="2023-01-11" class="refDate">11 January 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-08">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Dijk, E.</span>, <span class="refAuthor">Wang, C.</span>, and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-10</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-10">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-observe-multicast-notifications">[I-D.ietf-core-observe-multicast-notifications]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-06</span>, <time datetime="2023-04-26" class="refDate">26 April 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-07</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.tiloca-core-groupcomm-proxy">[I-D.tiloca-core-groupcomm-proxy]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">E. Dijk</span>, <span class="refTitle">"Proxy Operations for CoAP Group Communication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-tiloca-core-groupcomm-proxy-08</span>, <time datetime="2023-02-28" class="refDate">28 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-tiloca-core-groupcomm-proxy-08">https://datatracker.ietf.org/doc/html/draft-tiloca-core-groupcomm-proxy-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">E. Dijk</span>, <span class="refTitle">"Proxy Operations for CoAP Group Communication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-tiloca-core-groupcomm-proxy-09</span>, <time datetime="2023-08-31" class="refDate">31 August 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-tiloca-core-groupcomm-proxy-09">https://datatracker.ietf.org/doc/html/draft-tiloca-core-groupcomm-proxy-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7641">[RFC7641]</dt>
       <dd>
@@ -1738,6 +1719,7 @@ than normal responses unless authenticated in another way (e.g., via
 <dd class="break"></dd>
 </dl>
 </section>
+</div>
 </section>
 <div id="extensions-explained">
 <section id="appendix-A">
@@ -1760,9 +1742,11 @@ responses until either of the following conditions is met:<a href="#appendix-A.1
 (This is primarily in here because; Observe:1 and No-Response:any
 could be combined; otherwise, the other conditions suffice).<a href="#appendix-A.1-3.1.2" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.1-3.2">Any response does not carry an Observe option.<a href="#appendix-A.1-3.2" class="pilcrow">¶</a>
+          <li class="normal" id="appendix-A.1-3.2">
+            <p id="appendix-A.1-3.2.1">Any response does not carry an Observe option.<a href="#appendix-A.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="appendix-A.1-3.3">Any response has a non-successful status.<a href="#appendix-A.1-3.3" class="pilcrow">¶</a>
+          <li class="normal" id="appendix-A.1-3.3">
+            <p id="appendix-A.1-3.3.1">Any response has a non-successful status.<a href="#appendix-A.1-3.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="appendix-A.1-4">Follow-up requests are limited to extending the request ETag set.
