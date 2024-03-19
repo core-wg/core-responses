@@ -1,0 +1,341 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-06-08T00:30:52.693495+00:00",
+  "repo": "core-wg/core-responses",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOEOohh85Om1kr",
+      "title": "OSCORE and multiple responses",
+      "url": "https://github.com/core-wg/core-responses/issues/2",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "The combination of OSCORE and multiple nontraditional responses opens an orthogonality gap: OSCORE only talks about Observe multiple responses, and suddenly we could have different ones as well -- and the receiver could decrypt a response multiple times (as there is no replay protection for responses).\r\n\r\nWe can't close that gap generally, but maybe there's a place for a statement like\r\n\r\n> When receiving multiple responses through an OSCORE layer, that layer should pass on the sequence numbers (and, in group mode, KID) to the application. The mechanism introducing the multiple responses should contain statements on how to treat responses, given that OSCORE has no built-in response replay protection. In Observe, for example, responses are strictly ordered by their sequence numbers, and older responses discarded, implicitly eliminating duplicates. For proxied multicast requests, handlers should be idempotent anyway (because the proxy is allowed to send multiple responses from a single node), and would thus tolerate replayed responses without ill-effects.\r\n\r\n(This was discovered by @marco-tiloca-sics as an issue with group requests forwarded through proxies).",
+      "createdAt": "2022-07-26T22:14:44Z",
+      "updatedAt": "2022-07-26T22:14:44Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOEOohh84uRE6h",
+      "title": "Generalizing and defining non-traditional responses",
+      "url": "https://github.com/core-wg/core-responses/pull/1",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This works in my mail at [1] (after way too long time), adding definitions of non-traditional responses and setting requirements for their use.\r\n\r\nIt's not completely ship-shape yet as the text on the options introduced does not refer back to the new sections (instead, the \"explaining existing stuff with the new terminology\" appendix refers back to it), but IMO good enough for review. The whole PR is probably best viewed as a total delta (split into steps helping me keep track of parts), can squash if you prefer.\r\n\r\n[1]: https://mailarchive.ietf.org/arch/msg/core/KPDCO9mQNzYjAuGwjV6FWWEkAH8",
+      "createdAt": "2021-11-09T06:29:28Z",
+      "updatedAt": "2022-02-03T14:44:53Z",
+      "baseRepository": "core-wg/core-responses",
+      "baseRefName": "master",
+      "baseRefOid": "ba009ea44f347f4f29c1e4ccdabba630dddabd95",
+      "headRepository": "core-wg/core-responses",
+      "headRefName": "generalization",
+      "headRefOid": "f97c87cb3bcb0c1edcae357730aac97bc9e2c786",
+      "closedAt": "2022-02-03T14:44:48Z",
+      "mergedAt": "2022-02-03T14:44:48Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "c91eab516f6421857a38116209ff75c6edd5c5f9"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Ping @cabo, I'd like to make progress on this until IETF113, but there's little point in proceeding until this is merged or at least got an initial comment.",
+          "createdAt": "2022-02-02T13:49:58Z",
+          "updatedAt": "2022-02-02T13:49:58Z"
+        },
+        {
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "body": "Pong.  Question: Is this the place where we (1) discuss the design space, or where we (2) define new protocol elements, or where we (3) do (1) in terms of (2), or (4) what else?",
+          "createdAt": "2022-02-02T15:00:58Z",
+          "updatedAt": "2022-02-02T15:00:58Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I think this should mainly discuss the design space (without expanding what CoAP options can do, because they already *did* do it in Observe and Q-Block). To stay in the design \"space\" terminology, it'd set a convenient base in terminology that is more convenient for authors of current and future documents.\r\n\r\nThe document doesn't indicate an intended status yet, but I've read it as standards-track from the Response-For option. (Options have been specified in like in RFC7967 No-Response, but turned out people are careful to use that fearing downrefs). A standards-track document would also allow later users (like groupcomm-proxy) to use the base normatively rather than reiterate. (\"The Multicast-Signaling option indicates that non-traditional responses as described in ... are expected for the request; responses are expected for the number of seconds indicated in the option.\" would save them a lot of text, especially about tokens).\r\n\r\nLeisure-For-Responses is just using the base for illustrative purposes, and it may well make sense not to define this particular option here (but describing an option that does not get registered but is really just an example feels a bit weird). Maybe we'd also find a better example to illustrate. (Could be a Send-More-Blocks that does almost as Leisure-For-Responses does but makes a clear request for which additional responses should be sent).\r\n\r\n---\r\n\r\nThat being said, to be fair and transparent, I *do* plan for these things to have immediate consequences too: I've seen implementations (mainly mine) struggle to get observation and multicast integrated smoothly, and think that having a stream of responses (which may be one traditional, or any number as indicated by the application) is a suitable abstraction at some levels of CoAP. By making the abstraction available to future document authors, I hope that the next thing that sends nontraditional responses makes the implementors' lives easier as they just see a familiar (and planned-for) mechanism exercised. And of course they're free to ret-con observation, multicast and Q-Block all into the same mechanism internally.",
+          "createdAt": "2022-02-02T16:10:43Z",
+          "updatedAt": "2022-02-02T16:10:43Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOEOohh84z7WfA",
+          "commit": {
+            "abbreviatedOid": "5d7fa93"
+          },
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-02T22:50:26Z",
+          "updatedAt": "2022-02-02T23:00:20Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "*especially* unsuitable?  As in more unsuitable than other responses?\r\n(Just trying to find out what you are trying to say.)\r\n\r\nes\u00b7pe\u00b7cial\u00b7ly | \u026a\u02c8sp\u025b\u0283\u0259li |\r\nadverb\r\n1 used to single out one person, thing, or situation over all others: he despised them all, especially Sylvester | a new song, written especially for Jonathan.\r\n2 to a great extent; very much: he didn't especially like dancing | [as submodifier ] : sleep is especially important for growing children.",
+              "createdAt": "2022-02-02T22:50:27Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            },
+            {
+              "originalPosition": 44,
+              "body": "```suggestion\r\ncan be sent as a piggy-back response in an ACK (thus sharing the request's message ID),\r\n```\r\n\r\n(redundant, but useful)",
+              "createdAt": "2022-02-02T22:53:40Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            },
+            {
+              "originalPosition": 107,
+              "body": "What does the uint say?\r\n",
+              "createdAt": "2022-02-02T22:56:27Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            },
+            {
+              "originalPosition": 117,
+              "body": "Are you trying to say that this option is hbh?",
+              "createdAt": "2022-02-02T22:57:19Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            },
+            {
+              "originalPosition": 146,
+              "body": "```suggestion\r\nThis section describes the Observe option {{?RFC7641}} in the terms of this\r\n```",
+              "createdAt": "2022-02-02T22:58:05Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            },
+            {
+              "originalPosition": 158,
+              "body": "```suggestion\r\n* Any response has a non-successful status.\r\n```",
+              "createdAt": "2022-02-02T22:58:41Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            },
+            {
+              "originalPosition": 180,
+              "body": "Maybe briefly explain leisure time.",
+              "createdAt": "2022-02-02T22:59:56Z",
+              "updatedAt": "2022-02-02T23:00:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z8h5J",
+          "commit": {
+            "abbreviatedOid": "c76c2b1"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T08:29:20Z",
+          "updatedAt": "2022-02-03T08:29:20Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "Yes, as are all options that allow non-traditional responses (Observe and Block2 explicitly, requests to multicast addresses in their original versions ~\"need some extra stuff out of scope of these documents\", and the upcoming Multicast-Signaling explicitly again). Any such option requires the client to use a token that outlives the original response/'s exchange lifetime, and any client end of a proxy needs to be aware of that.\r\n\r\nThat is a reason why we may prefer to have a Leisure-For and an extra option that allows sending, say, multiple blocks or follow-up data: In such a split, only Leisure-For would need to be hop-by-hop, and the other could be safe-to-forward (but a proxy that understands it may thin out responses like it may with Observe). But there are sure also good reasons against silently introducing CONNECT-lite ;-)",
+              "createdAt": "2022-02-03T08:29:20Z",
+              "updatedAt": "2022-02-03T08:29:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z8ytR",
+          "commit": {
+            "abbreviatedOid": "51b8c02"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T09:31:12Z",
+          "updatedAt": "2022-02-03T09:31:12Z",
+          "comments": [
+            {
+              "originalPosition": 117,
+              "body": "For a concrete example on why it has to be, assume a client sends it to allow the server to send multiple response blocks.\r\n\r\nThe proxy would receive several blocks; in the likely case it receives the initial (the requested) block first, stores it in its cache and forwards it; later responses don't match a pending request and are discarded. But if a later block arrives first, what'll the proxy do? If it looks at the descriptive-use Block2 block number, it considers the response wrong, won't populate the cache and send the client a generic \"proxy error\". Worse, if it doesn't look at it (7959 says it MUST take not of the block size and MUST check ETags, but makes no requirement to verify the block number, at least on a quick check), it puts the data into the wrong cache part and forwards that.\r\n\r\nSo yeah, no improvements over the existing cases, still hop-by-hop.",
+              "createdAt": "2022-02-03T09:31:12Z",
+              "updatedAt": "2022-02-03T09:31:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z8zEU",
+          "commit": {
+            "abbreviatedOid": "52b3052"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T09:32:28Z",
+          "updatedAt": "2022-02-03T09:32:28Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "Clarified now that the bitflagged properties have their own paragraph following a table, and the option's type is inlined in the text describing that it's a number of extra responses.",
+              "createdAt": "2022-02-03T09:32:28Z",
+              "updatedAt": "2022-02-03T09:32:28Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z80aT",
+          "commit": {
+            "abbreviatedOid": "4304e47"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T09:37:17Z",
+          "updatedAt": "2022-02-03T09:37:17Z",
+          "comments": [
+            {
+              "originalPosition": 180,
+              "body": "Clarified by referencing into 7252 8.2",
+              "createdAt": "2022-02-03T09:37:17Z",
+              "updatedAt": "2022-02-03T09:37:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z84uS",
+          "commit": {
+            "abbreviatedOid": "4304e47"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T09:52:22Z",
+          "updatedAt": "2022-02-03T09:52:22Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "\"insbesondere\", now changed to \"in particular\", and augmented with an example.",
+              "createdAt": "2022-02-03T09:52:22Z",
+              "updatedAt": "2022-02-03T09:52:22Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z-AOW",
+          "commit": {
+            "abbreviatedOid": "47d28a3"
+          },
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T14:09:51Z",
+          "updatedAt": "2022-02-03T14:09:51Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "OK, the example is interesting; it doesn't really lend itself to processing by proxies (unless they are fully clockwise-aware).  Pushed a formatting nit.",
+              "createdAt": "2022-02-03T14:09:51Z",
+              "updatedAt": "2022-02-03T14:09:51Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z-AqL",
+          "commit": {
+            "abbreviatedOid": "47d28a3"
+          },
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T14:11:11Z",
+          "updatedAt": "2022-02-03T14:11:12Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "Still doesn't really say.\r\n\r\nDoes this count responses, as the first sentence says?\r\n\"as many as\"",
+              "createdAt": "2022-02-03T14:11:11Z",
+              "updatedAt": "2022-02-03T14:11:12Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh84z-Dye",
+          "commit": {
+            "abbreviatedOid": "00fb6c9"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2022-02-03T14:20:34Z",
+          "updatedAt": "2022-02-03T14:20:34Z",
+          "comments": [
+            {
+              "originalPosition": 107,
+              "body": "That was still not ideal, now says:\r\n\r\n> This new option indicates a number expressed as a uint.\r\nIt allows the server to send that number of non-traditional response messages in\r\naddition to the requested response. They are to be sent immediately\r\nafter the original response.\r\n",
+              "createdAt": "2022-02-03T14:20:34Z",
+              "updatedAt": "2022-02-03T14:20:34Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
