@@ -1,0 +1,77 @@
+\input{shared/ietf-slides.tex}
+
+\title{CoAP: Non-traditional response forms}
+\subtitle{\ietfdraft{bormann-core-responses-02}}
+\author{Carsten~Bormann, \textit{Christian~Amsüss}}
+\date{2024-03-20 \\CoRE at IETF 119 in Brisbane}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Non-traditional responses}\Large
+    \begin{block}{Non-traditional response}
+    A response that is not the single response
+    generated for a request received on the same transport.
+    \end{block}
+
+    \begin{itemize}
+        \item Define new versatile non-traditional responses
+        \item \textit{Define behavior of non-traditional responses in general}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Behavior definition: OSCORE}\Large
+    \framesubtitle{New in -02}
+
+    \begin{itemize}
+        \item Explicit request or not: Request needs sender and sequence number.
+        \item Request nonce can only be used in one response.
+        \item If order matters, responses are ordered by sequence number.
+        \item If replaying matters, responses are subjected to the replay window.
+        \item If follow-up requests were made, transiently tolerate erroneous responses.
+    \end{itemize}
+
+    \bigskip
+
+    \ldots and that's it on the OSCORE side?
+\end{frame}
+
+\begin{frame}{Next steps}\Large
+    \begin{itemize}
+        \item Interop based on concrete documents adopting this?
+        \item Future in the WG?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Backup slide: Potential users}
+\framesubtitle{Adapted from IETF113 slide set}
+
+\begin{description}[RFC7252 simplest case]
+% 2010 
+\item[\color{gray}RFC7252 simplest case] {\color{gray} Single request, single response}
+
+% 2010 
+\item[RFC7252 multicast] Single request, different responses with different source addresses
+
+% 2010
+\item[RFC7641] Observe notifications come in until further notice\footnote{No intent to redefine, but implementers may use common mechanisms}
+
+% 2011
+\item[core-coap-sms] Response-To-Uri-Host/-Port -- triangular requests
+
+% 2013
+\item[core-coap-endpoint-id] Observations across server address changes
+
+% 2017
+\item[core-responses-00] Configured requests, Response-For
+
+% 2020
+\item[RFC9177] Responding with multiple blocks
+
+% 2020
+\item[core-groupcomm-proxy] Multicast-Timeout
+\end{description}
+\end{frame}
+
+\end{document}
