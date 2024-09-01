@@ -4,7 +4,7 @@ v: 3
 title: >
   CoAP: Non-traditional response forms
 docname: draft-bormann-core-responses-latest
-# date: 2023-06-07
+# date: 2024-03-03
 
 keyword: Internet-Draft
 cat: info
@@ -67,7 +67,7 @@ evaluated.
 
 ## Terminology         {#terms}
 
-{::boilerplate bcp14-tagged}
+{::boilerplate bcp14-tagged-bcp14}
 
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
@@ -456,8 +456,8 @@ model.)
 Responses can only be sent for up to the deployment's Leisure time
 (see {{Section 8.2 of RFC7252}}) plus
 the application's timeout (in proxy situations, this needs to be
-communicated explicitly in the Multicast-Signaling option of
-{{?I-D.tiloca-core-groupcomm-proxy}}).
+communicated explicitly in the Multicast-Timeout option of
+{{?I-D.ietf-core-groupcomm-proxy}}).
 
 Triangular responses (Response-To)
 ----------------------------------
@@ -479,7 +479,7 @@ straightforward application of the phantom requests (the concept was
 developed there); Leisure-For-Responses could help it around the topic
 of joining a multicast group securely through a proxy.
 
-{{?I-D.tiloca-core-groupcomm-proxy}} seems to fit well with the concepts
+{{?I-D.ietf-core-groupcomm-proxy}} seems to fit well with the concepts
 here as well, and might be simplified by it both in terminology and by
 replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-Host).
 
