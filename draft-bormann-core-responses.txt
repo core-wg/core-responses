@@ -5,7 +5,7 @@
 Network Working Group                                         C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Informational                                 C. Amsüss
-Expires: 20 September 2024                                 19 March 2024
+Expires: 5 March 2025                                   1 September 2024
 
 
                   CoAP: Non-traditional response forms
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 September 2024.
+   This Internet-Draft will expire on 5 March 2025.
 
 Copyright Notice
 
@@ -114,7 +114,7 @@ Table of Contents
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   [BCP14] (RFC2119) (RFC8174) when, and only when, they appear in all
    capitals, as shown here.
 
    The term "byte" is used in its now customary sense as a synonym for
@@ -474,19 +474,23 @@ Table of Contents
 
 8.1.  Normative References
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+   [BCP14]    Best Current Practice 14,
+              <https://www.rfc-editor.org/info/bcp14>.
+              At the time of writing, this BCP comprises the following:
+
+              Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+              Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
               <https://www.rfc-editor.org/rfc/rfc7252>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
    [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
               "Object Security for Constrained RESTful Environments
@@ -499,24 +503,23 @@ Table of Contents
               Dijk, E., Wang, C., and M. Tiloca, "Group Communication
               for the Constrained Application Protocol (CoAP)", Work in
               Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              10, 23 October 2023,
+              11, 24 April 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-groupcomm-bis-11>.
+
+   [I-D.ietf-core-groupcomm-proxy]
+              Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
+              Communication", Work in Progress, Internet-Draft, draft-
+              ietf-core-groupcomm-proxy-02, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-10>.
+              groupcomm-proxy-02>.
 
    [I-D.ietf-core-observe-multicast-notifications]
               Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
               "Observe Notifications as CoAP Multicast Responses", Work
               in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-08, 4 March 2024,
+              multicast-notifications-09, 8 July 2024,
               <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-08>.
-
-   [I-D.tiloca-core-groupcomm-proxy]
-              Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
-              Communication", Work in Progress, Internet-Draft, draft-
-              tiloca-core-groupcomm-proxy-09, 31 August 2023,
-              <https://datatracker.ietf.org/doc/html/draft-tiloca-core-
-              groupcomm-proxy-09>.
+              observe-multicast-notifications-09>.
 
    [RFC7641]  Hartke, K., "Observing Resources in the Constrained
               Application Protocol (CoAP)", RFC 7641,
@@ -566,7 +569,7 @@ A.2.  Responses to multicast requests
    Responses can only be sent for up to the deployment's Leisure time
    (see Section 8.2 of [RFC7252]) plus the application's timeout (in
    proxy situations, this needs to be communicated explicitly in the
-   Multicast-Signaling option of [I-D.tiloca-core-groupcomm-proxy]).
+   Multicast-Timeout option of [I-D.ietf-core-groupcomm-proxy]).
 
 A.3.  Triangular responses (Response-To)
 
@@ -587,7 +590,7 @@ A.4.  Other current documents
    there); Leisure-For-Responses could help it around the topic of
    joining a multicast group securely through a proxy.
 
-   [I-D.tiloca-core-groupcomm-proxy] seems to fit well with the concepts
+   [I-D.ietf-core-groupcomm-proxy] seems to fit well with the concepts
    here as well, and might be simplified by it both in terminology and
    by replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-
    Host).
