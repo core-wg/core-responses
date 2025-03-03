@@ -7,6 +7,7 @@ This is the working area for the individual Internet-Draft, "CoAP: Non-tradition
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-bormann-core-responses)
 * [Compare Editor's Copy to Individual Draft](https://core-wg.github.io/core-responses/#go.draft-bormann-core-responses.diff)
 
+[Access to all branches](https://core-wg.github.io/core-responses/)
 
 ## Contributing
 
