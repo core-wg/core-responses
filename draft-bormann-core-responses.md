@@ -4,7 +4,7 @@ v: 3
 title: >
   CoAP: Non-traditional response forms
 docname: draft-bormann-core-responses-latest
-# date: 2024-03-03
+# date: 2025-03-03
 
 keyword: Internet-Draft
 cat: info
@@ -107,8 +107,8 @@ all non-traditional responses use the request's token;
 in any case, they are bound to the original request
 (e.g. by using the same request_kid/request_piv pair in OSCORE {{-oscore}}).
 Where message IDs are involved,
-one of the non-traditional response (the first sent, not necessarily the first received as generally the network might reorder messages)
-can be sent as a piggybacked response in an ACK (thus sharing the request's message ID),
+one of the non-traditional responses (the first sent, not necessarily the first received as generally the network might reorder messages)
+can be sent as a piggybacked response in an ACK (thus sharing the request's message ID);
 the others are CON or NON responses.
 
 Some established responses
@@ -190,7 +190,7 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   necessitating the use of encoded Sender Sequence Numbers in later responses.
   (Non-traditional responses such as Observe that rely on message
   ordering may require that the request's nonce is used either in the first response or not at all.)
-  [^maybealwaysfirst]
+  [^maybealwaysfirst] [^relyonmessageordering]
 
   <!-- Conveniently, this is obsoleting some text that's rotting away in lwig-oscore. -->
 
@@ -200,6 +200,7 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   (which without this generalized rule necessitated a "MUST" statement in the appendix).
 
 [^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior.
+[^relyonmessageordering]: CB: "rely on message ordering" is easy to misunderstand.
 
   It is unclear why one would delay sending the one response that has the least overhead,
   but that may be lack of imagination.
@@ -256,6 +257,10 @@ responses with embedded requests are therefore sent with a
 zero-length Token.  (In essence, the "Response-For" option takes the
 place of the request the Token usually stands for.)
 
+Note that block-wise transfer is not available for CoAP Options,
+possibly limiting the size of the request that can be stored in a
+"Response-For" Option.
+
 The congestion control considerations for confirmable and
 non-confirmable messages apply unchanged.
 
@@ -305,7 +310,7 @@ a transport endpoint (address/port).  Here, the address is a multicast
 address, so the token name space is shared by all nodes joined to that multicast
 address.  The assumption for multicast responses is that, for each
 multicast group, there is some form of management for the token space
-(and the port number) that everyone can participate that needs to
+(and the port number) that everyone can participate in that needs to
 join that multicast group; the specific form of management is out of
 the scope of this specification.  Note that this means that multicast
 responses MUST NOT be sent to unmanaged multicast addresses such as
