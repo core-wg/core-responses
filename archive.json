@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-06-08T00:30:52.693495+00:00",
+  "timestamp": "2025-03-04T01:45:25.381764+00:00",
   "repo": "core-wg/core-responses",
   "labels": [
     {
@@ -55,7 +55,7 @@
       "id": "I_kwDOEOohh85Om1kr",
       "title": "OSCORE and multiple responses",
       "url": "https://github.com/core-wg/core-responses/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "chrysn",
       "authorAssociation": "MEMBER",
       "assignees": [
@@ -64,9 +64,17 @@
       "labels": [],
       "body": "The combination of OSCORE and multiple nontraditional responses opens an orthogonality gap: OSCORE only talks about Observe multiple responses, and suddenly we could have different ones as well -- and the receiver could decrypt a response multiple times (as there is no replay protection for responses).\r\n\r\nWe can't close that gap generally, but maybe there's a place for a statement like\r\n\r\n> When receiving multiple responses through an OSCORE layer, that layer should pass on the sequence numbers (and, in group mode, KID) to the application. The mechanism introducing the multiple responses should contain statements on how to treat responses, given that OSCORE has no built-in response replay protection. In Observe, for example, responses are strictly ordered by their sequence numbers, and older responses discarded, implicitly eliminating duplicates. For proxied multicast requests, handlers should be idempotent anyway (because the proxy is allowed to send multiple responses from a single node), and would thus tolerate replayed responses without ill-effects.\r\n\r\n(This was discovered by @marco-tiloca-sics as an issue with group requests forwarded through proxies).",
       "createdAt": "2022-07-26T22:14:44Z",
-      "updatedAt": "2022-07-26T22:14:44Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-03-02T21:37:02Z",
+      "closedAt": "2024-03-02T21:37:02Z",
+      "comments": [
+        {
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "body": "Addressed by #3 ",
+          "createdAt": "2024-03-02T21:37:02Z",
+          "updatedAt": "2024-03-02T21:37:02Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -332,6 +340,123 @@
               "body": "That was still not ideal, now says:\r\n\r\n> This new option indicates a number expressed as a uint.\r\nIt allows the server to send that number of non-traditional response messages in\r\naddition to the requested response. They are to be sent immediately\r\nafter the original response.\r\n",
               "createdAt": "2022-02-03T14:20:34Z",
               "updatedAt": "2022-02-03T14:20:34Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOEOohh85ofMSN",
+      "title": "Describe how OSCORE works with non-traditional responses",
+      "url": "https://github.com/core-wg/core-responses/pull/3",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "cabo"
+      ],
+      "labels": [],
+      "body": "I'm tempted to CC G\u00f6ran and Marco to this, but in the interest of the timeline I'd hope we can upload this, and once uploaded ask the OSCORE authors for a review.",
+      "createdAt": "2024-03-02T16:36:32Z",
+      "updatedAt": "2024-03-19T15:02:59Z",
+      "baseRepository": "core-wg/core-responses",
+      "baseRefName": "master",
+      "baseRefOid": "806a58d8fa9b9c5c0053c111d2b6171e3b37a570",
+      "headRepository": "core-wg/core-responses",
+      "headRefName": "oscore",
+      "headRefOid": "231a17a6baf127fae8e7bea48bcb17415649aed9",
+      "closedAt": "2024-03-02T21:35:50Z",
+      "mergedAt": "2024-03-02T21:35:50Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "108949ae01f61bda8b21201657094f9dbb6368dd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOEOohh85yAZ8v",
+          "commit": {
+            "abbreviatedOid": "a148b19"
+          },
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-02T19:13:13Z",
+          "updatedAt": "2024-03-02T19:17:47Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "What does \"save the efficient response\" mean here?",
+              "createdAt": "2024-03-02T19:13:13Z",
+              "updatedAt": "2024-03-02T19:17:47Z"
+            },
+            {
+              "originalPosition": 40,
+              "body": "What does \"affine type system\" mean here?",
+              "createdAt": "2024-03-02T19:13:16Z",
+              "updatedAt": "2024-03-02T19:17:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh85yAbyY",
+          "commit": {
+            "abbreviatedOid": "a148b19"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-02T20:08:04Z",
+          "updatedAt": "2024-03-02T20:08:04Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Clarified: The one where the OSCORE option is empty.",
+              "createdAt": "2024-03-02T20:08:04Z",
+              "updatedAt": "2024-03-02T20:08:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh85yAbzz",
+          "commit": {
+            "abbreviatedOid": "a148b19"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-02T20:08:47Z",
+          "updatedAt": "2024-03-02T20:08:47Z",
+          "comments": [
+            {
+              "originalPosition": 40,
+              "body": "Made explicit: Where items are used at most once, and not generally duplicated.",
+              "createdAt": "2024-03-02T20:08:47Z",
+              "updatedAt": "2024-03-02T20:08:47Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOEOohh85yAiyl",
+          "commit": {
+            "abbreviatedOid": "a148b19"
+          },
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-03-02T21:35:32Z",
+          "updatedAt": "2024-03-02T21:35:32Z",
+          "comments": [
+            {
+              "originalPosition": 40,
+              "body": "I pushed the scary word into a parentheses.",
+              "createdAt": "2024-03-02T21:35:32Z",
+              "updatedAt": "2024-03-02T21:35:32Z"
             }
           ]
         }
