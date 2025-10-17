@@ -422,7 +422,11 @@ Observation
 -----------
 
 This section describes the Observe option {{RFC7641}} in the terms of this
-document, \[ so nothing in here should contradict that document ].
+document.
+It does not intend to update the original specification,
+merely to provide an alternative phrasing of its rules
+which may be useful for implementors,
+and which that the authors believe to have the same effect.
 
 When Observe:0 is present in a request, this sets up non-traditional
 responses until either of the following conditions is met:
