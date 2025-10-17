@@ -189,9 +189,9 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   i.e., after the sequence number expressed in that request was removed from the replay window.
   This option is usually taken in the first response,
   necessitating the use of encoded Sender Sequence Numbers in later responses.
-  (Non-traditional responses such as Observe that rely on message
-  ordering may require that the request's nonce is used either in the first response or not at all.)
-  [^maybealwaysfirst] [^relyonmessageordering]
+  (Non-traditional responses such as Observe that order responses by sequence number
+  may require that the request's nonce is used either in the first response or not at all.)
+  [^maybealwaysfirst]
 
   <!-- Conveniently, this is obsoleting some text that's rotting away in lwig-oscore. -->
 
@@ -201,7 +201,6 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   (which without this generalized rule necessitated a "MUST" statement in the appendix).
 
 [^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior. It is unclear why one would delay sending the one response that has the least overhead, but that may be lack of imagination. An approach where instances can not generally be duplicated and are used at most once (as in an affine type system) can make this doable in a safe way. In the end it's a tradeoff between implementer flexibility and specification simplicity.
-[^relyonmessageordering]: CB: "rely on message ordering" is easy to misunderstand.
 
 * In 8.4 between steps 5 and 6,
   the Sender Sequence Number of the response establishes an order in the received messages,
