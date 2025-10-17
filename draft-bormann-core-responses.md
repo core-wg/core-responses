@@ -315,6 +315,8 @@ Multicast responses are always non-confirmable.  The congestion
 control considerations for non-confirmable multicast messages apply
 unchanged.
 
+The draft {{?I-D.ietf-core-observe-multicast-notifications}} provides a concrete way of communicating such a setup.
+
 ## Respond-To option
 
 What has been called "configured request" here may also be triggered
