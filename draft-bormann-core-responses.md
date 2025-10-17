@@ -200,14 +200,8 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   it needs to use its own Partial IV for the nonce
   (which without this generalized rule necessitated a "MUST" statement in the appendix).
 
-[^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior.
+[^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior. It is unclear why one would delay sending the one response that has the least overhead, but that may be lack of imagination. An approach where instances can not generally be duplicated and are used at most once (as in an affine type system) can make this doable in a safe way. In the end it's a tradeoff between implementer flexibility and specification simplicity.
 [^relyonmessageordering]: CB: "rely on message ordering" is easy to misunderstand.
-
-  It is unclear why one would delay sending the one response that has the least overhead,
-  but that may be lack of imagination.
-  An approach where instances can not generally be duplicated and are
-  used at most once (as in an affine type system) can make this doable in a safe way.
-  In the end it's a tradeoff between implementer flexibility and specification simplicity.
 
 * In 8.4 between steps 5 and 6,
   the Sender Sequence Number of the response establishes an order in the received messages,
