@@ -152,9 +152,9 @@ or by a generic option like Response-For.
 ## Responses without request
 
 Endpoints may agree out of band on a token (or other request-matching
-details). One way to do that is to exchange a "phantom request", which
-is a request that client and server will agree to have sent and
-received, respectively, without it actually being sent between those
+details). One way to do that is to agree on a "phantom request", which
+is a request that client might have sent and the server assumes to have received,
+without it actually being sent between those
 endpoints.
 
 As tokens are managed by the client, that request needs to be
