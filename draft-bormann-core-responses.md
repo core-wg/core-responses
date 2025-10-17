@@ -30,6 +30,7 @@ normative:
 
 informative:
   RFC7641: observe
+  I-D.ietf-core-oscore-groupcomm: oscore-groupcomm
 
 entity:
   SELF: RFCthis
@@ -165,8 +166,8 @@ token values in order to set up non-traditional responses).
 
 OSCORE {{-oscore}} is built with the general assumption that requests
 are processed into exactly one response.
-The specification contains explicit provisions for Observe requests,
-and a whole protocol extension for multicast requests.
+The specification contains explicit provisions for Observe requests ({{Section 4.1.3.5 of -oscore}}),
+and a whole protocol extension for multicast requests ({{-oscore-groupcomm}}).
 
 OSCORE's binding between requests and responses remains unmodified:
 Each response is cryptographically bound to an OSCORE request.
