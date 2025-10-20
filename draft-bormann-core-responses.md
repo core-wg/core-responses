@@ -30,6 +30,7 @@ normative:
 
 informative:
   RFC7641: observe
+  I-D.ietf-core-oscore-groupcomm: oscore-groupcomm
 
 entity:
   SELF: RFCthis
@@ -154,9 +155,9 @@ or by a generic option like Response-For.
 ## Responses without request
 
 Endpoints may agree out of band on a token (or other request-matching
-details). One way to do that is to exchange a "phantom request", which
-is a request that client and server will agree to have sent and
-received, respectively, without it actually being sent between those
+details). One way to do that is to agree on a "phantom request", which
+is a request that the client might have sent and the server assumes to have received,
+without it actually being sent between those
 endpoints.
 
 As tokens are managed by the client, that request needs to be
@@ -168,8 +169,8 @@ token values in order to set up non-traditional responses).
 
 OSCORE {{-oscore}} is built with the general assumption that requests
 are processed into exactly one response.
-The specification contains explicit provisions for Observe requests,
-and a whole protocol extension for multicast requests.
+The specification contains explicit provisions for Observe requests ({{Section 4.1.3.5 of -oscore}}),
+and a whole protocol extension for multicast requests ({{-oscore-groupcomm}}).
 
 OSCORE's binding between requests and responses remains unmodified:
 Each response is cryptographically bound to an OSCORE request.
@@ -191,9 +192,10 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   i.e., after the sequence number expressed in that request was removed from the replay window.
   This option is usually taken in the first response,
   necessitating the use of encoded Sender Sequence Numbers in later responses.
-  (Non-traditional responses such as Observe that rely on message
-  ordering may require that the request's nonce is used either in the first response or not at all.)
-  [^maybealwaysfirst] [^relyonmessageordering]
+  (Non-traditional responses such as Observe that indicate the order
+  of responses by a sequence number
+  may require that the request's nonce is used either in the first response or not at all.)
+  [^maybealwaysfirst]
 
   <!-- Conveniently, this is obsoleting some text that's rotting away in lwig-oscore. -->
 
@@ -202,14 +204,7 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   it needs to use its own Partial IV for the nonce
   (which without this generalized rule necessitated a "MUST" statement in the appendix).
 
-[^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior.
-[^relyonmessageordering]: CB: "rely on message ordering" is easy to misunderstand.
-
-  It is unclear why one would delay sending the one response that has the least overhead,
-  but that may be lack of imagination.
-  An approach where instances can not generally be duplicated and are
-  used at most once (as in an affine type system) can make this doable in a safe way.
-  In the end it's a tradeoff between implementer flexibility and specification simplicity.
+[^maybealwaysfirst]: CA: We could also just mandate the "either the first or never" behavior. It is unclear why one would delay sending the one response that has the least overhead, but that may be lack of imagination. An approach where instances can not generally be duplicated and are used at most once (as in an affine type system) can make this doable in a safe way. In the end it's a tradeoff between implementer flexibility and specification simplicity.
 
 * In 8.4 between steps 5 and 6,
   the Sender Sequence Number of the response establishes an order in the received messages,
@@ -323,6 +318,8 @@ Multicast responses are always non-confirmable.  The congestion
 control considerations for non-confirmable multicast messages apply
 unchanged.
 
+The draft {{?I-D.ietf-core-observe-multicast-notifications}} provides a concrete way of communicating such a setup.
+
 ## Respond-To option
 
 What has been called "configured request" here may also be triggered
@@ -428,7 +425,11 @@ Observation
 -----------
 
 This section describes the Observe option {{RFC7641}} in the terms of this
-document, \[ so nothing in here should contradict that document ].
+document.
+It does not intend to update the original specification,
+merely to provide an alternative phrasing of its rules
+which may be useful for implementors,
+and which the authors believe to have the same effect.
 
 When Observe:0 is present in a request, this sets up non-traditional
 responses until either of the following conditions is met:
