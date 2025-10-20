@@ -44,10 +44,13 @@ venue:
 
 In CoAP as defined by RFC 7252, responses are always unicast back to a
 client that posed a request.  The present memo describes two forms of
-responses that go beyond that model.  These descriptions are not
-intended as advocacy for adopting these approaches immediately, they
-are provided to point out potential avenues for development that would
-have to be carefully evaluated.
+responses that go beyond that model.
+
+The design spaces for the new CoAP Options proposed to represent these
+responses are now sufficiently understood that they can be developed
+to standards-track specifications, either in this document or by
+transferring the specification for an Option to a document that that
+Option closely works with.
 
 --- middle
 
@@ -291,7 +294,7 @@ will send updates to the state of the resource addressed by the GET
 request to the configured address of the client.
 
 The considerations of {{Section 4.5 of -observe}} apply.  How losing
-interest reflects back into to configuration and whether there is some
+interest reflects back into the configuration and whether there is some
 form of error notification to the source of the configuration is out
 of scope of the present specification.
 
