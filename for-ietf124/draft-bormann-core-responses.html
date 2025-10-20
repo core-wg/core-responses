@@ -15,22 +15,21 @@ intended as advocacy for adopting these approaches immediately, they
 are provided to point out potential avenues for development that would
 have to be carefully evaluated. 
     " name="description">
-<meta content="xml2rfc 3.30.2" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-bormann-core-responses-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.30.2
-    Python 3.12.11
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.4.0
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
     requests 2.32.5
-    setuptools 80.9.0
     wcwidth 0.2.14
 -->
 <link href="draft-bormann-core-responses.xml" rel="alternate" type="application/rfc+xml">
@@ -1054,7 +1053,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bormann &amp; Amsüss</td>
-<td class="center">Expires 20 April 2026</td>
+<td class="center">Expires 23 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,12 +1066,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bormann-core-responses-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-10-17" class="published">17 October 2025</time>
+<time datetime="2025-10-20" class="published">20 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-04-20">20 April 2026</time></dd>
+<dd class="expires"><time datetime="2026-04-23">23 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1129,7 +1128,7 @@ have to be carefully evaluated.<a href="#section-abstract-1" class="pilcrow">¶<
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1373,7 +1372,7 @@ or by a generic option like Response-For.<a href="#section-2.1-3" class="pilcrow
         </h3>
 <p id="section-2.2-1">Endpoints may agree out of band on a token (or other request-matching
 details). One way to do that is to agree on a "phantom request", which
-is a request that client might have sent and the server assumes to have received,
+is a request that the client might have sent and the server assumes to have received,
 without it actually being sent between those
 endpoints.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 <p id="section-2.2-2">As tokens are managed by the client, that request needs to be
@@ -1411,7 +1410,8 @@ These rules generalize Sections <span><a href="https://rfc-editor.org/rfc/rfc861
 i.e., after the sequence number expressed in that request was removed from the replay window.
 This option is usually taken in the first response,
 necessitating the use of encoded Sender Sequence Numbers in later responses.
-(Non-traditional responses such as Observe that order responses by sequence number
+(Non-traditional responses such as Observe that indicate the order
+of responses by a sequence number
 may require that the request's nonce is used either in the first response or not at all.)
 <span class="cref" id="maybealwaysfirst">CA: We could also just mandate the "either the first or never" behavior. It is unclear why one would delay sending the one response that has the least overhead, but that may be lack of imagination. An approach where instances can not generally be duplicated and are used at most once (as in an affine type system) can make this doable in a safe way. In the end it's a tradeoff between implementer flexibility and specification simplicity.</span><a href="#section-3-4.1.1" class="pilcrow">¶</a></p>
 <p id="section-3-4.1.2"></p>
@@ -1819,7 +1819,7 @@ than normal responses unless authenticated in another way (e.g., via
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-observe-multicast-notifications">[I-D.ietf-core-observe-multicast-notifications]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-12</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-12">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-12</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-13</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-13">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-13</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
         <dd>
@@ -1849,7 +1849,7 @@ document.
 It does not intend to update the original specification,
 merely to provide an alternative phrasing of its rules
 which may be useful for implementors,
-and which that the authors believe to have the same effect.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
+and which the authors believe to have the same effect.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.1-2">When Observe:0 is present in a request, this sets up non-traditional
 responses until either of the following conditions is met:<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
