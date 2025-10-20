@@ -153,7 +153,7 @@ or by a generic option like Response-For.
 
 Endpoints may agree out of band on a token (or other request-matching
 details). One way to do that is to agree on a "phantom request", which
-is a request that client might have sent and the server assumes to have received,
+is a request that the client might have sent and the server assumes to have received,
 without it actually being sent between those
 endpoints.
 
@@ -189,7 +189,8 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   i.e., after the sequence number expressed in that request was removed from the replay window.
   This option is usually taken in the first response,
   necessitating the use of encoded Sender Sequence Numbers in later responses.
-  (Non-traditional responses such as Observe that order responses by sequence number
+  (Non-traditional responses such as Observe that indicate the order
+  of responses by a sequence number
   may require that the request's nonce is used either in the first response or not at all.)
   [^maybealwaysfirst]
 
@@ -425,7 +426,7 @@ document.
 It does not intend to update the original specification,
 merely to provide an alternative phrasing of its rules
 which may be useful for implementors,
-and which that the authors believe to have the same effect.
+and which the authors believe to have the same effect.
 
 When Observe:0 is present in a request, this sets up non-traditional
 responses until either of the following conditions is met:
