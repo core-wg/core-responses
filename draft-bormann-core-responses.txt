@@ -15,10 +15,13 @@ Abstract
 
    In CoAP as defined by RFC 7252, responses are always unicast back to
    a client that posed a request.  The present memo describes two forms
-   of responses that go beyond that model.  These descriptions are not
-   intended as advocacy for adopting these approaches immediately, they
-   are provided to point out potential avenues for development that
-   would have to be carefully evaluated.
+   of responses that go beyond that model.
+
+   The design spaces for the new CoAP Options proposed to represent
+   these responses are now sufficiently understood that they can be
+   developed to standards-track specifications, either in this document
+   or by transferring the specification for an Option to a document that
+   that Option closely works with.
 
 About This Document
 
@@ -46,10 +49,7 @@ Status of This Memo
    working documents as Internet-Drafts.  The list of current Internet-
    Drafts is at https://datatracker.ietf.org/drafts/current/.
 
-   Internet-Drafts are draft documents valid for a maximum of six months
-   and may be updated, replaced, or obsoleted by other documents at any
-   time.  It is inappropriate to use Internet-Drafts as reference
-   material or to cite them other than as "work in progress."
+
 
 
 
@@ -57,6 +57,11 @@ Bormann & Amsüss          Expires 23 April 2026                 [Page 1]
 
 Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
 
    This Internet-Draft will expire on 23 April 2026.
 
@@ -101,11 +106,6 @@ Table of Contents
      A.1.  Observation . . . . . . . . . . . . . . . . . . . . . . .  12
      A.2.  Responses to multicast requests . . . . . . . . . . . . .  13
      A.3.  Triangular responses (Response-To)  . . . . . . . . . . .  13
-     A.4.  Other current documents . . . . . . . . . . . . . . . . .  13
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  13
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
-
-
 
 
 
@@ -113,6 +113,10 @@ Bormann & Amsüss          Expires 23 April 2026                 [Page 2]
 
 Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
+
+     A.4.  Other current documents . . . . . . . . . . . . . . . . .  13
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  13
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
 
 1.  Introduction
 
@@ -158,10 +162,6 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
    Embedded request:  A request that is provided by the server to the
       recipient of its response by embedding it into the response.
-
-
-
-
 
 
 
@@ -407,7 +407,7 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
    request to the configured address of the client.
 
    The considerations of Section 4.5 of [RFC7641] apply.  How losing
-   interest reflects back into to configuration and whether there is
+   interest reflects back into the configuration and whether there is
    some form of error notification to the source of the configuration is
    out of scope of the present specification.
 

@@ -10,10 +10,12 @@
 <meta content="
        In CoAP as defined by RFC 7252, responses are always unicast back to a
 client that posed a request.  The present memo describes two forms of
-responses that go beyond that model.  These descriptions are not
-intended as advocacy for adopting these approaches immediately, they
-are provided to point out potential avenues for development that would
-have to be carefully evaluated. 
+responses that go beyond that model. 
+       The design spaces for the new CoAP Options proposed to represent these
+responses are now sufficiently understood that they can be developed
+to standards-track specifications, either in this document or by
+transferring the specification for an Option to a document that that
+Option closely works with. 
     " name="description">
 <meta content="xml2rfc 3.31.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1089,10 +1091,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">In CoAP as defined by RFC 7252, responses are always unicast back to a
 client that posed a request.  The present memo describes two forms of
-responses that go beyond that model.  These descriptions are not
-intended as advocacy for adopting these approaches immediately, they
-are provided to point out potential avenues for development that would
-have to be carefully evaluated.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+responses that go beyond that model.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">The design spaces for the new CoAP Options proposed to represent these
+responses are now sufficiently understood that they can be developed
+to standards-track specifications, either in this document or by
+transferring the specification for an Option to a document that that
+Option closely works with.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1559,7 +1563,7 @@ includes an Observe option with value 0.  This means that the server
 will send updates to the state of the resource addressed by the GET
 request to the configured address of the client.<a href="#section-5.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.3-2">The considerations of <span><a href="https://rfc-editor.org/rfc/rfc7641#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> apply.  How losing
-interest reflects back into to configuration and whether there is some
+interest reflects back into the configuration and whether there is some
 form of error notification to the source of the configuration is out
 of scope of the present specification.<a href="#section-5.1.3-2" class="pilcrow">¶</a></p>
 </section>
