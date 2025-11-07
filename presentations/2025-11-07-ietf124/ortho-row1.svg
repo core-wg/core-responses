@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="300mm"
+   height="160mm"
+   viewBox="0 0 300 160"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="ortho-row1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.4038058"
+     inkscape:cx="-78.007796"
+     inkscape:cy="179.54175"
+     inkscape:current-layer="layer1"
+     showguides="true">
+    <sodipodi:guide
+       position="-95.770476,113.46986"
+       orientation="13.740794,61.833562"
+       id="guide23"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-79.410346,109.83427"
+       orientation="-14.763746,66.436876"
+       id="guide24"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-61.832266,113.74051"
+       orientation="-13.740797,-61.833562"
+       id="guide25"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-78.192386,117.3761"
+       orientation="14.763749,-66.436876"
+       id="guide26"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-79.410346,109.83427"
+       orientation="70.690507,0"
+       id="guide27"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-79.410346,91.130738"
+       orientation="-14.76378,66.436876"
+       id="guide28"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-61.832266,95.036988"
+       orientation="-70.690473,0"
+       id="guide29"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-79.410346,109.83427"
+       orientation="70.690507,0"
+       id="guide32"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-79.410346,91.130738"
+       orientation="-13.740813,-61.833562"
+       id="guide33"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-95.770476,94.766328"
+       orientation="-70.690488,0"
+       id="guide34"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-93.180066,104.81765"
+       orientation="21.86293,0"
+       id="guide35"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-82.235226,99.033078"
+       orientation="-21.86293,0"
+       id="guide37"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="225.52959,57.962822"
+       orientation="-0.2169305,-0.97618705"
+       id="guide43"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, rounded arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:round"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2" />
+    </marker>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-150 : 33.333332 : 0"
+       inkscape:vp_y="0 : 999.99998 : 0"
+       inkscape:vp_z="150 : 33.333332 : 0"
+       inkscape:persp3d-origin="293.05058 : 81.966389 : 1"
+       id="perspective1" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-39.6875 : 8.8194442 : 0"
+       inkscape:vp_y="0 : 264.58332 : 0"
+       inkscape:vp_z="39.6875 : 8.8194442 : 0"
+       inkscape:persp3d-origin="193.15921 : 55.50559 : 1"
+       id="perspective1-9" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-39.6875 : 8.8194442 : 0"
+       inkscape:vp_y="0 : 264.58332 : 0"
+       inkscape:vp_z="39.6875 : 8.8194442 : 0"
+       inkscape:persp3d-origin="122.79565 : 75.836089 : 1"
+       id="perspective1-2" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-48.948258 : 10.877391 : 0"
+       inkscape:vp_y="0 : 326.3217 : 0"
+       inkscape:vp_z="48.948258 : 10.877391 : 0"
+       inkscape:persp3d-origin="194.67463 : 64.185109 : 1"
+       id="perspective1-2-6" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-12.950893 : 2.8779763 : 0"
+       inkscape:vp_y="0 : 86.339284 : 0"
+       inkscape:vp_z="12.950893 : 2.8779763 : 0"
+       inkscape:persp3d-origin="194.11808 : 28.626804 : 1"
+       id="perspective1-2-6-5" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-137.85718,24.391163)">
+    <g
+       id="g23">
+      <g
+         id="g22"
+         transform="translate(-21.164462,-36.703063)">
+        <path
+           d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+           style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path20" />
+        <path
+           d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+           style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path21" />
+        <path
+           d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+           style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path22" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+         x="64.680473"
+         y="63.101883"
+         id="text22"
+         transform="rotate(12.329431)"><tspan
+           sodipodi:role="line"
+           id="tspan22"
+           style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+           x="64.680473"
+           y="63.101883">7252</tspan></text>
+    </g>
+    <g
+       id="g23-3"
+       transform="translate(-22.558761,5.0130702)">
+      <g
+         id="g22-6"
+         transform="translate(-21.164462,-36.703063)">
+        <path
+           d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+           style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path20-5" />
+        <path
+           d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+           style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path21-6" />
+        <path
+           d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+           style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path22-3" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+         x="64.680473"
+         y="63.101883"
+         id="text22-94"
+         transform="rotate(12.329431)"><tspan
+           sodipodi:role="line"
+           id="tspan22-8"
+           style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+           x="64.680473"
+           y="63.101883">next</tspan></text>
+    </g>
+    <g
+       id="g23-61"
+       transform="translate(21.703629,4.8230382)">
+      <g
+         id="g22-5"
+         transform="translate(-21.164462,-36.703063)">
+        <path
+           d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+           style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path20-94" />
+        <path
+           d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+           style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path21-9" />
+        <path
+           d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+           style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+           id="path22-0" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+         x="64.680473"
+         y="63.101883"
+         id="text22-9"
+         transform="rotate(12.329431)"><tspan
+           sodipodi:role="line"
+           id="tspan22-1"
+           style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+           x="64.680473"
+           y="63.101883">7641</tspan></text>
+    </g>
+    <g
+       id="g39"
+       transform="translate(-92.718513,-1.9656726)">
+      <g
+         id="g23-4"
+         transform="translate(327.41291,-54.055046)">
+        <g
+           id="g22-8"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-8" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-8" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-9" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-77"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-6"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">7252</tspan></text>
+      </g>
+      <g
+         id="g23-3-4"
+         transform="translate(304.85415,-49.041976)">
+        <g
+           id="g22-6-3"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-5-0" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-6-3" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-3-0" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-94-9"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-8-2"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">next</tspan></text>
+      </g>
+      <g
+         id="g23-61-54"
+         transform="translate(349.11654,-49.232008)">
+        <g
+           id="g22-5-0"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-94-5" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-9-9" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-0-4" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-9-6"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-1-9"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">7641</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g38">
+      <path
+         d="m 42.086697,40.201515 38.063759,8.458623 v 18.70353 L 42.086697,58.90504 Z"
+         style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+         id="path22-6"
+         sodipodi:nodetypes="ccccc" />
+      <text
+         xml:space="preserve"
+         style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+         x="68.950951"
+         y="41.74469"
+         id="text22-6"
+         transform="rotate(12.329431)"><tspan
+           sodipodi:role="line"
+           id="tspan22-4"
+           style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+           x="68.950951"
+           y="41.74469">8613</tspan></text>
+      <path
+         d="m 42.086697,40.201515 38.063759,8.458623 17.57809,-3.906241 -38.063759,-8.458624 z"
+         style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+         id="path20-9-1"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         d="m 80.150456,48.660138 v 18.70353 l 17.57809,-3.90625 V 44.753897 Z"
+         style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+         id="path21-2-1" />
+    </g>
+    <g
+       id="g40"
+       transform="translate(-19.090853,-7.5778996)">
+      <g
+         id="g23-31"
+         transform="translate(141.00998,-48.252787)">
+        <g
+           id="g22-7"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-59" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-62" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-1" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-7"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-85"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">7252</tspan></text>
+      </g>
+      <g
+         id="g23-61-5"
+         transform="translate(162.71361,-43.429749)">
+        <g
+           id="g22-5-3"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-94-8" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-9-8" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-0-3" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-9-1"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-1-8"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">7641</tspan></text>
+      </g>
+    </g>
+    <g
+       id="g40-9"
+       transform="translate(178.32442,-7.5778996)">
+      <g
+         id="g23-31-6"
+         transform="translate(141.00998,-48.252787)">
+        <g
+           id="g22-7-1"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-59-0" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-62-4" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-1-2" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-7-2"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-85-2"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">7252</tspan></text>
+      </g>
+      <g
+         id="g23-61-5-0"
+         transform="translate(162.71361,-43.429749)">
+        <g
+           id="g22-5-3-5"
+           transform="translate(-21.164462,-36.703063)">
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 17.57809,-3.906241 -16.36013,-3.635586 z"
+             style="fill:#cccccc;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path20-94-8-5" />
+          <path
+             d="m 79.611289,102.47763 v 18.70353 l 17.57809,-3.90625 V 98.571389 Z"
+             style="fill:#999999;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path21-9-8-2" />
+          <path
+             d="m 63.251159,98.842045 16.36013,3.635585 v 18.70353 l -16.36013,-3.63559 z"
+             style="fill:#f9f9f9;stroke:#000000;stroke-width:0.377953;stroke-linecap:round;stroke-linejoin:round"
+             id="path22-0-3-9" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-size:4.93889px;font-family:'TeX Gyre Adventor';-inkscape-font-specification:'TeX Gyre Adventor';text-align:center;text-anchor:middle;fill:#000000;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+           x="64.680473"
+           y="63.101883"
+           id="text22-9-1-0"
+           transform="rotate(12.329431)"><tspan
+             sodipodi:role="line"
+             id="tspan22-1-8-2"
+             style="font-size:4.93889px;stroke:none;stroke-width:0.264583px"
+             x="64.680473"
+             y="63.101883">resp</tspan></text>
+      </g>
+    </g>
+    <path
+       style="fill:none;stroke:#008000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;marker-end:url(#ArrowWideRounded)"
+       d="m 276.66417,27.431577 c 16.41163,9.038288 29.93237,0.934211 29.93237,0.934211"
+       id="path42"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>
