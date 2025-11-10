@@ -5,7 +5,7 @@
 Network Working Group                                         C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Informational                                 C. Amsüss
-Expires: 23 April 2026                                   20 October 2025
+Expires: 14 May 2026                                    10 November 2025
 
 
                   CoAP: Non-traditional response forms
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 1]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 1]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
    Internet-Drafts are draft documents valid for a maximum of six months
@@ -63,7 +63,7 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 April 2026.
+   This Internet-Draft will expire on 14 May 2026.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 2]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 2]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
      A.4.  Other current documents . . . . . . . . . . . . . . . . .  13
@@ -165,9 +165,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 3]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 3]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 2.  Sending non-traditional responses
@@ -221,9 +221,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 4]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 4]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 2.2.  Responses without request
@@ -277,9 +277,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 5]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 5]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
       // behavior.  It is unclear why one would delay sending the one
@@ -333,9 +333,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 6]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 6]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 4.  Response with embedded request
@@ -389,9 +389,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 7]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 7]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 5.1.2.  Example: Event driven request
@@ -445,9 +445,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 8]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 8]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 5.3.  Respond-To option
@@ -501,9 +501,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                 [Page 9]
+Bormann & Amsüss           Expires 14 May 2026                  [Page 9]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
    Intermediaries may add or remove the option, and use incoming
@@ -557,9 +557,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                [Page 10]
+Bormann & Amsüss           Expires 14 May 2026                 [Page 10]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
    for freshness this way.  Their content therefore is less trustworthy
@@ -613,9 +613,9 @@ Internet-Draft    CoAP: Non-traditional response forms      October 2025
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                [Page 11]
+Bormann & Amsüss           Expires 14 May 2026                 [Page 11]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
    [I-D.ietf-core-observe-multicast-notifications]
@@ -669,9 +669,9 @@ A.1.  Observation
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                [Page 12]
+Bormann & Amsüss           Expires 14 May 2026                 [Page 12]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 A.2.  Responses to multicast requests
@@ -725,9 +725,9 @@ Acknowledgements
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                [Page 13]
+Bormann & Amsüss           Expires 14 May 2026                 [Page 13]
 
-Internet-Draft    CoAP: Non-traditional response forms      October 2025
+Internet-Draft    CoAP: Non-traditional response forms     November 2025
 
 
 Authors' Addresses
@@ -781,4 +781,4 @@ Authors' Addresses
 
 
 
-Bormann & Amsüss          Expires 23 April 2026                [Page 14]
+Bormann & Amsüss           Expires 14 May 2026                 [Page 14]
