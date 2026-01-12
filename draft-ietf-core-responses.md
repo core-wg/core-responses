@@ -3,7 +3,7 @@ v: 3
 
 title: >
   CoAP: Non-traditional response forms
-docname: draft-bormann-core-responses-latest
+docname: draft-ietf-core-responses-latest
 # date: 2025-03-03
 
 keyword: Internet-Draft
