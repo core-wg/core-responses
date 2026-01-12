@@ -1,3 +1,5 @@
+<!-- regenerate: on (set to off if you edit this file) -->
+
 # CoAP: Non-traditional response forms
 
 This is the working area for the individual Internet-Draft, "CoAP: Non-traditional response forms".
@@ -7,16 +9,14 @@ This is the working area for the individual Internet-Draft, "CoAP: Non-tradition
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-bormann-core-responses)
 * [Compare Editor's Copy to Individual Draft](https://core-wg.github.io/core-responses/#go.draft-bormann-core-responses.diff)
 
-[Access to all branches](https://core-wg.github.io/core-responses/)
 
 ## Contributing
 
 See the
 [guidelines for contributions](https://github.com/core-wg/core-responses/blob/master/CONTRIBUTING.md).
 
-Contributions can be made by creating pull requests.
-The GitHub interface supports creating pull requests using the Edit (✏) button.
-
+The contributing file also has tips on how to make contributions, if you
+don't already know how to do that.
 
 ## Command Line Usage
 
