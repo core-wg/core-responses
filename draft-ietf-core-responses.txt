@@ -37,7 +37,7 @@ About This Document
    https://www.ietf.org/mailman/listinfo/core/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/core-wg/core-responses.
+   https://github.com/core-wg/draft-ietf-core-responses.
 
 Status of This Memo
 
