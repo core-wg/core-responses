@@ -38,7 +38,7 @@ entity:
 venue:
   group: Constrained RESTful Environments (CoRE)
   mail: core@ietf.org
-  github: core-wg/core-responses
+  github: core-wg/draft-ietf-core-responses
 
 
 --- abstract
