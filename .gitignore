@@ -18,7 +18,7 @@
 /versioned/
 Gemfile.lock
 archive.json
-draft-bormann-core-responses.xml
+draft-ietf-core-responses*.xml
 package-lock.json
 report.xml
 !requirements.txt
