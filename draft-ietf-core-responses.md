@@ -492,6 +492,7 @@ of joining a multicast group securely through a proxy.
 here as well, and might be simplified by it both in terminology and by
 replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-Host).
 
+{::include-all lists.md}
 
 Acknowledgements
 ================
