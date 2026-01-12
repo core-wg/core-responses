@@ -4,11 +4,12 @@
 
 This is the working area for the individual Internet-Draft, "CoAP: Non-traditional response forms".
 
-* [Editor's Copy](https://core-wg.github.io/core-responses/#go.draft-bormann-core-responses.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-bormann-core-responses)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-bormann-core-responses)
-* [Compare Editor's Copy to Individual Draft](https://core-wg.github.io/core-responses/#go.draft-bormann-core-responses.diff)
+* [Editor's Copy](https://core-wg.github.io/core-responses/#go.draft-ietf-core-responses.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-ietf-core-responses)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-ietf-core-responses)
+* [Compare Editor's Copy to Individual Draft](https://core-wg.github.io/core-responses/#go.draft-ietf-core-responses.diff)
 
+[Access to all branches](https://core-wg.github.io/draft-ietf-core-responses/)
 
 ## Contributing
 
