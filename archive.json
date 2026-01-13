@@ -1,7 +1,7 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-30T01:55:37.940301+00:00",
-  "repo": "core-wg/core-responses",
+  "timestamp": "2026-01-13T01:42:08.466948+00:00",
+  "repo": "core-wg/draft-ietf-core-responses",
   "labels": [
     {
       "name": "bug",
@@ -54,7 +54,7 @@
       "number": 2,
       "id": "I_kwDOEOohh85Om1kr",
       "title": "OSCORE and multiple responses",
-      "url": "https://github.com/core-wg/core-responses/issues/2",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/issues/2",
       "state": "CLOSED",
       "author": "chrysn",
       "authorAssociation": "MEMBER",
@@ -75,6 +75,30 @@
           "updatedAt": "2024-03-02T21:37:02Z"
         }
       ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOEOohh87SMqoe",
+      "title": "Normative intent of Response-For and options",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/issues/4",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "I'd like to ask CoRE about adopting this, but that works best with an updated abstract.\n\nThe current abstract says \"descriptions are not intended as advocacy for adopting these approaches immediately\"; we're reaching a point where we should have an idea on whether and which to endorse (and whether they're ship-shape, eg. whether we're happy with Response-To being sent unprovoked on the empty token, or whether this should be preceded by Leisure-For-Responses).",
+      "createdAt": "2025-10-17T15:15:12Z",
+      "updatedAt": "2025-10-17T15:28:11Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Respond-To is another case that may need a bit of revisiting \u2013 if we want to keep it in this form and not more as a \"one could also\" suggestion, aiming to convey the idea rather than specify something concrete (which would probably need transport details from multicast-notification, otherwise it only works on same-transport requests).",
+          "createdAt": "2025-10-17T15:28:11Z",
+          "updatedAt": "2025-10-17T15:28:11Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -82,7 +106,7 @@
       "number": 1,
       "id": "PR_kwDOEOohh84uRE6h",
       "title": "Generalizing and defining non-traditional responses",
-      "url": "https://github.com/core-wg/core-responses/pull/1",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/pull/1",
       "state": "MERGED",
       "author": "chrysn",
       "authorAssociation": "MEMBER",
@@ -91,10 +115,10 @@
       "body": "This works in my mail at [1] (after way too long time), adding definitions of non-traditional responses and setting requirements for their use.\r\n\r\nIt's not completely ship-shape yet as the text on the options introduced does not refer back to the new sections (instead, the \"explaining existing stuff with the new terminology\" appendix refers back to it), but IMO good enough for review. The whole PR is probably best viewed as a total delta (split into steps helping me keep track of parts), can squash if you prefer.\r\n\r\n[1]: https://mailarchive.ietf.org/arch/msg/core/KPDCO9mQNzYjAuGwjV6FWWEkAH8",
       "createdAt": "2021-11-09T06:29:28Z",
       "updatedAt": "2022-02-03T14:44:53Z",
-      "baseRepository": "core-wg/core-responses",
+      "baseRepository": "core-wg/draft-ietf-core-responses",
       "baseRefName": "master",
       "baseRefOid": "ba009ea44f347f4f29c1e4ccdabba630dddabd95",
-      "headRepository": "core-wg/core-responses",
+      "headRepository": "core-wg/draft-ietf-core-responses",
       "headRefName": "generalization",
       "headRefOid": "f97c87cb3bcb0c1edcae357730aac97bc9e2c786",
       "closedAt": "2022-02-03T14:44:48Z",
@@ -349,7 +373,7 @@
       "number": 3,
       "id": "PR_kwDOEOohh85ofMSN",
       "title": "Describe how OSCORE works with non-traditional responses",
-      "url": "https://github.com/core-wg/core-responses/pull/3",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/pull/3",
       "state": "MERGED",
       "author": "chrysn",
       "authorAssociation": "MEMBER",
@@ -360,10 +384,10 @@
       "body": "I'm tempted to CC G\u00f6ran and Marco to this, but in the interest of the timeline I'd hope we can upload this, and once uploaded ask the OSCORE authors for a review.",
       "createdAt": "2024-03-02T16:36:32Z",
       "updatedAt": "2024-03-19T15:02:59Z",
-      "baseRepository": "core-wg/core-responses",
+      "baseRepository": "core-wg/draft-ietf-core-responses",
       "baseRefName": "master",
       "baseRefOid": "806a58d8fa9b9c5c0053c111d2b6171e3b37a570",
-      "headRepository": "core-wg/core-responses",
+      "headRepository": "core-wg/draft-ietf-core-responses",
       "headRefName": "oscore",
       "headRefOid": "231a17a6baf127fae8e7bea48bcb17415649aed9",
       "closedAt": "2024-03-02T21:35:50Z",
@@ -461,6 +485,119 @@
           ]
         }
       ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDOEOohh86uVfhj",
+      "title": "Updates for IETF124",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/pull/5",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "These are largely minor updates as I'm happy with the general shape of the document (except for #4).\r\n\r\nPlease review; if we don't make progress on #4 in the short time to the cut-off, I'd like to upload at least these changes; it should still be good enough for me to present with the intent to get it adopted.",
+      "createdAt": "2025-10-17T15:38:11Z",
+      "updatedAt": "2025-10-20T19:57:19Z",
+      "baseRepository": "core-wg/draft-ietf-core-responses",
+      "baseRefName": "master",
+      "baseRefOid": "3c75fa0f4b5aee245af6f1545e2d7e286571869a",
+      "headRepository": "core-wg/draft-ietf-core-responses",
+      "headRefName": "for-ietf124",
+      "headRefOid": "deb8b56f6a8f509274acb9b96afb5d445cf3378a",
+      "closedAt": "2025-10-20T19:56:47Z",
+      "mergedAt": "2025-10-20T19:56:47Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "dcc978046d4a15443db1a17bcd08366c7729bb78"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Sorry for the out-of-date push.\r\n\r\nNow rebased, with build fixes addressed, and with an extra commit that addresses the comment on \"rely on message ordering\" being unclar.",
+          "createdAt": "2025-10-17T15:56:08Z",
+          "updatedAt": "2025-10-17T15:56:08Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks for the fixes in #7, merging as those are applied.",
+          "createdAt": "2025-10-20T19:56:34Z",
+          "updatedAt": "2025-10-20T19:56:34Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOEOohh86uq-LI",
+      "title": "Prepare -06",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/pull/6",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Update abstract\r\nOne typo",
+      "createdAt": "2025-10-20T16:53:48Z",
+      "updatedAt": "2025-11-10T09:07:35Z",
+      "baseRepository": "core-wg/draft-ietf-core-responses",
+      "baseRefName": "master",
+      "baseRefOid": "dcc978046d4a15443db1a17bcd08366c7729bb78",
+      "headRepository": "core-wg/draft-ietf-core-responses",
+      "headRefName": "prepare-06",
+      "headRefOid": "a5fbb0f05bc48559cc546750fac1958f173da5c9",
+      "closedAt": "2025-10-20T20:15:17Z",
+      "mergedAt": "2025-10-20T20:15:16Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "f06d7de770b1fafaa7bbbd66fbe7a8ce48d98e7f"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOEOohh87IIwrD",
+          "commit": {
+            "abbreviatedOid": "a5fbb0f"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2025-10-20T19:57:48Z",
+          "updatedAt": "2025-10-20T20:14:13Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "PR_kwDOEOohh86ur2Os",
+      "title": "typos etc. in for-ietf124",
+      "url": "https://github.com/core-wg/draft-ietf-core-responses/pull/7",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "(Apply to PR#5 before merging that)",
+      "createdAt": "2025-10-20T18:17:39Z",
+      "updatedAt": "2025-11-10T09:07:29Z",
+      "baseRepository": "core-wg/draft-ietf-core-responses",
+      "baseRefName": "for-ietf124",
+      "baseRefOid": "0184435c352005bc468bcb6fcd44661e8db5c0fb",
+      "headRepository": "core-wg/draft-ietf-core-responses",
+      "headRefName": "for-ietf124-fixes",
+      "headRefOid": "8850d919c7b86e9e55dc82caa6050ccb7e63cb94",
+      "closedAt": "2025-10-20T18:21:38Z",
+      "mergedAt": "2025-10-20T18:21:38Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "deb8b56f6a8f509274acb9b96afb5d445cf3378a"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
