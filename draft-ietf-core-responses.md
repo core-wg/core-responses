@@ -2,7 +2,7 @@
 v: 3
 
 title: >
-  CoAP: Non-traditional response forms
+  CoAP: Non-traditional Response Forms
 docname: draft-ietf-core-responses-latest
 # date: 2025-03-03
 
@@ -48,33 +48,37 @@ client that posed a request.  The present memo describes two forms of
 responses that go beyond that model.
 
 The design spaces for the new CoAP Options proposed to represent these
-responses are now sufficiently understood that they can be developed
-to standards-track specifications, either in this document or by
-transferring the specification for an Option to a document that that
-Option closely works with.
+responses are now sufficiently understood that two of them can be
+developed to standards-track specifications in this document.
+Potential further work beyond this document is outlined in an appendix, which also discusses a
+common third option that might be used by that further work.
 
 [^status]
 
 [^status]: This revision -01 has been created as discussion input for IETF 126.
-    It makes a first attempt to sort the proposals into short-term actionable ones and more long-term considerations for more kinds of responses that could help additional use cases.
+    It makes a first attempt to sort the proposals into short-term actionable ones and more long-term considerations for more kinds of responses that could help additional use cases through future work.
 
 --- middle
 
 [^xxx]: XXX
+[^rfced]: RFC-Editor:
 
 Introduction        {#intro}
 ============
 
 In CoAP as defined by RFC 7252, responses are always unicast back to a
-client that posed a request.  A server may want to send a response to
-a request that it did not receive, may want to multicast a response,
-or both.
+client that posed a request.  <!-- A server may want to send a response to -->
+<!-- a request that it did not receive, may want to multicast a response, -->
+<!-- or both. -->
+The present memo describes two forms of responses that go beyond that
+model, embedded and configured responses, and defines two new CoAP options that enable embedded responses.
+Further work is needed on configured responses, which are discussed in {{configured}}.
 
-[^xxx]
-The descriptions in this specification are not intended as advocacy
-for adopting these approaches immediately, they are provided to point
-out potential avenues for development that would have to be carefully
-evaluated.
+<!-- [^xxx] -->
+<!-- The descriptions in this specification are not intended as advocacy -->
+<!-- for adopting these approaches immediately, they are provided to point -->
+<!-- out potential avenues for development that would have to be carefully -->
+<!-- evaluated. -->
 
 
 ## Terminology         {#terms}
@@ -84,7 +88,7 @@ evaluated.
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
 
-Terms used in this draft:
+Terms used in this specification:
 
 Non-traditional response:
 : A response that is not the single response generated for a request received
@@ -242,21 +246,21 @@ These rules generalize {{Sections 8.3 (Protecting the Response) and 8.4
   That in-flight response will fail decryption,
   but responses generated after the server has received the refresh will be decryptable again.
 
-# Response with Embedded Request
+# Response-For Option: Response with Embedded Request {#response-for}
 
 A server can send a response to a request that it did not actually
 receive by embedding the request which the response answers in the
 response.
 
-The option "Response-For" contains a request packaged as in {{Section
+The new option "Response-For" contains a request packaged as in {{Section
 5.3 of -oscore}}.  The response is then intended to serve as a
 response to this request.
 
 
-| No. | C | U | N | R | Name         | Format | Length | Default |
-|-----|---|---|---|---|--------------|--------|--------|---------|
-| TBD | C | - | - | - | Response-For | opaque | 0-1023 | (none)  |
-{: #response-for-option title="The Response-For Option" cols="r l l l l l l r l"}
+| No.  | C | U | N | R | Name         | Format | Length | Default |
+|------|---|---|---|---|--------------|--------|--------|---------|
+| TBD1 | C | - | - | - | Response-For | opaque | 0-1023 | (none)  |
+{: #tbl-response-for-option title="The Response-For Option" cols="r l l l l l l r l"}
 
 The CoAP Token becomes meaningless for this form of response;
 responses with embedded requests are therefore sent with a
@@ -270,93 +274,17 @@ possibly limiting the size of the request that can be stored in a
 The congestion control considerations for confirmable and
 non-confirmable messages apply unchanged.
 
-# Response for Configured Request
 
-A request may reach the server using a different means than that used
-for the response.  For instance, the request may be configured in the server.
-Without limiting generality, we speak about *configured requests*.
-
-The client MUST be cognizant of that configuration as the request uses
-a token from the token name space it controls.
-
-## Examples for Configured Requests
-
-### Example: Periodic Request
-
-A server may be configured to act on a configured request every day at 12:00.
-
-### Example: Event Driven Request
-
-A server may be configured to act on a configured request each time it reboots.
-
-### Example: Configured Observe
-
-A server may be configured with a GET request from a client that
-includes an Observe option with value 0.  This means that the server
-will send updates to the state of the resource addressed by the GET
-request to the configured address of the client.
-
-The considerations of {{Section 4.5 of -observe}} apply.  How losing
-interest reflects back into the configuration and whether there is some
-form of error notification to the source of the configuration is out
-of scope of the present specification.
-
-## Multicast Responses
-
-A server MAY send a response to a multicast address.
-(This needs to be a response to a configured request as a normal
-request cannot be sent *from* a multicast address.)
-
-Note that, as the originator of a multicast response is a unicast
-address, the relaxation of matching rules described in {{Section 8.2 of
-RFC7252}} does not apply.
-
-The token space in CoAP is owned by the client, which is identified by
-a transport endpoint (address/port).  Here, the address is a multicast
-address, so the token name space is shared by all nodes joined to that multicast
-address.  The assumption for multicast responses is that, for each
-multicast group, there is some form of management for the token space
-(and the port number) that everyone can participate in that needs to
-join that multicast group; the specific form of management is out of
-the scope of this specification.  Note that this means that multicast
-responses MUST NOT be sent to unmanaged multicast addresses such as
-All CoAP Nodes ({{Section 12.8 of -coap}}).
-
-Multicast responses are always non-confirmable.  The congestion
-control considerations for non-confirmable multicast messages apply
-unchanged.
-
-The draft {{?I-D.ietf-core-observe-multicast-notifications}} provides a concrete way of communicating such a setup.
-
-## Respond-To Option
-
-What has been called "configured request" here may also be triggered
-by a usual CoAP request that carries the Respond-To option.
-(The term "configured request" is still appropriate as the server
-ought to be configured to accept this option; see {{seccons}}.)
-
-If a single client wants to request a server to send the response to a
-specific multicast address, it can include the "Respond-To" option.
-This contains an opaque string with the port number as a 16-bit number
-(in network byte order), followed by the IP address (4-byte IPv4 or
-16-byte IPv6).
-
-| No. | C | U | N | R | Name       | Format | Length | Default |
-|-----|---|---|---|---|------------|--------|--------|---------|
-| TBD | C | U | - | - | Respond-To | opaque |   6-18 | (none)  |
-{: #tbl-respond-to-option title="The Respond-To Option" cols="r l l l l l l r l"}
-
-
-## Leisure-For-Responses Option
+# Leisure-For-Responses Option: Indicating Readiness for Response-For {#leisure-for-responses}
 
 This new option indicates a number expressed as a uint.
 It allows the server to send that number of non-traditional response messages in
 addition to the requested response. They are to be sent without undue delay
 after the original response.
 
-| No. | C | U | N | R | Name                  | Format | Length | Default |
-|-----|---|---|---|---|-----------------------|--------|--------|---------|
-| TBD |   | U | - |   | Leisure-For-Responses | uint   |    1-4 |       0 |
+| No.  | C | U | N | R | Name                  | Format | Length | Default |
+|------|---|---|---|---|-----------------------|--------|--------|---------|
+| TBD2 |   | U | - |   | Leisure-For-Responses | uint   | 1-4    | 0       |
 {: #tbl-leisure-for-responses-option title="The Leisure-For-Responses Option" cols="r l l l l l l r l"}
 
 The option is elective, but unsafe for proxies
@@ -379,39 +307,31 @@ Block2 transfer (which are obviously non-matching and thus don't need a
 Response-For), or serving follow-up documents (a response containing a
 single link can be followed by a representation of the linked resource,
 which needs a Response-For header that indicates the URI).
-<!-- or just provide
-the ETag of a freshly created resource (which would have a Request-For
-option for a GET with the given path and an ETag, and be a 2.03 Valid
-response). / but that probably already works as there is the concept of a "tagged representation" -->
+
 
 
 IANA Considerations
 ============
 
-This draft adds the following option numbers to the CoAP Option
+This specification adds the following option numbers to the CoAP Option
 Numbers registry of
 {{-coap}}:
 
 | Number | Name                  | Reference |
-|--------+-----------------------+-----------|
-| TBD    | Response-For          | {{&SELF}}   |
-| TBD    | Respond-To            | {{&SELF}}   |
-| TBD    | Leisure-For-Responses | {{&SELF}}   |
+|--------|-----------------------|-----------|
+| TBD1   | Response-For          | {{&SELF}} |
+| TBD2   | Leisure-For-Responses | {{&SELF}} |
 {: #tab-option-registry title="CoAP Option Numbers"}
 
+<!-- Not intended to register at this time:
+ | TBD    | Respond-To            | {{&SELF}}   | -->
+
+[^rfced] In the table, please replace TBD1 and TBD2 with the option number actually registered. Then, please delete this paragraph.
 
 Security Considerations {#seccons}
 ============
 
 TBD
-
-(Clearly, multicast responses pose a potential for amplification, in
-particular if unverified sources can cause them via Respond-To.
-Discuss how to mitigate.)
-
-A Respond-To option can be used to incite a server to send data to a
-third party.  This ought not be done blindly, i.e., only with
-considered application assent.
 
 The CoAP request/response mechanism allows the client to ascertain a
 level of authentication (not resistant though to on-path attackers
@@ -422,6 +342,9 @@ Responses with embedded requests can not be authenticated or checked
 for freshness this way.  Their content therefore is less trustworthy
 than normal responses unless authenticated in another way (e.g., via
 {{-oscore}}).
+
+Security considerations for configured requests are discussed in {{seccons-configured}}.
+
 
 --- back
 
@@ -499,6 +422,97 @@ of joining a multicast group securely through a proxy.
 {{?I-D.ietf-core-groupcomm-proxy}} seems to fit well with the concepts
 here as well, and might be simplified by it both in terminology and by
 replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-Host).
+
+# Response for Configured Request {#configured}
+
+A request may reach the server using a different means than that used
+for the response.  For instance, the request may be configured in the server.
+Without limiting generality, we speak about *configured requests*.
+
+The client MUST be cognizant of that configuration as the request uses
+a token from the token name space it controls.
+
+## Examples for Configured Requests
+
+### Example: Periodic Request
+
+A server may be configured to act on a configured request every day at 12:00.
+
+### Example: Event Driven Request
+
+A server may be configured to act on a configured request each time it reboots.
+
+### Example: Configured Observe
+
+A server may be configured with a GET request from a client that
+includes an Observe option with value 0.  This means that the server
+will send updates to the state of the resource addressed by the GET
+request to the configured address of the client.
+
+The considerations of {{Section 4.5 of -observe}} apply.  How losing
+interest reflects back into the configuration and whether there is some
+form of error notification to the source of the configuration is out
+of scope of the present specification.
+
+## Multicast Responses
+
+A server MAY send a response to a multicast address.
+(This needs to be a response to a configured request as a normal
+request cannot be sent *from* a multicast address.)
+
+Note that, as the originator of a multicast response is a unicast
+address, the relaxation of matching rules described in {{Section 8.2 of
+RFC7252}} does not apply.
+
+The token space in CoAP is owned by the client, which is identified by
+a transport endpoint (address/port).  Here, the address is a multicast
+address, so the token name space is shared by all nodes joined to that multicast
+address.  The assumption for multicast responses is that, for each
+multicast group, there is some form of management for the token space
+(and the port number) that everyone can participate in that needs to
+join that multicast group; the specific form of management is out of
+the scope of this specification.  Note that this means that multicast
+responses MUST NOT be sent to unmanaged multicast addresses such as
+All CoAP Nodes ({{Section 12.8 of -coap}}).
+
+Multicast responses are always non-confirmable.  The congestion
+control considerations for non-confirmable multicast messages apply
+unchanged.
+
+{{?I-D.ietf-core-observe-multicast-notifications}} provides a concrete way of communicating such a setup.
+
+## Respond-To Option: A Potential Common Component
+
+What has been called "configured request" here may also be triggered
+by a usual CoAP request that carries options that ask for modified response behavior.
+<!-- a "Respond-To" option as sketched here, or a more use-case-specific variant of that. -->
+(The term "configured request" is still appropriate as the server
+ought to be configured to accept option of this kind; see {{seccons}}.)
+
+For instance, if a single client wants to request a server to send the response to a
+specific multicast address, it can indicate this by including something like the "Respond-To" option sketched here.
+This contains an opaque string with the port number as a 16-bit number
+(in network byte order), followed by the IP address (4-byte IPv4 or
+16-byte IPv6).
+
+| No.       | C | U | N | R | Name       | Format | Length | Default |
+|-----------|---|---|---|---|------------|--------|--------|---------|
+| TBD later | C | U | - | - | Respond-To | opaque | 6-18   | (none)  |
+{: #tbl-respond-to-option title="A Potential Respond-To Option" cols="r l l l l l l r l"}
+
+(No allocation of an Option number is planned at this time.)
+
+## Security Considerations for Configured Requests {#seccons-configured}
+
+(Clearly, multicast responses pose a potential for amplification, in
+particular if unverified sources can cause them via Respond-To.
+[^xxx] Discuss how to mitigate.)
+
+A Respond-To option can be used to incite a server to send data to a
+third party.  This ought not be done blindly, i.e., only with
+considered application assent.
+
+<!-- .oOo. -->
 
 {::include-all lists.md}
 
