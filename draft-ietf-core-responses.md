@@ -285,7 +285,7 @@ The congestion control considerations for confirmable and
 non-confirmable messages apply unchanged.
 
 
-# Leisure-For-Responses Option: Indicating Readiness to receive multiple responses {#leisure-for-responses}
+# Leisure-For-Responses Option: Indicating Readiness to Receive Multiple Responses {#leisure-for-responses}
 
 This new option indicates a number expressed as a uint.
 It allows the server to send that number of non-traditional response messages in
