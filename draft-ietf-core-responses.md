@@ -43,11 +43,11 @@ venue:
 
 --- abstract
 
-In CoAP as defined by RFC 7252, there is generally one response for every request;
-various CoAP extensions have individually relaxed that practice.
+In CoAP as defined by RFC 7252, there is generally one response for each request.
+Various CoAP extensions have individually relaxed that practice.
 The present memo presents a generalized model beyond 1:1 responses,
 describes different forms in which it can be used,
-introduces new CoAP Options that make use of that model.
+and introduces new CoAP Options that make use of that model.
 
 Beyond that,
 this document provides implementation guidance to simplify prior extensions,
@@ -66,23 +66,24 @@ and outlines future possibilities of using it.
 Introduction        {#intro}
 ============
 
-In CoAP as defined by RFC 7252, in general, a single response is sent to the
+In CoAP as defined by {{-coap}}, in general, a single response is sent to the
 client that posed a request.
-That practice has been relaxed
-in RFC 7252 itself (and later {{?I-D.ietf-core-groupcomm-bis}}) for multicast requests,
-in {{-observe}} for multiple responses following an observation request,
-in {{?RFC7967}} for not sending a response at all,
-in {{?RFC9177}} for requesting a series of response blocks,
-as well as drafts such as {{?I-D.ietf-core-groupcomm-proxy}} and {{?I-D.ietf-core-observe-multicast-notifications}}.
+That practice has been relaxed:
+
+* in {{-coap}} itself (and later {{?I-D.ietf-core-groupcomm-bis}}) for multicast requests,
+* in {{-observe}} for multiple responses following an observation request,
+* in {{?RFC7967}} for not sending a response at all,
+* in {{?RFC9177}} for requesting a series of response blocks,
+* as well as in drafts such as {{?I-D.ietf-core-groupcomm-proxy}} and {{?I-D.ietf-core-observe-multicast-notifications}}.
 
 <!-- A server may want to send a response to -->
 <!-- a request that it did not receive, may want to multicast a response, -->
 <!-- or both. -->
 The present memo provides a general model for such responses, and
-describes two concrete forms using that model, embedded and configured responses.
-It sets up an option for a client to enable additional responses,
+describes two concrete forms using that model, with embedded or configured requests.
+It sets up a CoAP option for a client to enable additional responses,
 and an option that can be used to embed a request in a response.
-Further work is needed on configured responses, which are discussed in {{configured}}.
+Further work is needed on responses for configured requests, which are discussed in {{configured}}.
 
 <!-- [^xxx] -->
 <!-- The descriptions in this specification are not intended as advocacy -->
