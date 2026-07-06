@@ -43,15 +43,15 @@ venue:
 
 --- abstract
 
-In CoAP as defined by RFC 7252, responses are always unicast back to a
-client that posed a request.  The present memo describes two forms of
-responses that go beyond that model.
+In CoAP as defined by RFC 7252, there is generally one response for every request;
+various CoAP extensions have individually relaxed that practice.
+The present memo presents a generalized model beyond 1:1 responses,
+describes different forms in which it can be used,
+introduces new CoAP Options that make use of that model.
 
-The design spaces for the new CoAP Options proposed to represent these
-responses are now sufficiently understood that two of them can be
-developed to standards-track specifications in this document.
-Potential further work beyond this document is outlined in an appendix, which also discusses a
-common third option that might be used by that further work.
+Beyond that,
+this document provides implementation guidance to simplify prior extensions,
+and outlines future possibilities of using it.
 
 [^status]
 
@@ -66,12 +66,22 @@ common third option that might be used by that further work.
 Introduction        {#intro}
 ============
 
-In CoAP as defined by RFC 7252, responses are always unicast back to a
-client that posed a request.  <!-- A server may want to send a response to -->
+In CoAP as defined by RFC 7252, in general, a single response is sent to the
+client that posed a request.
+That practice has been relaxed
+in RFC 7252 itself (and later {{?I-D.ietf-core-groupcomm-bis}}) for multicast requests,
+in {{-observe}} for multiple responses following an observation request,
+in {{?RFC7967}} for not sending a response at all,
+in {{?RFC9177}} for requesting a series of response blocks,
+as well as drafts such as {{?I-D.ietf-core-groupcomm-proxy}} and {{?I-D.ietf-core-observe-multicast-notifications}}.
+
+<!-- A server may want to send a response to -->
 <!-- a request that it did not receive, may want to multicast a response, -->
 <!-- or both. -->
-The present memo describes two forms of responses that go beyond that
-model, embedded and configured responses, and defines two new CoAP options that enable embedded responses.
+The present memo provides a general model for such responses, and
+describes two concrete forms using that model, embedded and configured responses.
+It sets up an option for a client to enable additional responses,
+and an option that can be used to embed a request in a response.
 Further work is needed on configured responses, which are discussed in {{configured}}.
 
 <!-- [^xxx] -->
