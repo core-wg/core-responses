@@ -331,7 +331,7 @@ Numbers registry of
 |--------|-----------------------|-----------|
 | TBD1   | Response-For          | {{&SELF}} |
 | TBD2   | Leisure-For-Responses | {{&SELF}} |
-{: #tab-option-registry title="CoAP Option Numbers"}
+{: #tbl-option-registry title="Newly Registered CoAP Option Numbers"}
 
 <!-- Not intended to register at this time:
  | TBD    | Respond-To            | {{&SELF}}   | -->

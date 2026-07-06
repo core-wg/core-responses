@@ -9,8 +9,8 @@
 {{tbl-leisure-for-responses-option}}:
 : {{<<tbl-leisure-for-responses-option}}
 
-{{tab-option-registry}}:
-: {{<<tab-option-registry}}
+{{tbl-option-registry}}:
+: {{<<tbl-option-registry}}
 
 {{tbl-respond-to-option}}:
 : {{<<tbl-respond-to-option}}
