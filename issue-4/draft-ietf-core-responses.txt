@@ -5,7 +5,7 @@
 Network Working Group                                         C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Informational                                 C. Amsüss
-Expires: 5 January 2027                                      4 July 2026
+Expires: 7 January 2027                                      6 July 2026
 
 
                   CoAP: Non-traditional Response Forms
@@ -53,7 +53,7 @@ About This Document
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 1]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 1]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2027.
+   This Internet-Draft will expire on 7 January 2027.
 
 Copyright Notice
 
@@ -98,8 +98,8 @@ Table of Contents
      2.2.  Responses Without Explicit Request  . . . . . . . . . . .   5
    3.  OSCORE Processing for Non-traditional Responses . . . . . . .   5
    4.  Response-For Option: Response with Embedded Request . . . . .   7
-   5.  Leisure-For-Responses Option: Indicating Readiness for
-           Response-For  . . . . . . . . . . . . . . . . . . . . . .   8
+   5.  Leisure-For-Responses Option: Indicating Readiness to receive
+           multiple responses  . . . . . . . . . . . . . . . . . . .   8
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 2]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 2]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -165,7 +165,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 3]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 3]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -221,7 +221,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 4]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 4]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -277,7 +277,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 5]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 5]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -333,7 +333,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 6]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 6]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -389,12 +389,13 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 7]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 7]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
-5.  Leisure-For-Responses Option: Indicating Readiness for Response-For
+5.  Leisure-For-Responses Option: Indicating Readiness to receive
+    multiple responses
 
    This new option indicates a number expressed as a uint.  It allows
    the server to send that number of non-traditional response messages
@@ -444,8 +445,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-
-Bormann & Amsüss         Expires 5 January 2027                 [Page 8]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 8]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -501,7 +501,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                 [Page 9]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 9]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -557,7 +557,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                [Page 10]
+Bormann & Amsüss         Expires 7 January 2027                [Page 10]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -613,7 +613,7 @@ A.2.  Responses to Multicast Requests
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                [Page 11]
+Bormann & Amsüss         Expires 7 January 2027                [Page 11]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -669,7 +669,7 @@ B.1.2.  Example: Event Driven Request
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                [Page 12]
+Bormann & Amsüss         Expires 7 January 2027                [Page 12]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -725,7 +725,7 @@ B.3.  Respond-To Option: A Potential Common Component
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                [Page 13]
+Bormann & Amsüss         Expires 7 January 2027                [Page 13]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -781,7 +781,7 @@ Authors' Addresses
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                [Page 14]
+Bormann & Amsüss         Expires 7 January 2027                [Page 14]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
@@ -837,4 +837,4 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-Bormann & Amsüss         Expires 5 January 2027                [Page 15]
+Bormann & Amsüss         Expires 7 January 2027                [Page 15]
