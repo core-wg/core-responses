@@ -8,11 +8,11 @@
 <meta content="Carsten Bormann" name="author">
 <meta content="Christian Amsüss" name="author">
 <meta content="
-       In CoAP as defined by RFC 7252, there is generally one response for every request;
-various CoAP extensions have individually relaxed that practice.
+       In CoAP as defined by RFC 7252, there is generally one response for each request.
+Various CoAP extensions have individually relaxed that practice.
 The present memo presents a generalized model beyond 1:1 responses,
 describes different forms in which it can be used,
-introduces new CoAP Options that make use of that model. 
+and introduces new CoAP Options that make use of that model. 
        Beyond that,
 this document provides implementation guidance to simplify prior extensions,
 and outlines future possibilities of using it. 
@@ -1092,11 +1092,11 @@ svg {
 <h1 id="title">CoAP: Non-traditional Response Forms</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">In CoAP as defined by RFC 7252, there is generally one response for every request;
-various CoAP extensions have individually relaxed that practice.
+<p id="section-abstract-1">In CoAP as defined by RFC 7252, there is generally one response for each request.
+Various CoAP extensions have individually relaxed that practice.
 The present memo presents a generalized model beyond 1:1 responses,
 describes different forms in which it can be used,
-introduces new CoAP Options that make use of that model.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+and introduces new CoAP Options that make use of that model.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">Beyond that,
 this document provides implementation guidance to simplify prior extensions,
 and outlines future possibilities of using it.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
@@ -1192,7 +1192,7 @@ It makes a first attempt to sort the proposals into short-term actionable ones a
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-response-for-option-respons" class="internal xref">Response-For Option: Response with Embedded Request</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-leisure-for-responses-optio" class="internal xref">Leisure-For-Responses Option: Indicating Readiness to receive multiple responses</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-leisure-for-responses-optio" class="internal xref">Leisure-For-Responses Option: Indicating Readiness to Receive Multiple Responses</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
@@ -1274,19 +1274,31 @@ It makes a first attempt to sort the proposals into short-term actionable ones a
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">In CoAP as defined by RFC 7252, in general, a single response is sent to the
+<p id="section-1-1">In CoAP as defined by <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, in general, a single response is sent to the
 client that posed a request.
-That practice has been relaxed
-in RFC 7252 itself (and later <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>) for multicast requests,
-in <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> for multiple responses following an observation request,
-in <span>[<a href="#RFC7967" class="cite xref">RFC7967</a>]</span> for not sending a response at all,
-in <span>[<a href="#RFC9177" class="cite xref">RFC9177</a>]</span> for requesting a series of response blocks,
-as well as drafts such as <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span> and <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The present memo provides a general model for such responses, and
-describes two concrete forms using that model, embedded and configured responses.
-It sets up an option for a client to enable additional responses,
+That practice has been relaxed:<a href="#section-1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-2.1">
+          <p id="section-1-2.1.1">in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> itself (and later <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>) for multicast requests,<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.2">
+          <p id="section-1-2.2.1">in <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> for multiple responses following an observation request,<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.3">
+          <p id="section-1-2.3.1">in <span>[<a href="#RFC7967" class="cite xref">RFC7967</a>]</span> for not sending a response at all,<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.4">
+          <p id="section-1-2.4.1">in <span>[<a href="#RFC9177" class="cite xref">RFC9177</a>]</span> for requesting a series of response blocks,<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.5">
+          <p id="section-1-2.5.1">as well as in drafts such as <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span> and <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>.<a href="#section-1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-3">The present memo provides a general model for such responses, and
+describes two concrete forms using that model, with embedded or configured requests.
+It sets up a CoAP option for a client to enable additional responses,
 and an option that can be used to embed a request in a response.
-Further work is needed on configured responses, which are discussed in <a href="#configured" class="auto internal xref">Appendix B</a>.<a href="#section-1-2" class="pilcrow">¶</a></p>
+Further work is needed on responses for configured requests, which are discussed in <a href="#configured" class="auto internal xref">Appendix B</a>.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <div id="terms">
 <section id="section-1.1">
         <h3 id="name-terminology">
@@ -1541,7 +1553,7 @@ non-confirmable messages apply unchanged.<a href="#section-4-6" class="pilcrow">
 <div id="leisure-for-responses">
 <section id="section-5">
       <h2 id="name-leisure-for-responses-optio">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-leisure-for-responses-optio" class="section-name selfRef">Leisure-For-Responses Option: Indicating Readiness to receive multiple responses</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-leisure-for-responses-optio" class="section-name selfRef">Leisure-For-Responses Option: Indicating Readiness to Receive Multiple Responses</a>
       </h2>
 <p id="section-5-1">This new option indicates a number expressed as a uint.
 It allows the server to send that number of non-traditional response messages in
@@ -1608,11 +1620,11 @@ which needs a Response-For header that indicates the URI).<a href="#section-5-6"
 <p id="section-6-1">This specification adds the following option numbers to the CoAP Option
 Numbers registry of
 <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-6-1" class="pilcrow">¶</a></p>
-<span id="name-coap-option-numbers"></span><div id="tab-option-registry">
+<span id="name-newly-registered-coap-optio"></span><div id="tbl-option-registry">
 <table class="center" id="table-3">
         <caption>
 <a href="#table-3" class="selfRef">Table 3</a>:
-<a href="#name-coap-option-numbers" class="selfRef">CoAP Option Numbers</a>
+<a href="#name-newly-registered-coap-optio" class="selfRef">Newly Registered CoAP Option Numbers</a>
         </caption>
 <thead>
           <tr>
@@ -1976,9 +1988,9 @@ considered application assent.<a href="#appendix-B.4-2" class="pilcrow">¶</a></
 </dd>
         <dd class="break"></dd>
 <dt id="appendix-C-1.5">
-<a href="#tab-option-registry" class="auto internal xref">Table 3</a>:</dt>
+<a href="#tbl-option-registry" class="auto internal xref">Table 3</a>:</dt>
         <dd style="margin-left: 5.5em" id="appendix-C-1.6">
-          <p id="appendix-C-1.6.1"><a href="#tab-option-registry" class="internal xref">CoAP Option Numbers</a><a href="#appendix-C-1.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-1.6.1"><a href="#tbl-option-registry" class="internal xref">Newly Registered CoAP Option Numbers</a><a href="#appendix-C-1.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="appendix-C-1.7">

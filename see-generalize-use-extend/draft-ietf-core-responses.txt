@@ -14,9 +14,9 @@ Expires: 7 January 2027                                      6 July 2026
 Abstract
 
    In CoAP as defined by RFC 7252, there is generally one response for
-   every request; various CoAP extensions have individually relaxed that
+   each request.  Various CoAP extensions have individually relaxed that
    practice.  The present memo presents a generalized model beyond 1:1
-   responses, describes different forms in which it can be used,
+   responses, describes different forms in which it can be used, and
    introduces new CoAP Options that make use of that model.
 
    Beyond that, this document provides implementation guidance to
@@ -89,12 +89,12 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Sending Non-traditional Responses . . . . . . . . . . . . . .   4
-     2.1.  Preconditions to Sending Non-traditional Responses  . . .   4
+     2.1.  Preconditions to Sending Non-traditional Responses  . . .   5
      2.2.  Responses Without Explicit Request  . . . . . . . . . . .   5
    3.  OSCORE Processing for Non-traditional Responses . . . . . . .   5
    4.  Response-For Option: Response with Embedded Request . . . . .   7
-   5.  Leisure-For-Responses Option: Indicating Readiness to receive
-           multiple responses  . . . . . . . . . . . . . . . . . . .   8
+   5.  Leisure-For-Responses Option: Indicating Readiness to Receive
+           Multiple Responses  . . . . . . . . . . . . . . . . . . .   8
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
@@ -128,21 +128,29 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 1.  Introduction
 
-   In CoAP as defined by RFC 7252, in general, a single response is sent
-   to the client that posed a request.  That practice has been relaxed
-   in RFC 7252 itself (and later [I-D.ietf-core-groupcomm-bis]) for
-   multicast requests, in [RFC7641] for multiple responses following an
-   observation request, in [RFC7967] for not sending a response at all,
-   in [RFC9177] for requesting a series of response blocks, as well as
-   drafts such as [I-D.ietf-core-groupcomm-proxy] and
-   [I-D.ietf-core-observe-multicast-notifications].
+   In CoAP as defined by [RFC7252], in general, a single response is
+   sent to the client that posed a request.  That practice has been
+   relaxed:
+
+   *  in [RFC7252] itself (and later [I-D.ietf-core-groupcomm-bis]) for
+      multicast requests,
+
+   *  in [RFC7641] for multiple responses following an observation
+      request,
+
+   *  in [RFC7967] for not sending a response at all,
+
+   *  in [RFC9177] for requesting a series of response blocks,
+
+   *  as well as in drafts such as [I-D.ietf-core-groupcomm-proxy] and
+      [I-D.ietf-core-observe-multicast-notifications].
 
    The present memo provides a general model for such responses, and
-   describes two concrete forms using that model, embedded and
-   configured responses.  It sets up an option for a client to enable
+   describes two concrete forms using that model, with embedded or
+   configured requests.  It sets up a CoAP option for a client to enable
    additional responses, and an option that can be used to embed a
-   request in a response.  Further work is needed on configured
-   responses, which are discussed in Appendix B.
+   request in a response.  Further work is needed on responses for
+   configured requests, which are discussed in Appendix B.
 
 1.1.  Terminology
 
@@ -155,14 +163,6 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
    The term "byte" is used in its now customary sense as a synonym for
    "octet".
 
-   Terms used in this specification:
-
-   Non-traditional response:  A response that is not the single response
-      generated for a request received on the same transport.
-
-   Non-matching response:  A response that has properties (typically
-
-
 
 
 Bormann & Amsüss         Expires 7 January 2027                 [Page 3]
@@ -170,6 +170,12 @@ Bormann & Amsüss         Expires 7 January 2027                 [Page 3]
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
+   Terms used in this specification:
+
+   Non-traditional response:  A response that is not the single response
+      generated for a request received on the same transport.
+
+   Non-matching response:  A response that has properties (typically
       options) that make it incompatible with the original request, and
       thus in particular unsuitable as a cached response to that request
       (but possibly suitable to populate the cache for a similar
@@ -211,13 +217,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
    probably the last corner case at the boundary separating traditional
    from non-traditional responses.
 
-2.1.  Preconditions to Sending Non-traditional Responses
 
-   A server may send multiple responses to a request if there is any
-   property in the request that indicates the client's intention to
-   receive them.  This is typically indicated by a request option, and
-   rarely in external properties of the message (in the multicast case,
-   the destination address).
 
 
 
@@ -225,6 +225,14 @@ Bormann & Amsüss         Expires 7 January 2027                 [Page 4]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
+
+2.1.  Preconditions to Sending Non-traditional Responses
+
+   A server may send multiple responses to a request if there is any
+   property in the request that indicates the client's intention to
+   receive them.  This is typically indicated by a request option, and
+   rarely in external properties of the message (in the multicast case,
+   the destination address).
 
    A mechanism for eliciting multiple responses must specify the
    conditions under which a token gets freed, as the traditional arrival
@@ -266,6 +274,14 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
    OSCORE's binding between requests and responses remains unmodified:
    Each response is cryptographically bound to an OSCORE request.
    Therefore, any phantom request needs to be an OSCORE request as well,
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 5]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
    and the parties need to agree on the sender and sequence number of
    the phantom request.  An easy way to do that securely is to deliver
    the phantom request in a way that the server can do the full OSCORE
@@ -274,13 +290,6 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
    whenever a response is to be sent.  In the latter case, it may need
    to relax the requirements of Section 8.2 (Verifying the Request) of
    [RFC8613], item 3.
-
-
-
-Bormann & Amsüss         Expires 7 January 2027                 [Page 5]
-
-Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
-
 
    To avoid reinventing the same rules as for Observe requests for any
    other non-traditional response, this document defines a set of
@@ -322,6 +331,13 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
    *  If the handling of multiple responses is not idempotent, then at
       8.4 step 5:
 
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 6]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
       -  For responses that use a Sender Sequence Number from the
          server, the client consults the replay window before
          decryption, and removes its number from the replay window after
@@ -329,14 +345,6 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
       -  For responses that use the request's Sender Sequence Number,
          duplication is tracked for each request.
-
-
-
-
-Bormann & Amsüss         Expires 7 January 2027                 [Page 6]
-
-Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
-
 
       As a simplification, applications that only process the latest
       response may track the latest sequence number for deduplication.
@@ -378,14 +386,6 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
    possibly limiting the size of the request that can be stored in a
    "Response-For" Option.
 
-   The congestion control considerations for confirmable and non-
-   confirmable messages apply unchanged.
-
-
-
-
-
-
 
 
 
@@ -394,8 +394,11 @@ Bormann & Amsüss         Expires 7 January 2027                 [Page 7]
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
-5.  Leisure-For-Responses Option: Indicating Readiness to receive
-    multiple responses
+   The congestion control considerations for confirmable and non-
+   confirmable messages apply unchanged.
+
+5.  Leisure-For-Responses Option: Indicating Readiness to Receive
+    Multiple Responses
 
    This new option indicates a number expressed as a uint.  It allows
    the server to send that number of non-traditional response messages
@@ -442,9 +445,6 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
 
-
-
-
 Bormann & Amsüss         Expires 7 January 2027                 [Page 8]
 
 Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
@@ -458,7 +458,7 @@ Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
               | TBD2   | Leisure-For-Responses | RFCthis   |
               +--------+-----------------------+-----------+
 
-                       Table 3: CoAP Option Numbers
+              Table 3: Newly Registered CoAP Option Numbers
 
 
    // RFC-Editor: In the table, please replace TBD1 and TBD2 with the
@@ -773,7 +773,7 @@ List of Tables
 
    Table 1:   The Response-For Option
    Table 2:   The Leisure-For-Responses Option
-   Table 3:   CoAP Option Numbers
+   Table 3:   Newly Registered CoAP Option Numbers
    Table 4:   A Potential Respond-To Option
 
 
