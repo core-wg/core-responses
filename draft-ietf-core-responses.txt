@@ -5,23 +5,30 @@
 Network Working Group                                         C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Informational                                 C. Amsüss
-Expires: 16 July 2026                                    12 January 2026
+Expires: 7 January 2027                                      6 July 2026
 
 
-                  CoAP: Non-traditional response forms
+                  CoAP: Non-traditional Response Forms
                     draft-ietf-core-responses-latest
 
 Abstract
 
-   In CoAP as defined by RFC 7252, responses are always unicast back to
-   a client that posed a request.  The present memo describes two forms
-   of responses that go beyond that model.
+   In CoAP as defined by RFC 7252, there is generally one response for
+   each request.  Various CoAP extensions have individually relaxed that
+   practice.  The present memo presents a generalized model beyond 1:1
+   responses, describes different forms in which it can be used, and
+   introduces new CoAP Options that make use of that model.
 
-   The design spaces for the new CoAP Options proposed to represent
-   these responses are now sufficiently understood that they can be
-   developed to standards-track specifications, either in this document
-   or by transferring the specification for an Option to a document that
-   that Option closely works with.
+   Beyond that, this document provides implementation guidance to
+   simplify prior extensions, and outlines future possibilities of using
+   it.
+
+
+   // This revision -01 has been created as discussion input for IETF
+   // 126.  It makes a first attempt to sort the proposals into short-
+   // term actionable ones and more long-term considerations for more
+   // kinds of responses that could help additional use cases through
+   // future work.
 
 About This Document
 
@@ -44,26 +51,24 @@ Status of This Memo
    This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
 
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 1]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
    Drafts is at https://datatracker.ietf.org/drafts/current/.
-
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 1]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 July 2026.
+   This Internet-Draft will expire on 7 January 2027.
 
 Copyright Notice
 
@@ -83,53 +88,69 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
-   2.  Sending non-traditional responses . . . . . . . . . . . . . .   4
-     2.1.  Preconditions to sending non-traditional responses  . . .   4
-     2.2.  Responses without request . . . . . . . . . . . . . . . .   5
-   3.  OSCORE processing for non-traditional responses . . . . . . .   5
-   4.  Response with embedded request  . . . . . . . . . . . . . . .   7
-   5.  Response for configured request . . . . . . . . . . . . . . .   7
-     5.1.  Examples for configured requests  . . . . . . . . . . . .   8
-       5.1.1.  Example: Periodic request . . . . . . . . . . . . . .   8
-       5.1.2.  Example: Event driven request . . . . . . . . . . . .   8
-       5.1.3.  Example: Configured observe . . . . . . . . . . . . .   8
-     5.2.  Multicast responses . . . . . . . . . . . . . . . . . . .   8
-     5.3.  Respond-To option . . . . . . . . . . . . . . . . . . . .   9
-     5.4.  Leisure-For-Responses Option  . . . . . . . . . . . . . .   9
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  10
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  11
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  11
-   Appendix A.  CoAP extensions explained by non-traditional
-           responses . . . . . . . . . . . . . . . . . . . . . . . .  12
-     A.1.  Observation . . . . . . . . . . . . . . . . . . . . . . .  12
-     A.2.  Responses to multicast requests . . . . . . . . . . . . .  13
-     A.3.  Triangular responses (Response-To)  . . . . . . . . . . .  13
+   2.  Sending Non-traditional Responses . . . . . . . . . . . . . .   4
+     2.1.  Preconditions to Sending Non-traditional Responses  . . .   5
+     2.2.  Responses Without Explicit Request  . . . . . . . . . . .   5
+   3.  OSCORE Processing for Non-traditional Responses . . . . . . .   5
+   4.  Response-For Option: Response with Embedded Request . . . . .   7
+   5.  Leisure-For-Responses Option: Indicating Readiness to Receive
+           Multiple Responses  . . . . . . . . . . . . . . . . . . .   8
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   9
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  10
+   Appendix A.  Coap Extensions Explained by Non-traditional
+           Responses . . . . . . . . . . . . . . . . . . . . . . . .  11
+     A.1.  Observation . . . . . . . . . . . . . . . . . . . . . . .  11
+     A.2.  Responses to Multicast Requests . . . . . . . . . . . . .  11
+     A.3.  Triangular Responses (Response-To)  . . . . . . . . . . .  12
+     A.4.  Other Current Documents . . . . . . . . . . . . . . . . .  12
 
 
 
-Bormann & Amsüss          Expires 16 July 2026                  [Page 2]
+Bormann & Amsüss         Expires 7 January 2027                 [Page 2]
 
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
-     A.4.  Other current documents . . . . . . . . . . . . . . . . .  13
+   Appendix B.  Response for Configured Request  . . . . . . . . . .  12
+     B.1.  Examples for Configured Requests  . . . . . . . . . . . .  12
+       B.1.1.  Example: Periodic Request . . . . . . . . . . . . . .  13
+       B.1.2.  Example: Event Driven Request . . . . . . . . . . . .  13
+       B.1.3.  Example: Configured Observe . . . . . . . . . . . . .  13
+     B.2.  Multicast Responses . . . . . . . . . . . . . . . . . . .  13
+     B.3.  Respond-To Option: A Potential Common Component . . . . .  14
+     B.4.  Security Considerations for Configured Requests . . . . .  14
    List of Tables  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  14
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  15
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
 
 1.  Introduction
 
-   In CoAP as defined by RFC 7252, responses are always unicast back to
-   a client that posed a request.  A server may want to send a response
-   to a request that it did not receive, may want to multicast a
-   response, or both.
+   In CoAP as defined by [RFC7252], in general, a single response is
+   sent to the client that posed a request.  That practice has been
+   relaxed:
 
-   The descriptions in this specification are not intended as advocacy
-   for adopting these approaches immediately, they are provided to point
-   out potential avenues for development that would have to be carefully
-   evaluated.
+   *  in [RFC7252] itself (and later [I-D.ietf-core-groupcomm-bis]) for
+      multicast requests,
+
+   *  in [RFC7641] for multiple responses following an observation
+      request,
+
+   *  in [RFC7967] for not sending a response at all,
+
+   *  in [RFC9177] for requesting a series of response blocks,
+
+   *  as well as in drafts such as [I-D.ietf-core-groupcomm-proxy] and
+      [I-D.ietf-core-observe-multicast-notifications].
+
+   The present memo provides a general model for such responses, and
+   describes two concrete forms using that model, with embedded or
+   configured requests.  It sets up a CoAP option for a client to enable
+   additional responses, and an option that can be used to embed a
+   request in a response.  Further work is needed on responses for
+   configured requests, which are discussed in Appendix B.
 
 1.1.  Terminology
 
@@ -142,7 +163,14 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    The term "byte" is used in its now customary sense as a synonym for
    "octet".
 
-   Terms used in this draft:
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 3]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+   Terms used in this specification:
 
    Non-traditional response:  A response that is not the single response
       generated for a request received on the same transport.
@@ -162,17 +190,9 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
       communication channel a response is expected on.
 
    Embedded request:  A request that is provided by the server to the
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 3]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
       recipient of its response by embedding it into the response.
 
-2.  Sending non-traditional responses
+2.  Sending Non-traditional Responses
 
    Non-traditional responses are sets of responses produced for a single
    request, or responses sent without a transmitted request.
@@ -193,11 +213,20 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
 
    A second response differing from the first that can be sent by a non-
    deduplicating server responding to a retransmission of a request is
-   not non-traditional because there is a second request -- that is
-   probably the last corner case at the line separating traditional from
-   non-traditional responses.
+   not non-traditional because there is a second request — that is
+   probably the last corner case at the boundary separating traditional
+   from non-traditional responses.
 
-2.1.  Preconditions to sending non-traditional responses
+
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 4]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+2.1.  Preconditions to Sending Non-traditional Responses
 
    A server may send multiple responses to a request if there is any
    property in the request that indicates the client's intention to
@@ -214,18 +243,6 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    wait with reuse until no reordered non-traditional responses can be
    expected anymore.
 
-
-
-
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 4]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
    If a non-traditional response answers the original request, no
    further action is required (this is the case of observation: ordering
    is added on top of that to ensure that only the latest response is
@@ -233,7 +250,7 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    be non-matching, either by an option introduced with the eliciting
    option or by a generic option like Response-For.
 
-2.2.  Responses without request
+2.2.  Responses Without Explicit Request
 
    Endpoints may agree out of band on a token (or other request-matching
    details).  One way to do that is to agree on a "phantom request",
@@ -246,17 +263,25 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    (for example by the client allowing a third party to use a subset of
    its token values in order to set up non-traditional responses).
 
-3.  OSCORE processing for non-traditional responses
+3.  OSCORE Processing for Non-traditional Responses
 
    OSCORE [RFC8613] is built with the general assumption that requests
    are processed into exactly one response.  The specification contains
    explicit provisions for Observe requests (Section 4.1.3.5 of
    [RFC8613]), and a whole protocol extension for multicast requests
-   ([I-D.ietf-core-oscore-groupcomm]).
+   [I-D.ietf-core-oscore-groupcomm].
 
    OSCORE's binding between requests and responses remains unmodified:
    Each response is cryptographically bound to an OSCORE request.
    Therefore, any phantom request needs to be an OSCORE request as well,
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 5]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
    and the parties need to agree on the sender and sequence number of
    the phantom request.  An easy way to do that securely is to deliver
    the phantom request in a way that the server can do the full OSCORE
@@ -264,23 +289,13 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    into internal data structures at reception time, or may process it
    whenever a response is to be sent.  In the latter case, it may need
    to relax the requirements of Section 8.2 (Verifying the Request) of
-   [RFC8613] item 3.
+   [RFC8613], item 3.
 
    To avoid reinventing the same rules as for Observe requests for any
    other non-traditional response, this document defines a set of
    processing instructions which can be referenced when specifying their
    options.  These rules generalize Sections 8.3 (Protecting the
    Response) and 8.4 (Verifying the Response) of [RFC8613]:
-
-
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 5]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
 
    *  In 8.3 step 3, "use the AEAD nonce from the request" is only an
       option once, i.e., after the sequence number expressed in that
@@ -316,6 +331,13 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    *  If the handling of multiple responses is not idempotent, then at
       8.4 step 5:
 
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 6]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
       -  For responses that use a Sender Sequence Number from the
          server, the client consults the replay window before
          decryption, and removes its number from the replay window after
@@ -330,14 +352,6 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    *  In 8.4 step 8, the Option establishing the non-traditional
       responses may specify that error conditions processing a response
       are not fatal for the whole request.  This should be done when an
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 6]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
       Option allows immediate follow-up requests.  This is the case for
       the Observe option: When an observation is refreshed, a response
       encrypted with the earlier request's request_kid may still be in
@@ -345,23 +359,23 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
       responses generated after the server has received the refresh will
       be decryptable again.
 
-4.  Response with embedded request
+4.  Response-For Option: Response with Embedded Request
 
    A server can send a response to a request that it did not actually
    receive by embedding the request which the response answers in the
    response.
 
-   The option "Response-For" contains a request packaged as in
+   The new option "Response-For" contains a request packaged as in
    Section 5.3 of [RFC8613].  The response is then intended to serve as
    a response to this request.
 
-    +=====+===+===+===+===+==============+========+========+=========+
-    | No. | C | U | N | R | Name         | Format | Length | Default |
-    +=====+===+===+===+===+==============+========+========+=========+
-    | TBD | C | - | - | - | Response-For | opaque | 0-1023 | (none)  |
-    +-----+---+---+---+---+--------------+--------+--------+---------+
+    +======+===+===+===+===+==============+========+========+=========+
+    |  No. | C | U | N | R | Name         | Format | Length | Default |
+    +======+===+===+===+===+==============+========+========+=========+
+    | TBD1 | C | - | - | - | Response-For | opaque | 0-1023 | (none)  |
+    +------+---+---+---+---+--------------+--------+--------+---------+
 
-                     Table 1: The Response-For Option
+                      Table 1: The Response-For Option
 
    The CoAP Token becomes meaningless for this form of response;
    responses with embedded requests are therefore sent with a zero-
@@ -372,10 +386,273 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    possibly limiting the size of the request that can be stored in a
    "Response-For" Option.
 
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 7]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
    The congestion control considerations for confirmable and non-
    confirmable messages apply unchanged.
 
-5.  Response for configured request
+5.  Leisure-For-Responses Option: Indicating Readiness to Receive
+    Multiple Responses
+
+   This new option indicates a number expressed as a uint.  It allows
+   the server to send that number of non-traditional response messages
+   in addition to the requested response.  They are to be sent without
+   undue delay after the original response.
+
+   +======+=+=+=+=+=======================+========+========+=========+
+   |  No. |C|U|N|R| Name                  | Format | Length | Default |
+   +======+=+=+=+=+=======================+========+========+=========+
+   | TBD2 | |U|-| | Leisure-For-Responses | uint   |    1-4 | 0       |
+   +------+-+-+-+-+-----------------------+--------+--------+---------+
+
+                Table 2: The Leisure-For-Responses Option
+
+   The option is elective, but unsafe for proxies (as the option would
+   otherwise cause multiple responses to a proxy that expects only one
+   and that needs to be a matching response).  A proxy that chooses not
+   to implement it may forward the request with the Leisure-For-
+   Responses option removed.
+
+   On its own, the option does not indicate which kind of additional
+   responses the client would expect (though further elective proxy-safe
+   no-cache-key options can be added on top of that to give better
+   guidance), and the server may choose not to send any at all.
+
+   Intermediaries may add or remove the option, and use incoming
+   responses to populate their cache.  They may serve additional
+   responses from their cache, but in most cases the sensible course of
+   action is to forward the additional responses the origin server
+   sends.
+
+   Use cases for Leisure-For-Responses include sending further blocks in
+   a Block2 transfer (which are obviously non-matching and thus don't
+   need a Response-For), or serving follow-up documents (a response
+   containing a single link can be followed by a representation of the
+   linked resource, which needs a Response-For header that indicates the
+   URI).
+
+6.  IANA Considerations
+
+   This specification adds the following option numbers to the CoAP
+   Option Numbers registry of [RFC7252]:
+
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 8]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+              +========+=======================+===========+
+              | Number | Name                  | Reference |
+              +========+=======================+===========+
+              | TBD1   | Response-For          | RFCthis   |
+              +--------+-----------------------+-----------+
+              | TBD2   | Leisure-For-Responses | RFCthis   |
+              +--------+-----------------------+-----------+
+
+              Table 3: Newly Registered CoAP Option Numbers
+
+
+   // RFC-Editor: In the table, please replace TBD1 and TBD2 with the
+   option number actually registered.  Then, please delete this
+   paragraph.
+
+7.  Security Considerations
+
+   TBD
+
+   The CoAP request/response mechanism allows the client to ascertain a
+   level of authentication (not resistant though to on-path attackers
+   unless the communication is protected) and freshness of the response:
+   The Token echoed in the response shows that the responder had
+   knowledge of the (fresh) request (Section 5.3.1 of [RFC7252]).
+   Responses with embedded requests can not be authenticated or checked
+   for freshness this way.  Their content therefore is less trustworthy
+   than normal responses unless authenticated in another way (e.g., via
+   [RFC8613]).
+
+   Security considerations for configured requests are discussed in
+   Appendix B.4.
+
+8.  References
+
+8.1.  Normative References
+
+   [BCP14]    Best Current Practice 14,
+              <https://www.rfc-editor.org/info/bcp14>.
+              At the time of writing, this BCP comprises the following:
+
+              Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+              Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                 [Page 9]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
+              Application Protocol (CoAP)", RFC 7252,
+              DOI 10.17487/RFC7252, June 2014,
+              <https://www.rfc-editor.org/rfc/rfc7252>.
+
+   [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security for Constrained RESTful Environments
+              (OSCORE)", RFC 8613, DOI 10.17487/RFC8613, July 2019,
+              <https://www.rfc-editor.org/rfc/rfc8613>.
+
+8.2.  Informative References
+
+   [I-D.ietf-core-groupcomm-bis]
+              Dijk, E. and M. Tiloca, "Group Communication for the
+              Constrained Application Protocol (CoAP)", Work in
+              Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
+              18, 10 February 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              groupcomm-bis-18>.
+
+   [I-D.ietf-core-groupcomm-proxy]
+              Tiloca, M. and E. Dijk, "Proxy Operations in Group
+              Communication for the Constrained Application Protocol
+              (CoAP)", Work in Progress, Internet-Draft, draft-ietf-
+              core-groupcomm-proxy-06, 2 March 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              groupcomm-proxy-06>.
+
+   [I-D.ietf-core-observe-multicast-notifications]
+              Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
+              "Observe Notifications as CoAP Multicast Responses", Work
+              in Progress, Internet-Draft, draft-ietf-core-observe-
+              multicast-notifications-15, 6 July 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
+              observe-multicast-notifications-15>.
+
+   [I-D.ietf-core-oscore-groupcomm]
+              Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
+              and R. Höglund, "Group Object Security for Constrained
+              RESTful Environments (Group OSCORE)", Work in Progress,
+              Internet-Draft, draft-ietf-core-oscore-groupcomm-28, 23
+              December 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-core-oscore-groupcomm-28>.
+
+   [RFC7641]  Hartke, K., "Observing Resources in the Constrained
+              Application Protocol (CoAP)", RFC 7641,
+              DOI 10.17487/RFC7641, September 2015,
+              <https://www.rfc-editor.org/rfc/rfc7641>.
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                [Page 10]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+   [RFC7967]  Bhattacharyya, A., Bandyopadhyay, S., Pal, A., and T.
+              Bose, "Constrained Application Protocol (CoAP) Option for
+              No Server Response", RFC 7967, DOI 10.17487/RFC7967,
+              August 2016, <https://www.rfc-editor.org/rfc/rfc7967>.
+
+   [RFC9177]  Boucadair, M. and J. Shallow, "Constrained Application
+              Protocol (CoAP) Block-Wise Transfer Options Supporting
+              Robust Transmission", RFC 9177, DOI 10.17487/RFC9177,
+              March 2022, <https://www.rfc-editor.org/rfc/rfc9177>.
+
+Appendix A.  Coap Extensions Explained by Non-traditional Responses
+
+A.1.  Observation
+
+   This section describes the Observe option [RFC7641] in the terms of
+   this document.  It does not intend to update the original
+   specification, merely to provide an alternative phrasing of its rules
+   which may be useful for implementors, and which the authors believe
+   to have the same effect.
+
+   When Observe:0 is present in a request, this sets up non-traditional
+   responses until either of the following conditions is met:
+
+   *  A follow-up request on the same token carries an Observe:1 option.
+
+      (This is primarily in here because; Observe:1 and No-Response:any
+      could be combined; otherwise, the other conditions suffice).
+
+   *  Any response does not carry an Observe option.
+
+   *  Any response has a non-successful status.
+
+   Follow-up requests are limited to extending the request ETag set.
+   Responses are obviously non-matching by their Observe option; each
+   hop discards the Observe option for the purpose of caching and
+   refreshes its cache with the most recent one as per the Observe
+   value.
+
+A.2.  Responses to Multicast Requests
+
+   As with observe, this just phrases the existing mechanism in the
+   context of this generalization.
+
+   When the destination address of a CoAP request is a multicast
+   address, that token is valid for any member of that group (which, for
+   the purpose of the client, is any server at all) on any port.
+
+
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                [Page 11]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+   (Except for that the implications of having received a multicast
+   request still need to be followed, it might be seen as a template for
+   creating a phantom request to any endpoint, if that suits the
+   reader's mental model.)
+
+   Responses can only be sent for up to the deployment's Leisure time
+   (see Section 8.2 of [RFC7252]) plus the application's timeout (in
+   proxy situations, this needs to be communicated explicitly in the
+   Multicast-Timeout option of [I-D.ietf-core-groupcomm-proxy]).
+
+A.3.  Triangular Responses (Response-To)
+
+   The Response-To option can be viewed as a shorthand notation for
+   "Consider this a No-Response:any request, but take a copy of it, make
+   it into a CoAP-over-UDP request with that particular address as a
+   source and any address of yours as a response, and treat that as a
+   phantom request".
+
+   [ It may make sense to add an explicit return token, and include a
+   No-Response option; that might allow it to be used even across
+   proxies. ]
+
+A.4.  Other Current Documents
+
+   [I-D.ietf-core-observe-multicast-notifications] is a straightforward
+   application of the phantom requests (the concept was developed
+   there); Leisure-For-Responses could help it around the topic of
+   joining a multicast group securely through a proxy.
+
+   [I-D.ietf-core-groupcomm-proxy] seems to fit well with the concepts
+   here as well, and might be simplified by it both in terminology and
+   by replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-
+   Host).
+
+Appendix B.  Response for Configured Request
 
    A request may reach the server using a different means than that used
    for the response.  For instance, the request may be configured in the
@@ -385,28 +662,29 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    The client MUST be cognizant of that configuration as the request
    uses a token from the token name space it controls.
 
+B.1.  Examples for Configured Requests
 
 
 
 
-Bormann & Amsüss          Expires 16 July 2026                  [Page 7]
+
+
+Bormann & Amsüss         Expires 7 January 2027                [Page 12]
 
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
 
 
-5.1.  Examples for configured requests
-
-5.1.1.  Example: Periodic request
+B.1.1.  Example: Periodic Request
 
    A server may be configured to act on a configured request every day
    at 12:00.
 
-5.1.2.  Example: Event driven request
+B.1.2.  Example: Event Driven Request
 
    A server may be configured to act on a configured request each time
    it reboots.
 
-5.1.3.  Example: Configured observe
+B.1.3.  Example: Configured Observe
 
    A server may be configured with a GET request from a client that
    includes an Observe option with value 0.  This means that the server
@@ -418,7 +696,7 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    some form of error notification to the source of the configuration is
    out of scope of the present specification.
 
-5.2.  Multicast responses
+B.2.  Multicast Responses
 
    A server MAY send a response to a multicast address.  (This needs to
    be a response to a configured request as a normal request cannot be
@@ -440,307 +718,73 @@ Internet-Draft    CoAP: Non-traditional response forms      January 2026
    NOT be sent to unmanaged multicast addresses such as All CoAP Nodes
    (Section 12.8 of [RFC7252]).
 
-
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 8]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
    Multicast responses are always non-confirmable.  The congestion
    control considerations for non-confirmable multicast messages apply
    unchanged.
 
-   The draft [I-D.ietf-core-observe-multicast-notifications] provides a
-   concrete way of communicating such a setup.
 
-5.3.  Respond-To option
+
+
+Bormann & Amsüss         Expires 7 January 2027                [Page 13]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
+
+   [I-D.ietf-core-observe-multicast-notifications] provides a concrete
+   way of communicating such a setup.
+
+B.3.  Respond-To Option: A Potential Common Component
 
    What has been called "configured request" here may also be triggered
-   by a usual CoAP request that carries the Respond-To option.  (The
-   term "configured request" is still appropriate as the server ought to
-   be configured to accept this option; see Section 7.)
+   by a usual CoAP request that carries options that ask for modified
+   response behavior.  (The term "configured request" is still
+   appropriate as the server ought to be configured to accept option of
+   this kind; see Section 7.)
 
-   If a single client wants to request a server to send the response to
-   a specific multicast address, it can include the "Respond-To" option.
-   This contains an opaque string with the port number as a 16-bit
-   number (in network byte order), followed by the IP address (4-byte
-   IPv4 or 16-byte IPv6).
+   For instance, if a single client wants to request a server to send
+   the response to a specific multicast address, it can indicate this by
+   including something like the "Respond-To" option sketched here.  This
+   contains an opaque string with the port number as a 16-bit number (in
+   network byte order), followed by the IP address (4-byte IPv4 or
+   16-byte IPv6).
 
-     +=====+===+===+===+===+============+========+========+=========+
-     | No. | C | U | N | R | Name       | Format | Length | Default |
-     +=====+===+===+===+===+============+========+========+=========+
-     | TBD | C | U | - | - | Respond-To | opaque |   6-18 | (none)  |
-     +-----+---+---+---+---+------------+--------+--------+---------+
+    +=======+===+===+===+===+============+========+========+=========+
+    |   No. | C | U | N | R | Name       | Format | Length | Default |
+    +=======+===+===+===+===+============+========+========+=========+
+    |   TBD | C | U | - | - | Respond-To | opaque |   6-18 | (none)  |
+    | later |   |   |   |   |            |        |        |         |
+    +-------+---+---+---+---+------------+--------+--------+---------+
 
-                      Table 2: The Respond-To Option
+                  Table 4: A Potential Respond-To Option
 
-5.4.  Leisure-For-Responses Option
+   (No allocation of an Option number is planned at this time.)
 
-   This new option indicates a number expressed as a uint.  It allows
-   the server to send that number of non-traditional response messages
-   in addition to the requested response.  They are to be sent without
-   undue delay after the original response.
-
-    +=====+=+=+=+=+=======================+========+========+=========+
-    | No. |C|U|N|R| Name                  | Format | Length | Default |
-    +=====+=+=+=+=+=======================+========+========+=========+
-    | TBD | |U|-| | Leisure-For-Responses | uint   |    1-4 | 0       |
-    +-----+-+-+-+-+-----------------------+--------+--------+---------+
-
-                 Table 3: The Leisure-For-Responses Option
-
-   The option is elective, but unsafe for proxies (as the option would
-   otherwise cause multiple responses to a proxy that expects only one
-   and that needs to be a matching response).  A proxy that chooses not
-   to implement it may forward the request with the Leisure-For-
-   Responses option removed.
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                  [Page 9]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
-   On its own, the option does not indicate which kind of additional
-   responses the client would expect (though further elective proxy-safe
-   no-cache-key options can be added on top of that to give better
-   guidance), and the server may choose not to send any at all.
-
-   Intermediaries may add or remove the option, and use incoming
-   responses to populate their cache.  They may serve additional
-   responses from their cache, but in most cases the sensible course of
-   action is to forward the additional responses the origin server
-   sends.
-
-   Use cases for Leisure-For-Responses include sending further blocks in
-   a Block2 transfer (which are obviously non-matching and thus don't
-   need a Response-For), or serving follow-up documents (a response
-   containing a single link can be followed by a representation of the
-   linked resource, which needs a Request-For header that indicates the
-   URI).
-
-6.  IANA Considerations
-
-   This draft adds the following option numbers to the CoAP Option
-   Numbers registry of [RFC7252]:
-
-              +========+=======================+===========+
-              | Number | Name                  | Reference |
-              +========+=======================+===========+
-              | TBD    | Response-For          | RFCthis   |
-              +--------+-----------------------+-----------+
-              | TBD    | Respond-To            | RFCthis   |
-              +--------+-----------------------+-----------+
-              | TBD    | Leisure-For-Responses | RFCthis   |
-              +--------+-----------------------+-----------+
-
-                       Table 4: CoAP Option Numbers
-
-7.  Security Considerations
-
-   TBD
+B.4.  Security Considerations for Configured Requests
 
    (Clearly, multicast responses pose a potential for amplification, in
    particular if unverified sources can cause them via Respond-To.
-   Discuss how to mitigate.)
+   // XXX Discuss how to mitigate.)
 
    A Respond-To option can be used to incite a server to send data to a
    third party.  This ought not be done blindly, i.e., only with
    considered application assent.
 
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                 [Page 10]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
-   The CoAP request/response mechanism allows the client to ascertain a
-   level of authentication (not resistant though to on-path attackers
-   unless the communication is protected) and freshness of the response:
-   The Token echoed in the response shows that the responder had
-   knowledge of the (fresh) request (Section 5.3.1 of [RFC7252]).
-   Responses with embedded requests can not be authenticated or checked
-   for freshness this way.  Their content therefore is less trustworthy
-   than normal responses unless authenticated in another way (e.g., via
-   [RFC8613]).
-
-8.  References
-
-8.1.  Normative References
-
-   [BCP14]    Best Current Practice 14,
-              <https://www.rfc-editor.org/info/bcp14>.
-              At the time of writing, this BCP comprises the following:
-
-              Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
-
-              Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-   [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
-              Application Protocol (CoAP)", RFC 7252,
-              DOI 10.17487/RFC7252, June 2014,
-              <https://www.rfc-editor.org/rfc/rfc7252>.
-
-   [RFC8613]  Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
-              "Object Security for Constrained RESTful Environments
-              (OSCORE)", RFC 8613, DOI 10.17487/RFC8613, July 2019,
-              <https://www.rfc-editor.org/rfc/rfc8613>.
-
-8.2.  Informative References
-
-   [I-D.ietf-core-groupcomm-bis]
-              Dijk, E. and M. Tiloca, "Group Communication for the
-              Constrained Application Protocol (CoAP)", Work in
-              Progress, Internet-Draft, draft-ietf-core-groupcomm-bis-
-              15, 25 September 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-bis-15>.
-
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                 [Page 11]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
-   [I-D.ietf-core-groupcomm-proxy]
-              Tiloca, M. and E. Dijk, "Proxy Operations for CoAP Group
-              Communication", Work in Progress, Internet-Draft, draft-
-              ietf-core-groupcomm-proxy-05, 3 September 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              groupcomm-proxy-05>.
-
-   [I-D.ietf-core-observe-multicast-notifications]
-              Tiloca, M., Höglund, R., Amsüss, C., and F. Palombini,
-              "Observe Notifications as CoAP Multicast Responses", Work
-              in Progress, Internet-Draft, draft-ietf-core-observe-
-              multicast-notifications-13, 20 October 2025,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-core-
-              observe-multicast-notifications-13>.
-
-   [I-D.ietf-core-oscore-groupcomm]
-              Tiloca, M., Selander, G., Palombini, F., Mattsson, J. P.,
-              and R. Höglund, "Group Object Security for Constrained
-              RESTful Environments (Group OSCORE)", Work in Progress,
-              Internet-Draft, draft-ietf-core-oscore-groupcomm-28, 23
-              December 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-core-oscore-groupcomm-28>.
-
-   [RFC7641]  Hartke, K., "Observing Resources in the Constrained
-              Application Protocol (CoAP)", RFC 7641,
-              DOI 10.17487/RFC7641, September 2015,
-              <https://www.rfc-editor.org/rfc/rfc7641>.
-
-Appendix A.  CoAP extensions explained by non-traditional responses
-
-A.1.  Observation
-
-   This section describes the Observe option [RFC7641] in the terms of
-   this document.  It does not intend to update the original
-   specification, merely to provide an alternative phrasing of its rules
-   which may be useful for implementors, and which the authors believe
-   to have the same effect.
-
-   When Observe:0 is present in a request, this sets up non-traditional
-   responses until either of the following conditions is met:
-
-   *  A follow-up request on the same token carries an Observe:1 option.
-
-      (This is primarily in here because; Observe:1 and No-Response:any
-      could be combined; otherwise, the other conditions suffice).
-
-   *  Any response does not carry an Observe option.
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                 [Page 12]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
-   *  Any response has a non-successful status.
-
-   Follow-up requests are limited to extending the request ETag set.
-   Responses are obviously non-matching by their Observe option; each
-   hop discards the Observe option for the purpose of caching and
-   refreshes its cache with the most recent one as per the Observe
-   value.
-
-A.2.  Responses to multicast requests
-
-   As with observe, this just phrases the existing mechanism in the
-   context of this generalization.
-
-   When the destination address of a CoAP request is a multicast
-   address, that token is valid for any member of that group (which, for
-   the purpose of the client, is any server at all) on any port.
-
-   (Except for that the implications of having received a multicast
-   request still need to be followed, it might be seen as a template for
-   creating a phantom request to any endpoint, if that suits the
-   reader's mental model.)
-
-   Responses can only be sent for up to the deployment's Leisure time
-   (see Section 8.2 of [RFC7252]) plus the application's timeout (in
-   proxy situations, this needs to be communicated explicitly in the
-   Multicast-Timeout option of [I-D.ietf-core-groupcomm-proxy]).
-
-A.3.  Triangular responses (Response-To)
-
-   The Response-To option can be viewed as a shorthand notation for
-   "Consider this a No-Response:any request, but take a copy of it, make
-   it into a CoAP-over-UDP request with that particular address as a
-   source and any address of yours as a response, and treat that as a
-   phantom request".
-
-   [ It may make sense to add an explicit return token, and include a
-   No-Response option; that might allow it to be used even across
-   proxies. ]
-
-A.4.  Other current documents
-
-   [I-D.ietf-core-observe-multicast-notifications] is a straightforward
-   application of the phantom requests (the concept was developed
-   there); Leisure-For-Responses could help it around the topic of
-   joining a multicast group securely through a proxy.
-
-
-
-
-
-
-Bormann & Amsüss          Expires 16 July 2026                 [Page 13]
-
-Internet-Draft    CoAP: Non-traditional response forms      January 2026
-
-
-   [I-D.ietf-core-groupcomm-proxy] seems to fit well with the concepts
-   here as well, and might be simplified by it both in terminology and
-   by replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-
-   Host).
-
 List of Tables
 
    Table 1:   The Response-For Option
-   Table 2:   The Respond-To Option
-   Table 3:   The Leisure-For-Responses Option
-   Table 4:   CoAP Option Numbers
+   Table 2:   The Leisure-For-Responses Option
+   Table 3:   Newly Registered CoAP Option Numbers
+   Table 4:   A Potential Respond-To Option
+
+
+
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                [Page 14]
+
+Internet-Draft    CoAP: Non-traditional Response Forms         July 2026
+
 
 Acknowledgements
 
@@ -781,4 +825,16 @@ Authors' Addresses
 
 
 
-Bormann & Amsüss          Expires 16 July 2026                 [Page 14]
+
+
+
+
+
+
+
+
+
+
+
+
+Bormann & Amsüss         Expires 7 January 2027                [Page 15]

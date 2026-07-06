@@ -4,35 +4,38 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>CoAP: Non-traditional response forms</title>
+<title>CoAP: Non-traditional Response Forms</title>
 <meta content="Carsten Bormann" name="author">
 <meta content="Christian Amsüss" name="author">
 <meta content="
-       In CoAP as defined by RFC 7252, responses are always unicast back to a
-client that posed a request.  The present memo describes two forms of
-responses that go beyond that model. 
-       The design spaces for the new CoAP Options proposed to represent these
-responses are now sufficiently understood that they can be developed
-to standards-track specifications, either in this document or by
-transferring the specification for an Option to a document that that
-Option closely works with. 
+       In CoAP as defined by RFC 7252, there is generally one response for each request.
+Various CoAP extensions have individually relaxed that practice.
+The present memo presents a generalized model beyond 1:1 responses,
+describes different forms in which it can be used,
+and introduces new CoAP Options that make use of that model. 
+       Beyond that,
+this document provides implementation guidance to simplify prior extensions,
+and outlines future possibilities of using it. 
+       This revision -01 has been created as discussion input for IETF 126.
+It makes a first attempt to sort the proposals into short-term actionable ones and more long-term considerations for more kinds of responses that could help additional use cases through future work. 
     " name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-core-responses-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.5.1
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.2.14
+    requests 2.33.1
+    wcwidth 0.8.2
 -->
 <link href="draft-ietf-core-responses.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -173,7 +176,7 @@ Option closely works with.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -181,7 +184,8 @@ Option closely works with.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -298,16 +302,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -327,10 +334,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -341,59 +348,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -431,26 +438,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -466,20 +472,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -515,9 +523,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -527,17 +535,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -573,6 +583,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -586,25 +597,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -624,13 +627,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -641,18 +637,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -711,9 +705,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -803,23 +797,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -830,19 +828,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -863,54 +863,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -929,26 +929,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -964,12 +964,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1031,17 +1032,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1050,12 +1053,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">CoAP: Non-traditional response forms</td>
-<td class="right">January 2026</td>
+<td class="center">CoAP: Non-traditional Response Forms</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bormann &amp; Amsüss</td>
-<td class="center">Expires 16 July 2026</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,12 +1071,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-core-responses-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-12" class="published">12 January 2026</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-16">16 July 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1086,17 +1089,19 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">CoAP: Non-traditional response forms</h1>
+<h1 id="title">CoAP: Non-traditional Response Forms</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">In CoAP as defined by RFC 7252, responses are always unicast back to a
-client that posed a request.  The present memo describes two forms of
-responses that go beyond that model.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">The design spaces for the new CoAP Options proposed to represent these
-responses are now sufficiently understood that they can be developed
-to standards-track specifications, either in this document or by
-transferring the specification for an Option to a document that that
-Option closely works with.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">In CoAP as defined by RFC 7252, there is generally one response for each request.
+Various CoAP extensions have individually relaxed that practice.
+The present memo presents a generalized model beyond 1:1 responses,
+describes different forms in which it can be used,
+and introduces new CoAP Options that make use of that model.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">Beyond that,
+this document provides implementation guidance to simplify prior extensions,
+and outlines future possibilities of using it.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3"><span class="cref" id="status">This revision -01 has been created as discussion input for IETF 126.
+It makes a first attempt to sort the proposals into short-term actionable ones and more long-term considerations for more kinds of responses that could help additional use cases through future work.</span><a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1132,7 +1137,7 @@ Option closely works with.<a href="#section-abstract-2" class="pilcrow">¶</a></
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1170,49 +1175,24 @@ Option closely works with.<a href="#section-abstract-2" class="pilcrow">¶</a></
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-sending-non-traditional-res" class="internal xref">Sending non-traditional responses</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-sending-non-traditional-res" class="internal xref">Sending Non-traditional Responses</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-preconditions-to-sending-no" class="internal xref">Preconditions to sending non-traditional responses</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-preconditions-to-sending-no" class="internal xref">Preconditions to Sending Non-traditional Responses</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-responses-without-request" class="internal xref">Responses without request</a></p>
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-responses-without-explicit-" class="internal xref">Responses Without Explicit Request</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-oscore-processing-for-non-t" class="internal xref">OSCORE processing for non-traditional responses</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-oscore-processing-for-non-t" class="internal xref">OSCORE Processing for Non-traditional Responses</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-response-with-embedded-requ" class="internal xref">Response with embedded request</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-response-for-option-respons" class="internal xref">Response-For Option: Response with Embedded Request</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-response-for-configured-req" class="internal xref">Response for configured request</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-examples-for-configured-req" class="internal xref">Examples for configured requests</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
-                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-example-periodic-request" class="internal xref">Example: Periodic request</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
-                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-example-event-driven-reques" class="internal xref">Example: Event driven request</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.3">
-                    <p id="section-toc.1-1.5.2.1.2.3.1"><a href="#section-5.1.3" class="auto internal xref">5.1.3</a>.  <a href="#name-example-configured-observe" class="internal xref">Example: Configured observe</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-multicast-responses" class="internal xref">Multicast responses</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-respond-to-option" class="internal xref">Respond-To option</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-leisure-for-responses-optio" class="internal xref">Leisure-For-Responses Option</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-leisure-for-responses-optio" class="internal xref">Leisure-For-Responses Option: Indicating Readiness to Receive Multiple Responses</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
@@ -1232,30 +1212,58 @@ Option closely works with.<a href="#section-abstract-2" class="pilcrow">¶</a></
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-coap-extensions-explained-b" class="internal xref">CoAP extensions explained by non-traditional responses</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-coap-extensions-explained-b" class="internal xref">Coap Extensions Explained by Non-traditional Responses</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
                 <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-observation" class="internal xref">Observation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
-                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-responses-to-multicast-requ" class="internal xref">Responses to multicast requests</a></p>
+                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-responses-to-multicast-requ" class="internal xref">Responses to Multicast Requests</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
-                <p id="section-toc.1-1.9.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-triangular-responses-respon" class="internal xref">Triangular responses (Response-To)</a></p>
+                <p id="section-toc.1-1.9.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-triangular-responses-respon" class="internal xref">Triangular Responses (Response-To)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.4">
-                <p id="section-toc.1-1.9.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-other-current-documents" class="internal xref">Other current documents</a></p>
+                <p id="section-toc.1-1.9.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-other-current-documents" class="internal xref">Other Current Documents</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-list-of-tables" class="internal xref">List of Tables</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-response-for-configured-req" class="internal xref">Response for Configured Request</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-examples-for-configured-req" class="internal xref">Examples for Configured Requests</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.1">
+                    <p id="section-toc.1-1.10.2.1.2.1.1"><a href="#appendix-B.1.1" class="auto internal xref">B.1.1</a>.  <a href="#name-example-periodic-request" class="internal xref">Example: Periodic Request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.2">
+                    <p id="section-toc.1-1.10.2.1.2.2.1"><a href="#appendix-B.1.2" class="auto internal xref">B.1.2</a>.  <a href="#name-example-event-driven-reques" class="internal xref">Example: Event Driven Request</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1.2.3">
+                    <p id="section-toc.1-1.10.2.1.2.3.1"><a href="#appendix-B.1.3" class="auto internal xref">B.1.3</a>.  <a href="#name-example-configured-observe" class="internal xref">Example: Configured Observe</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-multicast-responses" class="internal xref">Multicast Responses</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.3">
+                <p id="section-toc.1-1.10.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-respond-to-option-a-potenti" class="internal xref">Respond-To Option: A Potential Common Component</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.4">
+                <p id="section-toc.1-1.10.2.4.1"><a href="#appendix-B.4" class="auto internal xref">B.4</a>.  <a href="#name-security-considerations-for" class="internal xref">Security Considerations for Configured Requests</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-list-of-tables" class="internal xref">List of Tables</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1266,14 +1274,31 @@ Option closely works with.<a href="#section-abstract-2" class="pilcrow">¶</a></
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">In CoAP as defined by RFC 7252, responses are always unicast back to a
-client that posed a request.  A server may want to send a response to
-a request that it did not receive, may want to multicast a response,
-or both.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">The descriptions in this specification are not intended as advocacy
-for adopting these approaches immediately, they are provided to point
-out potential avenues for development that would have to be carefully
-evaluated.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-1">In CoAP as defined by <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>, in general, a single response is sent to the
+client that posed a request.
+That practice has been relaxed:<a href="#section-1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-2.1">
+          <p id="section-1-2.1.1">in <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> itself (and later <span>[<a href="#I-D.ietf-core-groupcomm-bis" class="cite xref">I-D.ietf-core-groupcomm-bis</a>]</span>) for multicast requests,<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.2">
+          <p id="section-1-2.2.1">in <span>[<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> for multiple responses following an observation request,<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.3">
+          <p id="section-1-2.3.1">in <span>[<a href="#RFC7967" class="cite xref">RFC7967</a>]</span> for not sending a response at all,<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.4">
+          <p id="section-1-2.4.1">in <span>[<a href="#RFC9177" class="cite xref">RFC9177</a>]</span> for requesting a series of response blocks,<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-1-2.5">
+          <p id="section-1-2.5.1">as well as in drafts such as <span>[<a href="#I-D.ietf-core-groupcomm-proxy" class="cite xref">I-D.ietf-core-groupcomm-proxy</a>]</span> and <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span>.<a href="#section-1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-3">The present memo provides a general model for such responses, and
+describes two concrete forms using that model, with embedded or configured requests.
+It sets up a CoAP option for a client to enable additional responses,
+and an option that can be used to embed a request in a response.
+Further work is needed on responses for configured requests, which are discussed in <a href="#configured" class="auto internal xref">Appendix B</a>.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <div id="terms">
 <section id="section-1.1">
         <h3 id="name-terminology">
@@ -1285,7 +1310,7 @@ described in <span>[<a href="#BCP14" class="cite xref">BCP14</a>]</span> (<a hre
 appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">The term "byte" is used in its now customary sense as a synonym for
 "octet".<a href="#section-1.1-2" class="pilcrow">¶</a></p>
-<p id="section-1.1-3">Terms used in this draft:<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">Terms used in this specification:<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlParallel" id="section-1.1-4">
           <dt id="section-1.1-4.1">Non-traditional response:</dt>
           <dd style="margin-left: 1.5em" id="section-1.1-4.2">
@@ -1301,7 +1326,7 @@ and thus in particular unsuitable as a cached response to that request (but
 possibly suitable to populate the cache for a similar request).
 Options that make a response non-matching need to be proxy unsafe.<a href="#section-1.1-4.4.1" class="pilcrow">¶</a></p>
 <p id="section-1.1-4.4.2">For example,
-a Block2 response with a different value of block number <span class="contact-name">×</span> block size than indicated in the request is non-matching.<a href="#section-1.1-4.4.2" class="pilcrow">¶</a></p>
+a Block2 response with a different value of block number × block size than indicated in the request is non-matching.<a href="#section-1.1-4.4.2" class="pilcrow">¶</a></p>
 </dd>
           <dd class="break"></dd>
 <dt id="section-1.1-4.5">Configured request:</dt>
@@ -1325,7 +1350,7 @@ response by embedding it into the response.<a href="#section-1.1-4.8.1" class="p
 <div id="sending-non-traditional-responses">
 <section id="section-2">
       <h2 id="name-sending-non-traditional-res">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-sending-non-traditional-res" class="section-name selfRef">Sending non-traditional responses</a>
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-sending-non-traditional-res" class="section-name selfRef">Sending Non-traditional Responses</a>
       </h2>
 <p id="section-2-1">Non-traditional responses are sets of responses produced for a single request,
 or responses sent without a transmitted request.<a href="#section-2-1" class="pilcrow">¶</a></p>
@@ -1344,12 +1369,12 @@ match this definition and already follow the guidance set out here for non-tradi
 <a href="#extensions-explained" class="auto internal xref">Appendix A</a> gives details for them.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">A second response differing from the first that can be sent by a non-deduplicating server
 responding to a retransmission of a request
-is not non-traditional because there is a second request --
-that is probably the last corner case at the line separating traditional from non-traditional responses.<a href="#section-2-4" class="pilcrow">¶</a></p>
+is not non-traditional because there is a second request —
+that is probably the last corner case at the boundary separating traditional from non-traditional responses.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <div id="preconditions-to-sending-non-traditional-responses">
 <section id="section-2.1">
         <h3 id="name-preconditions-to-sending-no">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-preconditions-to-sending-no" class="section-name selfRef">Preconditions to sending non-traditional responses</a>
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-preconditions-to-sending-no" class="section-name selfRef">Preconditions to Sending Non-traditional Responses</a>
         </h3>
 <p id="section-2.1-1">A server may send multiple responses to a request if there is any
 property in the request that indicates the client's intention to receive
@@ -1372,10 +1397,10 @@ either by an option introduced with the eliciting option
 or by a generic option like Response-For.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="responses-without-request">
+<div id="responses-without-explicit-request">
 <section id="section-2.2">
-        <h3 id="name-responses-without-request">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-responses-without-request" class="section-name selfRef">Responses without request</a>
+        <h3 id="name-responses-without-explicit-">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-responses-without-explicit-" class="section-name selfRef">Responses Without Explicit Request</a>
         </h3>
 <p id="section-2.2-1">Endpoints may agree out of band on a token (or other request-matching
 details). One way to do that is to agree on a "phantom request", which
@@ -1393,12 +1418,12 @@ token values in order to set up non-traditional responses).<a href="#section-2.2
 <div id="oscore-processing-for-non-traditional-responses">
 <section id="section-3">
       <h2 id="name-oscore-processing-for-non-t">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-oscore-processing-for-non-t" class="section-name selfRef">OSCORE processing for non-traditional responses</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-oscore-processing-for-non-t" class="section-name selfRef">OSCORE Processing for Non-traditional Responses</a>
       </h2>
 <p id="section-3-1">OSCORE <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> is built with the general assumption that requests
 are processed into exactly one response.
 The specification contains explicit provisions for Observe requests (<span><a href="https://rfc-editor.org/rfc/rfc8613#section-4.1.3.5" class="relref">Section 4.1.3.5</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>),
-and a whole protocol extension for multicast requests (<span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>).<a href="#section-3-1" class="pilcrow">¶</a></p>
+and a whole protocol extension for multicast requests <span>[<a href="#I-D.ietf-core-oscore-groupcomm" class="cite xref">I-D.ietf-core-oscore-groupcomm</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">OSCORE's binding between requests and responses remains unmodified:
 Each response is cryptographically bound to an OSCORE request.
 Therefore, any phantom request needs to be an OSCORE request as well,
@@ -1407,7 +1432,7 @@ An easy way to do that securely is to deliver the phantom request in a
 way that the server can do the full OSCORE request processing on it.
 The server may process the OSCORE request into internal data structures at reception time,
 or may process it whenever a response is to be sent.
-In the latter case, it may need to relax the requirements of Section <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">8.2</a> (<a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Verifying the Request</a>)</span> of <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span> item 3.<a href="#section-3-2" class="pilcrow">¶</a></p>
+In the latter case, it may need to relax the requirements of Section <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">8.2</a> (<a href="https://rfc-editor.org/rfc/rfc8613#section-8.2" class="relref">Verifying the Request</a>)</span> of <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>, item 3.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">To avoid reinventing the same rules as for Observe requests for any other non-traditional response,
 this document defines a set of processing instructions which can be referenced when specifying their options.
 These rules generalize Sections <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.3" class="relref">8.3</a> (<a href="https://rfc-editor.org/rfc/rfc8613#section-8.3" class="relref">Protecting the Response</a>)</span> and <span><a href="https://rfc-editor.org/rfc/rfc8613#section-8.4" class="relref">8.4</a> (<a href="https://rfc-editor.org/rfc/rfc8613#section-8.4" class="relref">Verifying the Response</a>)</span> of <span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>:<a href="#section-3-3" class="pilcrow">¶</a></p>
@@ -1470,17 +1495,17 @@ but responses generated after the server has received the refresh will be decryp
       </ul>
 </section>
 </div>
-<div id="response-with-embedded-request">
+<div id="response-for">
 <section id="section-4">
-      <h2 id="name-response-with-embedded-requ">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-response-with-embedded-requ" class="section-name selfRef">Response with embedded request</a>
+      <h2 id="name-response-for-option-respons">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-response-for-option-respons" class="section-name selfRef">Response-For Option: Response with Embedded Request</a>
       </h2>
 <p id="section-4-1">A server can send a response to a request that it did not actually
 receive by embedding the request which the response answers in the
 response.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The option "Response-For" contains a request packaged as in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.  The response is then intended to serve as a
+<p id="section-4-2">The new option "Response-For" contains a request packaged as in <span><a href="https://rfc-editor.org/rfc/rfc8613#section-5.3" class="relref">Section 5.3</a> of [<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>.  The response is then intended to serve as a
 response to this request.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<span id="name-the-response-for-option"></span><div id="response-for-option">
+<span id="name-the-response-for-option"></span><div id="tbl-response-for-option">
 <table class="center" id="table-1">
         <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
@@ -1501,7 +1526,7 @@ response to this request.<a href="#section-4-2" class="pilcrow">¶</a></p>
         </thead>
         <tbody>
           <tr>
-            <td class="text-right" rowspan="1" colspan="1">TBD</td>
+            <td class="text-right" rowspan="1" colspan="1">TBD1</td>
             <td class="text-left" rowspan="1" colspan="1">C</td>
             <td class="text-left" rowspan="1" colspan="1">-</td>
             <td class="text-left" rowspan="1" colspan="1">-</td>
@@ -1525,192 +1550,66 @@ possibly limiting the size of the request that can be stored in a
 non-confirmable messages apply unchanged.<a href="#section-4-6" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="response-for-configured-request">
+<div id="leisure-for-responses">
 <section id="section-5">
-      <h2 id="name-response-for-configured-req">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-response-for-configured-req" class="section-name selfRef">Response for configured request</a>
+      <h2 id="name-leisure-for-responses-optio">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-leisure-for-responses-optio" class="section-name selfRef">Leisure-For-Responses Option: Indicating Readiness to Receive Multiple Responses</a>
       </h2>
-<p id="section-5-1">A request may reach the server using a different means than that used
-for the response.  For instance, the request may be configured in the server.
-Without limiting generality, we speak about <em>configured requests</em>.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The client <span class="bcp14">MUST</span> be cognizant of that configuration as the request uses
-a token from the token name space it controls.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<div id="examples-for-configured-requests">
-<section id="section-5.1">
-        <h3 id="name-examples-for-configured-req">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-examples-for-configured-req" class="section-name selfRef">Examples for configured requests</a>
-        </h3>
-<div id="example-periodic-request">
-<section id="section-5.1.1">
-          <h4 id="name-example-periodic-request">
-<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-example-periodic-request" class="section-name selfRef">Example: Periodic request</a>
-          </h4>
-<p id="section-5.1.1-1">A server may be configured to act on a configured request every day at 12:00.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="example-event-driven-request">
-<section id="section-5.1.2">
-          <h4 id="name-example-event-driven-reques">
-<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-example-event-driven-reques" class="section-name selfRef">Example: Event driven request</a>
-          </h4>
-<p id="section-5.1.2-1">A server may be configured to act on a configured request each time it reboots.<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="example-configured-observe">
-<section id="section-5.1.3">
-          <h4 id="name-example-configured-observe">
-<a href="#section-5.1.3" class="section-number selfRef">5.1.3. </a><a href="#name-example-configured-observe" class="section-name selfRef">Example: Configured observe</a>
-          </h4>
-<p id="section-5.1.3-1">A server may be configured with a GET request from a client that
-includes an Observe option with value 0.  This means that the server
-will send updates to the state of the resource addressed by the GET
-request to the configured address of the client.<a href="#section-5.1.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.1.3-2">The considerations of <span><a href="https://rfc-editor.org/rfc/rfc7641#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> apply.  How losing
-interest reflects back into the configuration and whether there is some
-form of error notification to the source of the configuration is out
-of scope of the present specification.<a href="#section-5.1.3-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-</section>
-</div>
-<div id="multicast-responses">
-<section id="section-5.2">
-        <h3 id="name-multicast-responses">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-multicast-responses" class="section-name selfRef">Multicast responses</a>
-        </h3>
-<p id="section-5.2-1">A server <span class="bcp14">MAY</span> send a response to a multicast address.
-(This needs to be a response to a configured request as a normal
-request cannot be sent <em>from</em> a multicast address.)<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Note that, as the originator of a multicast response is a unicast
-address, the relaxation of matching rules described in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> does not apply.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">The token space in CoAP is owned by the client, which is identified by
-a transport endpoint (address/port).  Here, the address is a multicast
-address, so the token name space is shared by all nodes joined to that multicast
-address.  The assumption for multicast responses is that, for each
-multicast group, there is some form of management for the token space
-(and the port number) that everyone can participate in that needs to
-join that multicast group; the specific form of management is out of
-the scope of this specification.  Note that this means that multicast
-responses <span class="bcp14">MUST NOT</span> be sent to unmanaged multicast addresses such as
-All CoAP Nodes (<span><a href="https://rfc-editor.org/rfc/rfc7252#section-12.8" class="relref">Section 12.8</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2-4">Multicast responses are always non-confirmable.  The congestion
-control considerations for non-confirmable multicast messages apply
-unchanged.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2-5">The draft <span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span> provides a concrete way of communicating such a setup.<a href="#section-5.2-5" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="respond-to-option">
-<section id="section-5.3">
-        <h3 id="name-respond-to-option">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-respond-to-option" class="section-name selfRef">Respond-To option</a>
-        </h3>
-<p id="section-5.3-1">What has been called "configured request" here may also be triggered
-by a usual CoAP request that carries the Respond-To option.
-(The term "configured request" is still appropriate as the server
-ought to be configured to accept this option; see <a href="#seccons" class="auto internal xref">Section 7</a>.)<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<p id="section-5.3-2">If a single client wants to request a server to send the response to a
-specific multicast address, it can include the "Respond-To" option.
-This contains an opaque string with the port number as a 16-bit number
-(in network byte order), followed by the IP address (4-byte IPv4 or
-16-byte IPv6).<a href="#section-5.3-2" class="pilcrow">¶</a></p>
-<span id="name-the-respond-to-option"></span><div id="tbl-respond-to-option">
-<table class="center" id="table-2">
-          <caption>
-<a href="#table-2" class="selfRef">Table 2</a>:
-<a href="#name-the-respond-to-option" class="selfRef">The Respond-To Option</a>
-          </caption>
-<thead>
-            <tr>
-              <th class="text-right" rowspan="1" colspan="1">No.</th>
-              <th class="text-left" rowspan="1" colspan="1">C</th>
-              <th class="text-left" rowspan="1" colspan="1">U</th>
-              <th class="text-left" rowspan="1" colspan="1">N</th>
-              <th class="text-left" rowspan="1" colspan="1">R</th>
-              <th class="text-left" rowspan="1" colspan="1">Name</th>
-              <th class="text-left" rowspan="1" colspan="1">Format</th>
-              <th class="text-right" rowspan="1" colspan="1">Length</th>
-              <th class="text-left" rowspan="1" colspan="1">Default</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-right" rowspan="1" colspan="1">TBD</td>
-              <td class="text-left" rowspan="1" colspan="1">C</td>
-              <td class="text-left" rowspan="1" colspan="1">U</td>
-              <td class="text-left" rowspan="1" colspan="1">-</td>
-              <td class="text-left" rowspan="1" colspan="1">-</td>
-              <td class="text-left" rowspan="1" colspan="1">Respond-To</td>
-              <td class="text-left" rowspan="1" colspan="1">opaque</td>
-              <td class="text-right" rowspan="1" colspan="1">6-18</td>
-              <td class="text-left" rowspan="1" colspan="1">(none)</td>
-            </tr>
-          </tbody>
-        </table>
-</div>
-</section>
-</div>
-<div id="leisure-for-responses-option">
-<section id="section-5.4">
-        <h3 id="name-leisure-for-responses-optio">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-leisure-for-responses-optio" class="section-name selfRef">Leisure-For-Responses Option</a>
-        </h3>
-<p id="section-5.4-1">This new option indicates a number expressed as a uint.
+<p id="section-5-1">This new option indicates a number expressed as a uint.
 It allows the server to send that number of non-traditional response messages in
 addition to the requested response. They are to be sent without undue delay
-after the original response.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+after the original response.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <span id="name-the-leisure-for-responses-o"></span><div id="tbl-leisure-for-responses-option">
-<table class="center" id="table-3">
-          <caption>
-<a href="#table-3" class="selfRef">Table 3</a>:
+<table class="center" id="table-2">
+        <caption>
+<a href="#table-2" class="selfRef">Table 2</a>:
 <a href="#name-the-leisure-for-responses-o" class="selfRef">The Leisure-For-Responses Option</a>
-          </caption>
+        </caption>
 <thead>
-            <tr>
-              <th class="text-right" rowspan="1" colspan="1">No.</th>
-              <th class="text-left" rowspan="1" colspan="1">C</th>
-              <th class="text-left" rowspan="1" colspan="1">U</th>
-              <th class="text-left" rowspan="1" colspan="1">N</th>
-              <th class="text-left" rowspan="1" colspan="1">R</th>
-              <th class="text-left" rowspan="1" colspan="1">Name</th>
-              <th class="text-left" rowspan="1" colspan="1">Format</th>
-              <th class="text-right" rowspan="1" colspan="1">Length</th>
-              <th class="text-left" rowspan="1" colspan="1">Default</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-right" rowspan="1" colspan="1">TBD</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">U</td>
-              <td class="text-left" rowspan="1" colspan="1">-</td>
-              <td class="text-left" rowspan="1" colspan="1"> </td>
-              <td class="text-left" rowspan="1" colspan="1">Leisure-For-Responses</td>
-              <td class="text-left" rowspan="1" colspan="1">uint</td>
-              <td class="text-right" rowspan="1" colspan="1">1-4</td>
-              <td class="text-left" rowspan="1" colspan="1">0</td>
-            </tr>
-          </tbody>
-        </table>
+          <tr>
+            <th class="text-right" rowspan="1" colspan="1">No.</th>
+            <th class="text-left" rowspan="1" colspan="1">C</th>
+            <th class="text-left" rowspan="1" colspan="1">U</th>
+            <th class="text-left" rowspan="1" colspan="1">N</th>
+            <th class="text-left" rowspan="1" colspan="1">R</th>
+            <th class="text-left" rowspan="1" colspan="1">Name</th>
+            <th class="text-left" rowspan="1" colspan="1">Format</th>
+            <th class="text-right" rowspan="1" colspan="1">Length</th>
+            <th class="text-left" rowspan="1" colspan="1">Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right" rowspan="1" colspan="1">TBD2</td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+            <td class="text-left" rowspan="1" colspan="1">U</td>
+            <td class="text-left" rowspan="1" colspan="1">-</td>
+            <td class="text-left" rowspan="1" colspan="1"> </td>
+            <td class="text-left" rowspan="1" colspan="1">Leisure-For-Responses</td>
+            <td class="text-left" rowspan="1" colspan="1">uint</td>
+            <td class="text-right" rowspan="1" colspan="1">1-4</td>
+            <td class="text-left" rowspan="1" colspan="1">0</td>
+          </tr>
+        </tbody>
+      </table>
 </div>
-<p id="section-5.4-3">The option is elective, but unsafe for proxies
+<p id="section-5-3">The option is elective, but unsafe for proxies
 (as the option would otherwise cause multiple responses to a proxy that expects only one and that needs to be a matching response).
 A proxy that chooses not to implement it may forward the request
-with the Leisure-For-Responses option removed.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.4-4">On its own, the option does not indicate which kind of additional responses the client
+with the Leisure-For-Responses option removed.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">On its own, the option does not indicate which kind of additional responses the client
 would expect (though further elective proxy-safe no-cache-key options
 can be added on top of that to give better guidance), and the server may
-choose not to send any at all.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
-<p id="section-5.4-5">Intermediaries may add or remove the option, and use incoming responses to
+choose not to send any at all.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">Intermediaries may add or remove the option, and use incoming responses to
 populate their cache. They may serve additional responses from their
 cache, but in most cases the sensible course of action is to forward the
-additional responses the origin server sends.<a href="#section-5.4-5" class="pilcrow">¶</a></p>
-<p id="section-5.4-6">Use cases for Leisure-For-Responses include sending further blocks in a
+additional responses the origin server sends.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">Use cases for Leisure-For-Responses include sending further blocks in a
 Block2 transfer (which are obviously non-matching and thus don't need a
 Response-For), or serving follow-up documents (a response containing a
 single link can be followed by a representation of the linked resource,
-which needs a Request-For header that indicates the URI).<a href="#section-5.4-6" class="pilcrow">¶</a></p>
-</section>
-</div>
+which needs a Response-For header that indicates the URI).<a href="#section-5-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1718,14 +1617,14 @@ which needs a Request-For header that indicates the URI).<a href="#section-5.4-6
       <h2 id="name-iana-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-6-1">This draft adds the following option numbers to the CoAP Option
+<p id="section-6-1">This specification adds the following option numbers to the CoAP Option
 Numbers registry of
 <span>[<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>:<a href="#section-6-1" class="pilcrow">¶</a></p>
-<span id="name-coap-option-numbers"></span><div id="tab-option-registry">
-<table class="center" id="table-4">
+<span id="name-newly-registered-coap-optio"></span><div id="tbl-option-registry">
+<table class="center" id="table-3">
         <caption>
-<a href="#table-4" class="selfRef">Table 4</a>:
-<a href="#name-coap-option-numbers" class="selfRef">CoAP Option Numbers</a>
+<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#name-newly-registered-coap-optio" class="selfRef">Newly Registered CoAP Option Numbers</a>
         </caption>
 <thead>
           <tr>
@@ -1736,23 +1635,19 @@ Numbers registry of
         </thead>
         <tbody>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD1</td>
             <td class="text-left" rowspan="1" colspan="1">Response-For</td>
             <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">TBD</td>
-            <td class="text-left" rowspan="1" colspan="1">Respond-To</td>
-            <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD2</td>
             <td class="text-left" rowspan="1" colspan="1">Leisure-For-Responses</td>
             <td class="text-left" rowspan="1" colspan="1">RFCthis</td>
           </tr>
         </tbody>
       </table>
 </div>
+<p id="section-6-3"><span class="cref" id="rfced">RFC-Editor:</span> In the table, please replace TBD1 and TBD2 with the option number actually registered. Then, please delete this paragraph.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="seccons">
@@ -1761,13 +1656,7 @@ Numbers registry of
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-7-1">TBD<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">(Clearly, multicast responses pose a potential for amplification, in
-particular if unverified sources can cause them via Respond-To.
-Discuss how to mitigate.)<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">A Respond-To option can be used to incite a server to send data to a
-third party.  This ought not be done blindly, i.e., only with
-considered application assent.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">The CoAP request/response mechanism allows the client to ascertain a
+<p id="section-7-2">The CoAP request/response mechanism allows the client to ascertain a
 level of authentication (not resistant though to on-path attackers
 unless the communication is protected) and freshness of the response:
 The Token echoed in the response shows that the responder had
@@ -1775,7 +1664,8 @@ knowledge of the (fresh) request (<span><a href="https://rfc-editor.org/rfc/rfc7
 Responses with embedded requests can not be authenticated or checked
 for freshness this way.  Their content therefore is less trustworthy
 than normal responses unless authenticated in another way (e.g., via
-<span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-7-4" class="pilcrow">¶</a></p>
+<span>[<a href="#RFC8613" class="cite xref">RFC8613</a>]</span>).<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">Security considerations for configured requests are discussed in <a href="#seccons-configured" class="auto internal xref">Appendix B.4</a>.<a href="#section-7-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-combined-references">
@@ -1818,23 +1708,31 @@ than normal responses unless authenticated in another way (e.g., via
 <dl class="references">
 <dt id="I-D.ietf-core-groupcomm-bis">[I-D.ietf-core-groupcomm-bis]</dt>
         <dd>
-<span class="refAuthor">Dijk, E.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-15</span>, <time datetime="2025-09-25" class="refDate">25 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-15">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-15</a>&gt;</span>. </dd>
+<span class="refAuthor">Dijk, E.</span> and <span class="refAuthor">M. Tiloca</span>, <span class="refTitle">"Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-bis-18</span>, <time datetime="2026-02-10" class="refDate">10 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-18">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-bis-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-groupcomm-proxy">[I-D.ietf-core-groupcomm-proxy]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">E. Dijk</span>, <span class="refTitle">"Proxy Operations for CoAP Group Communication"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-proxy-05</span>, <time datetime="2025-09-03" class="refDate">3 September 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-05">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-05</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span> and <span class="refAuthor">E. Dijk</span>, <span class="refTitle">"Proxy Operations in Group Communication for the Constrained Application Protocol (CoAP)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-groupcomm-proxy-06</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-06">https://datatracker.ietf.org/doc/html/draft-ietf-core-groupcomm-proxy-06</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-observe-multicast-notifications">[I-D.ietf-core-observe-multicast-notifications]</dt>
         <dd>
-<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-13</span>, <time datetime="2025-10-20" class="refDate">20 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-13">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-13</a>&gt;</span>. </dd>
+<span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Höglund, R.</span>, <span class="refAuthor">Amsüss, C.</span>, and <span class="refAuthor">F. Palombini</span>, <span class="refTitle">"Observe Notifications as CoAP Multicast Responses"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-observe-multicast-notifications-15</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-15">https://datatracker.ietf.org/doc/html/draft-ietf-core-observe-multicast-notifications-15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-core-oscore-groupcomm">[I-D.ietf-core-oscore-groupcomm]</dt>
         <dd>
 <span class="refAuthor">Tiloca, M.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, <span class="refAuthor">Mattsson, J. P.</span>, and <span class="refAuthor">R. Höglund</span>, <span class="refTitle">"Group Object Security for Constrained RESTful Environments (Group OSCORE)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-core-oscore-groupcomm-28</span>, <time datetime="2025-12-23" class="refDate">23 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28">https://datatracker.ietf.org/doc/html/draft-ietf-core-oscore-groupcomm-28</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7641">[RFC7641]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Hartke, K.</span>, <span class="refTitle">"Observing Resources in the Constrained Application Protocol (CoAP)"</span>, <span class="seriesInfo">RFC 7641</span>, <span class="seriesInfo">DOI 10.17487/RFC7641</span>, <time datetime="2015-09" class="refDate">September 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7641">https://www.rfc-editor.org/rfc/rfc7641</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7967">[RFC7967]</dt>
+        <dd>
+<span class="refAuthor">Bhattacharyya, A.</span>, <span class="refAuthor">Bandyopadhyay, S.</span>, <span class="refAuthor">Pal, A.</span>, and <span class="refAuthor">T. Bose</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Option for No Server Response"</span>, <span class="seriesInfo">RFC 7967</span>, <span class="seriesInfo">DOI 10.17487/RFC7967</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7967">https://www.rfc-editor.org/rfc/rfc7967</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9177">[RFC9177]</dt>
+      <dd>
+<span class="refAuthor">Boucadair, M.</span> and <span class="refAuthor">J. Shallow</span>, <span class="refTitle">"Constrained Application Protocol (CoAP) Block-Wise Transfer Options Supporting Robust Transmission"</span>, <span class="seriesInfo">RFC 9177</span>, <span class="seriesInfo">DOI 10.17487/RFC9177</span>, <time datetime="2022-03" class="refDate">March 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9177">https://www.rfc-editor.org/rfc/rfc9177</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1844,7 +1742,7 @@ than normal responses unless authenticated in another way (e.g., via
 <div id="extensions-explained">
 <section id="appendix-A">
       <h2 id="name-coap-extensions-explained-b">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-coap-extensions-explained-b" class="section-name selfRef">CoAP extensions explained by non-traditional responses</a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-coap-extensions-explained-b" class="section-name selfRef">Coap Extensions Explained by Non-traditional Responses</a>
       </h2>
 <div id="observation">
 <section id="appendix-A.1">
@@ -1882,7 +1780,7 @@ cache with the most recent one as per the Observe value.<a href="#appendix-A.1-4
 <div id="responses-to-multicast-requests">
 <section id="appendix-A.2">
         <h3 id="name-responses-to-multicast-requ">
-<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-responses-to-multicast-requ" class="section-name selfRef">Responses to multicast requests</a>
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-responses-to-multicast-requ" class="section-name selfRef">Responses to Multicast Requests</a>
         </h3>
 <p id="appendix-A.2-1">As with observe, this just phrases the existing mechanism in the context
 of this generalization.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
@@ -1903,7 +1801,7 @@ communicated explicitly in the Multicast-Timeout option of
 <div id="triangular-responses-response-to">
 <section id="appendix-A.3">
         <h3 id="name-triangular-responses-respon">
-<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-triangular-responses-respon" class="section-name selfRef">Triangular responses (Response-To)</a>
+<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-triangular-responses-respon" class="section-name selfRef">Triangular Responses (Response-To)</a>
         </h3>
 <p id="appendix-A.3-1">The Response-To option can be viewed as a shorthand notation for
 "Consider this a No-Response:any request, but take a copy of it, make it
@@ -1917,7 +1815,7 @@ No-Response option; that might allow it to be used even across proxies. ]<a href
 <div id="other-current-documents">
 <section id="appendix-A.4">
         <h3 id="name-other-current-documents">
-<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-other-current-documents" class="section-name selfRef">Other current documents</a>
+<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-other-current-documents" class="section-name selfRef">Other Current Documents</a>
         </h3>
 <p id="appendix-A.4-1"><span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span> is a
 straightforward application of the phantom requests (the concept was
@@ -1930,49 +1828,190 @@ replacing Response-Forwarding with Response-For(Proxy-Scheme, Uri-Host).<a href=
 </div>
 </section>
 </div>
-<div id="list-of-tables">
+<div id="configured">
 <section id="appendix-B">
+      <h2 id="name-response-for-configured-req">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-response-for-configured-req" class="section-name selfRef">Response for Configured Request</a>
+      </h2>
+<p id="appendix-B-1">A request may reach the server using a different means than that used
+for the response.  For instance, the request may be configured in the server.
+Without limiting generality, we speak about <em>configured requests</em>.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-2">The client <span class="bcp14">MUST</span> be cognizant of that configuration as the request uses
+a token from the token name space it controls.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
+<div id="examples-for-configured-requests">
+<section id="appendix-B.1">
+        <h3 id="name-examples-for-configured-req">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-examples-for-configured-req" class="section-name selfRef">Examples for Configured Requests</a>
+        </h3>
+<div id="example-periodic-request">
+<section id="appendix-B.1.1">
+          <h4 id="name-example-periodic-request">
+<a href="#appendix-B.1.1" class="section-number selfRef">B.1.1. </a><a href="#name-example-periodic-request" class="section-name selfRef">Example: Periodic Request</a>
+          </h4>
+<p id="appendix-B.1.1-1">A server may be configured to act on a configured request every day at 12:00.<a href="#appendix-B.1.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="example-event-driven-request">
+<section id="appendix-B.1.2">
+          <h4 id="name-example-event-driven-reques">
+<a href="#appendix-B.1.2" class="section-number selfRef">B.1.2. </a><a href="#name-example-event-driven-reques" class="section-name selfRef">Example: Event Driven Request</a>
+          </h4>
+<p id="appendix-B.1.2-1">A server may be configured to act on a configured request each time it reboots.<a href="#appendix-B.1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="example-configured-observe">
+<section id="appendix-B.1.3">
+          <h4 id="name-example-configured-observe">
+<a href="#appendix-B.1.3" class="section-number selfRef">B.1.3. </a><a href="#name-example-configured-observe" class="section-name selfRef">Example: Configured Observe</a>
+          </h4>
+<p id="appendix-B.1.3-1">A server may be configured with a GET request from a client that
+includes an Observe option with value 0.  This means that the server
+will send updates to the state of the resource addressed by the GET
+request to the configured address of the client.<a href="#appendix-B.1.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.3-2">The considerations of <span><a href="https://rfc-editor.org/rfc/rfc7641#section-4.5" class="relref">Section 4.5</a> of [<a href="#RFC7641" class="cite xref">RFC7641</a>]</span> apply.  How losing
+interest reflects back into the configuration and whether there is some
+form of error notification to the source of the configuration is out
+of scope of the present specification.<a href="#appendix-B.1.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="multicast-responses">
+<section id="appendix-B.2">
+        <h3 id="name-multicast-responses">
+<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-multicast-responses" class="section-name selfRef">Multicast Responses</a>
+        </h3>
+<p id="appendix-B.2-1">A server <span class="bcp14">MAY</span> send a response to a multicast address.
+(This needs to be a response to a configured request as a normal
+request cannot be sent <em>from</em> a multicast address.)<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-2">Note that, as the originator of a multicast response is a unicast
+address, the relaxation of matching rules described in <span><a href="https://rfc-editor.org/rfc/rfc7252#section-8.2" class="relref">Section 8.2</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span> does not apply.<a href="#appendix-B.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-3">The token space in CoAP is owned by the client, which is identified by
+a transport endpoint (address/port).  Here, the address is a multicast
+address, so the token name space is shared by all nodes joined to that multicast
+address.  The assumption for multicast responses is that, for each
+multicast group, there is some form of management for the token space
+(and the port number) that everyone can participate in that needs to
+join that multicast group; the specific form of management is out of
+the scope of this specification.  Note that this means that multicast
+responses <span class="bcp14">MUST NOT</span> be sent to unmanaged multicast addresses such as
+All CoAP Nodes (<span><a href="https://rfc-editor.org/rfc/rfc7252#section-12.8" class="relref">Section 12.8</a> of [<a href="#RFC7252" class="cite xref">RFC7252</a>]</span>).<a href="#appendix-B.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-4">Multicast responses are always non-confirmable.  The congestion
+control considerations for non-confirmable multicast messages apply
+unchanged.<a href="#appendix-B.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-B.2-5"><span>[<a href="#I-D.ietf-core-observe-multicast-notifications" class="cite xref">I-D.ietf-core-observe-multicast-notifications</a>]</span> provides a concrete way of communicating such a setup.<a href="#appendix-B.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="respond-to-option-a-potential-common-component">
+<section id="appendix-B.3">
+        <h3 id="name-respond-to-option-a-potenti">
+<a href="#appendix-B.3" class="section-number selfRef">B.3. </a><a href="#name-respond-to-option-a-potenti" class="section-name selfRef">Respond-To Option: A Potential Common Component</a>
+        </h3>
+<p id="appendix-B.3-1">What has been called "configured request" here may also be triggered
+by a usual CoAP request that carries options that ask for modified response behavior.
+
+(The term "configured request" is still appropriate as the server
+ought to be configured to accept option of this kind; see <a href="#seccons" class="auto internal xref">Section 7</a>.)<a href="#appendix-B.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.3-2">For instance, if a single client wants to request a server to send the response to a
+specific multicast address, it can indicate this by including something like the "Respond-To" option sketched here.
+This contains an opaque string with the port number as a 16-bit number
+(in network byte order), followed by the IP address (4-byte IPv4 or
+16-byte IPv6).<a href="#appendix-B.3-2" class="pilcrow">¶</a></p>
+<span id="name-a-potential-respond-to-opti"></span><div id="tbl-respond-to-option">
+<table class="center" id="table-4">
+          <caption>
+<a href="#table-4" class="selfRef">Table 4</a>:
+<a href="#name-a-potential-respond-to-opti" class="selfRef">A Potential Respond-To Option</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-right" rowspan="1" colspan="1">No.</th>
+              <th class="text-left" rowspan="1" colspan="1">C</th>
+              <th class="text-left" rowspan="1" colspan="1">U</th>
+              <th class="text-left" rowspan="1" colspan="1">N</th>
+              <th class="text-left" rowspan="1" colspan="1">R</th>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Format</th>
+              <th class="text-right" rowspan="1" colspan="1">Length</th>
+              <th class="text-left" rowspan="1" colspan="1">Default</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-right" rowspan="1" colspan="1">TBD later</td>
+              <td class="text-left" rowspan="1" colspan="1">C</td>
+              <td class="text-left" rowspan="1" colspan="1">U</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">-</td>
+              <td class="text-left" rowspan="1" colspan="1">Respond-To</td>
+              <td class="text-left" rowspan="1" colspan="1">opaque</td>
+              <td class="text-right" rowspan="1" colspan="1">6-18</td>
+              <td class="text-left" rowspan="1" colspan="1">(none)</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="appendix-B.3-4">(No allocation of an Option number is planned at this time.)<a href="#appendix-B.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="seccons-configured">
+<section id="appendix-B.4">
+        <h3 id="name-security-considerations-for">
+<a href="#appendix-B.4" class="section-number selfRef">B.4. </a><a href="#name-security-considerations-for" class="section-name selfRef">Security Considerations for Configured Requests</a>
+        </h3>
+<p id="appendix-B.4-1">(Clearly, multicast responses pose a potential for amplification, in
+particular if unverified sources can cause them via Respond-To.
+<span class="cref" id="xxx">XXX</span> Discuss how to mitigate.)<a href="#appendix-B.4-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.4-2">A Respond-To option can be used to incite a server to send data to a
+third party.  This ought not be done blindly, i.e., only with
+considered application assent.<a href="#appendix-B.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="list-of-tables">
+<section id="appendix-C">
       <h2 id="name-list-of-tables">
 <a href="#name-list-of-tables" class="section-name selfRef">List of Tables</a>
       </h2>
-<span class="break"></span><dl class="dlCompact dlParallel" id="appendix-B-1">
-        <dt id="appendix-B-1.1">
-<a href="#response-for-option" class="auto internal xref">Table 1</a>:</dt>
-        <dd style="margin-left: 5.5em" id="appendix-B-1.2">
-          <p id="appendix-B-1.2.1"><a href="#response-for-option" class="internal xref">The Response-For Option</a><a href="#appendix-B-1.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="appendix-C-1">
+        <dt id="appendix-C-1.1">
+<a href="#tbl-response-for-option" class="auto internal xref">Table 1</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-C-1.2">
+          <p id="appendix-C-1.2.1"><a href="#tbl-response-for-option" class="internal xref">The Response-For Option</a><a href="#appendix-C-1.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="appendix-B-1.3">
-<a href="#tbl-respond-to-option" class="auto internal xref">Table 2</a>:</dt>
-        <dd style="margin-left: 5.5em" id="appendix-B-1.4">
-          <p id="appendix-B-1.4.1"><a href="#tbl-respond-to-option" class="internal xref">The Respond-To Option</a><a href="#appendix-B-1.4.1" class="pilcrow">¶</a></p>
+<dt id="appendix-C-1.3">
+<a href="#tbl-leisure-for-responses-option" class="auto internal xref">Table 2</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-C-1.4">
+          <p id="appendix-C-1.4.1"><a href="#tbl-leisure-for-responses-option" class="internal xref">The Leisure-For-Responses Option</a><a href="#appendix-C-1.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="appendix-B-1.5">
-<a href="#tbl-leisure-for-responses-option" class="auto internal xref">Table 3</a>:</dt>
-        <dd style="margin-left: 5.5em" id="appendix-B-1.6">
-          <p id="appendix-B-1.6.1"><a href="#tbl-leisure-for-responses-option" class="internal xref">The Leisure-For-Responses Option</a><a href="#appendix-B-1.6.1" class="pilcrow">¶</a></p>
+<dt id="appendix-C-1.5">
+<a href="#tbl-option-registry" class="auto internal xref">Table 3</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-C-1.6">
+          <p id="appendix-C-1.6.1"><a href="#tbl-option-registry" class="internal xref">Newly Registered CoAP Option Numbers</a><a href="#appendix-C-1.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="appendix-B-1.7">
-<a href="#tab-option-registry" class="auto internal xref">Table 4</a>:</dt>
-        <dd style="margin-left: 5.5em" id="appendix-B-1.8">
-          <p id="appendix-B-1.8.1"><a href="#tab-option-registry" class="internal xref">CoAP Option Numbers</a><a href="#appendix-B-1.8.1" class="pilcrow">¶</a></p>
+<dt id="appendix-C-1.7">
+<a href="#tbl-respond-to-option" class="auto internal xref">Table 4</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-C-1.8">
+          <p id="appendix-C-1.8.1"><a href="#tbl-respond-to-option" class="internal xref">A Potential Respond-To Option</a><a href="#appendix-C-1.8.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
 </section>
 </div>
 <div id="acknowledgements">
-<section id="appendix-C">
+<section id="appendix-D">
       <h2 id="name-acknowledgements">
 <a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
       </h2>
-<p id="appendix-C-1">TBD<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">TBD<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-D">
+<section id="appendix-E">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
